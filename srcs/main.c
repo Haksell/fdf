@@ -6,11 +6,20 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:04:35 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/15 20:58:13 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/15 22:16:50 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
+
+static void	set_limits(t_data *data)
+{
+	static t_limits	limits[] = {
+	{-2.25, 0.75, -1.5, 1.5},
+	{-1.5, -1.5, -1.5, 1.5}};
+
+	data->limits = limits[data->args.fractal];
+}
 
 int	render_frame(t_data *data)
 {
@@ -43,10 +52,7 @@ int	main(int argc, char **argv)
 		ft_putendl_fd("- ./fractol julia real imag", STDERR_FILENO);
 		return (EXIT_FAILURE);
 	}
-	data.limits.min_x = -INITIAL_ZOOM;
-	data.limits.min_y = -INITIAL_ZOOM;
-	data.limits.max_x = INITIAL_ZOOM;
-	data.limits.max_y = INITIAL_ZOOM;
+	set_limits(&data);
 	data.max_iterations = 100;
 	data.mlx = mlx_init();
 	data.win = mlx_new_window(data.mlx, WINDOW_WIDTH, WINDOW_HEIGHT, argv[0]);

@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:06:02 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/15 21:23:12 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/16 00:23:41 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@
 # define WINDOW_WIDTH 800
 # define WINDOW_HEIGHT 800
 # define ESCAPE_RADIUS_SQUARED 100
-# define INITIAL_ZOOM 2.2
 # define ZOOM_FACTOR 1.1
 # define BLACK 0x000000
+# define WHITE 0xffffff
 
 typedef enum e_fractal {
 	MANDELBROT = 0,
