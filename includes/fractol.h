@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:06:02 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/15 21:03:30 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/15 21:23:12 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@
 # define ESCAPE_RADIUS_SQUARED 100
 # define INITIAL_ZOOM 2.2
 # define ZOOM_FACTOR 1.1
-# define COLORMAP_SIZE 100
 # define BLACK 0x000000
 
 typedef enum e_fractal {
