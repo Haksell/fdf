@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 18:24:36 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/15 20:51:30 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/16 01:31:50 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,20 @@ static bool	in_main_bulbs(double x, double y)
 int	iterations_mandelbrot(double x0, double y0, t_data *data)
 {
 	int		n;
-	double	x = x0;
-	double	y = y0;
+	double	x;
+	double	y;
+	double	xtemp;
 
+	x = x0;
+	y = y0;
 	if (in_main_bulbs(x0, y0))
 		return (data->max_iterations);
 	n = 0;
-	while (n < data->max_iterations && x*x+y*y <= ESCAPE_RADIUS_SQUARED)
+	while (n < data->max_iterations && x * x + y * y <= ESCAPE_RADIUS_SQUARED)
 	{
-		double xtemp = x*x - y*y + x0;
-        y = 2*x*y + y0;
-        x = xtemp;
+		xtemp = x * x - y * y + x0;
+		y = 2 * x * y + y0;
+		x = xtemp;
 		++n;
 	}
 	return (n);
@@ -46,15 +49,18 @@ int	iterations_mandelbrot(double x0, double y0, t_data *data)
 int	iterations_julia(double x0, double y0, t_data *data)
 {
 	int		n;
-	double	x = x0;
-	double	y = y0;
+	double	x;
+	double	y;
+	double	xtemp;
 
+	x = x0;
+	y = y0;
 	n = 0;
-	while (n < data->max_iterations && x*x+y*y <= ESCAPE_RADIUS_SQUARED)
+	while (n < data->max_iterations && x * x + y * y <= ESCAPE_RADIUS_SQUARED)
 	{
-		double xtemp = x*x - y*y + data->args.julia_start_x;
-        y = 2*x*y + data->args.julia_start_y;
-        x = xtemp;
+		xtemp = x * x - y * y + data->args.julia_start_x;
+		y = 2 * x * y + data->args.julia_start_y;
+		x = xtemp;
 		++n;
 	}
 	return (n);

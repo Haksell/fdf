@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 18:16:05 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/15 21:02:17 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/16 01:17:25 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,10 @@
 
 int	close_window(t_data *data)
 {
+	mlx_destroy_image(data->mlx, data->img);
 	mlx_destroy_window(data->mlx, data->win);
+	mlx_destroy_display(data->mlx);
+	free(data->mlx);
 	exit(0);
 	return (0);
 }

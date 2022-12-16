@@ -6,7 +6,7 @@
 #    By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 12:42:52 by axbrisse          #+#    #+#              #
-#    Updated: 2022/12/15 20:59:06 by axbrisse         ###   ########.fr        #
+#    Updated: 2022/12/16 00:52:19 by axbrisse         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,8 @@ PATH_OBJS = objs
 PATH_LIBFT = libft
 PATH_MLX = minilibx
 
+FILES += colors01234
+FILES += colors56789
 FILES += count_iterations
 FILES += event_handlers
 FILES += main

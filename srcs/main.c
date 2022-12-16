@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:04:35 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/15 22:16:50 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/16 01:01:49 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void	set_limits(t_data *data)
 {
 	static t_limits	limits[] = {
 	{-2.25, 0.75, -1.5, 1.5},
-	{-1.5, -1.5, -1.5, 1.5}};
+	{-1.5, 1.5, -1.5, 1.5}};
 
 	data->limits = limits[data->args.fractal];
 }

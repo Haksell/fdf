@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:06:02 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/16 00:23:41 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/16 01:38:10 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,16 @@ typedef int	(*t_iteration_func)(double, double, t_data *);
 
 void	calculate_pixel(t_data *data, int x, int y, t_iteration_func func);
 int		close_window(t_data *data);
-int		get_color(int iterations, int max_iterations);
+int		get_color_0(int iterations, int max_iterations);
+int		get_color_1(int iterations, int max_iterations);
+int		get_color_2(int iterations, int max_iterations);
+int		get_color_3(int iterations, int max_iterations);
+int		get_color_4(int iterations, int max_iterations);
+int		get_color_5(int iterations, int max_iterations);
+int		get_color_6(int iterations, int max_iterations);
+int		get_color_7(int iterations, int max_iterations);
+int		get_color_8(int iterations, int max_iterations);
+int		get_color_9(int iterations, int max_iterations);
 int		handle_key_down(int keycode, t_data *data);
 int		handle_zoom(int button, int x, int y, t_data *data);
 int		iterations_julia(double x0, double y0, t_data *data);
