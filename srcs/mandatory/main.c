@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:04:35 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/16 01:01:49 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/16 02:38:51 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	set_limits(t_data *data)
 	data->limits = limits[data->args.fractal];
 }
 
-int	render_frame(t_data *data)
+static int	render_frame(t_data *data)
 {
 	static t_iteration_func	funcs[] = {
 		iterations_mandelbrot, iterations_julia

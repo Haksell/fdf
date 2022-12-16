@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 18:16:05 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/16 01:17:25 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/16 02:40:29 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	handle_key_down(int keycode, t_data *data)
 	return (0);
 }
 
-void	zoom(int button, int x, int y, t_data *data)
+static void	zoom(int button, int x, int y, t_data *data)
 {
 	const double	x_before = scale_x(x, data);
 	const double	y_before = scale_y(y, data);

@@ -6,19 +6,17 @@
 #    By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 12:42:52 by axbrisse          #+#    #+#              #
-#    Updated: 2022/12/16 00:52:19 by axbrisse         ###   ########.fr        #
+#    Updated: 2022/12/16 02:36:51 by axbrisse         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = fractol
 
-PATH_SRCS = srcs
-PATH_OBJS = objs
+PATH_SRCS = srcs/mandatory
+PATH_OBJS = objs/mandatory
 PATH_LIBFT = libft
 PATH_MLX = minilibx
 
-FILES += colors01234
-FILES += colors56789
 FILES += count_iterations
 FILES += event_handlers
 FILES += main
@@ -47,7 +45,7 @@ ${NAME}: ${OBJS}
 clean:
 	${MAKE} -s -C ${PATH_LIBFT} clean
 	${MAKE} -s -C ${PATH_MLX} clean
-	rm -rf ${PATH_OBJS}
+	rm -rf objs
 
 fclean: clean
 	${MAKE} -s -C ${PATH_LIBFT} fclean
