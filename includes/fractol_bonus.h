@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:06:02 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/16 22:33:43 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/16 22:59:05 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # define WINDOW_WIDTH 800
 # define WINDOW_HEIGHT 800
 # define ESCAPE_RADIUS_SQUARED 100
+# define MAX_ITERATIONS 100
 # define ZOOM_FACTOR 1.1
 # define MOVE_FACTOR 0.05
 # define BLACK 0x000000

@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 00:24:48 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/16 02:54:46 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/16 22:57:40 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	get_color_5(int iterations, int max_iterations)
 		0xf3f4fd, 0xf4f4fd, 0xf4f5fd, 0xf5f6fd, 0xf6f6fd, 0xf6f7fd, 0xf7f8fd,
 		0xf8f8fd, 0xf9f9fe, 0xf9fafe, 0xfafafe, 0xfbfbfe, 0xfbfbfe, 0xfcfcfe,
 		0xfdfdfe, 0xfdfdfe, 0xfefefe, 0xffffff};
-	const int	palette_size = sizeof(palette) / sizeof(int);
+	static int	palette_size = sizeof(palette) / sizeof(int);
 
 	if (iterations == max_iterations)
 		return (BLACK);
@@ -54,7 +54,7 @@ int	get_color_6(int iterations, int max_iterations)
 		0xfdf3f3, 0xfdf4f3, 0xfdf5f4, 0xfdf5f5, 0xfdf6f6, 0xfdf7f6, 0xfdf7f7,
 		0xfef8f8, 0xfef9f8, 0xfef9f9, 0xfefafa, 0xfefbfa, 0xfefbfb, 0xfefcfc,
 		0xfefdfd, 0xfefdfd, 0xfefefe, 0xffffff};
-	const int	palette_size = sizeof(palette) / sizeof(int);
+	static int	palette_size = sizeof(palette) / sizeof(int);
 
 	if (iterations == max_iterations)
 		return (BLACK);
@@ -79,7 +79,7 @@ int	get_color_7(int iterations, int max_iterations)
 		0xeff8f0, 0xf0f8f1, 0xf1f9f2, 0xf2f9f3, 0xf3f9f3, 0xf4faf4, 0xf5faf5,
 		0xf6fbf6, 0xf7fbf7, 0xf7fbf8, 0xf8fcf9, 0xf9fcfa, 0xfafdfa, 0xfbfdfb,
 		0xfcfdfc, 0xfdfefd, 0xfefefe, 0xffffff};
-	const int	palette_size = sizeof(palette) / sizeof(int);
+	static int	palette_size = sizeof(palette) / sizeof(int);
 
 	if (iterations == max_iterations)
 		return (BLACK);

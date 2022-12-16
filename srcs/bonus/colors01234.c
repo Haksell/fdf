@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 22:36:54 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/16 02:54:40 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/16 22:50:47 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	get_color_0(int iterations, int max_iterations)
 		0x757575, 0x707070, 0x696969, 0x656565, 0x5e5e5e, 0x595959, 0x535353,
 		0x4c4c4c, 0x484848, 0x424242, 0x3e3e3e, 0x383838, 0x323232, 0x2e2e2e,
 		0x282828, 0x242424, 0x1e1e1e, 0x1a1a1a};
-	const int	palette_size = sizeof(palette) / sizeof(int);
+	static int	palette_size = sizeof(palette) / sizeof(int);
 
 	if (iterations == max_iterations)
 		return (BLACK);
@@ -54,7 +54,7 @@ int	get_color_1(int iterations, int max_iterations)
 		0xcb4942, 0xc8443f, 0xc43b3b, 0xc13539, 0xbd2d35, 0xba2732, 0xb61f2e,
 		0xb1172a, 0xab1529, 0xa21228, 0x9c1127, 0x930e26, 0x8a0b24, 0x840923,
 		0x7c0622, 0x760421, 0x6d0120, 0x67001f};
-	const int	palette_size = sizeof(palette) / sizeof(int);
+	static int	palette_size = sizeof(palette) / sizeof(int);
 
 	if (iterations == max_iterations)
 		return (BLACK);
@@ -79,7 +79,7 @@ int	get_color_2(int iterations, int max_iterations)
 		0x7093f4, 0x6e90f2, 0x6a8bf0, 0x6788ee, 0x6384eb, 0x6080e9, 0x5d7ce6,
 		0x5977e3, 0x5673e1, 0x526edd, 0x506bda, 0x4c66d6, 0x4961d2, 0x465dd0,
 		0x4358cb, 0x4055c8, 0x3d4fc4, 0x3a4cc0};
-	const int	palette_size = sizeof(palette) / sizeof(int);
+	static int	palette_size = sizeof(palette) / sizeof(int);
 
 	if (iterations == max_iterations)
 		return (BLACK);
@@ -104,7 +104,7 @@ int	get_color_3(int iterations, int max_iterations)
 		0xd2750f, 0xcf710e, 0xc96d0c, 0xc6690b, 0xc0640a, 0xbd6109, 0xb85c07,
 		0xb25706, 0xae5506, 0xa85206, 0xa44f06, 0x9e4c06, 0x984807, 0x934607,
 		0x8d4307, 0x894007, 0x833d07, 0x7f3b08};
-	const int	palette_size = sizeof(palette) / sizeof(int);
+	static int	palette_size = sizeof(palette) / sizeof(int);
 
 	if (iterations == max_iterations)
 		return (BLACK);
@@ -129,7 +129,7 @@ int	get_color_4(int iterations, int max_iterations)
 		0xdcc514, 0xddc514, 0xddc614, 0xdec714, 0xdec714, 0xdfc814, 0xdfc914,
 		0xe0c914, 0xe0ca13, 0xe1cb13, 0xe1cb13, 0xe2cc13, 0xe2cc13, 0xe3cd13,
 		0xe3ce13, 0xe4ce13, 0xe4cf13, 0xe5d013};
-	const int	palette_size = sizeof(palette) / sizeof(int);
+	static int	palette_size = sizeof(palette) / sizeof(int);
 
 	if (iterations == max_iterations)
 		return (BLACK);

@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 18:22:58 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/16 22:31:27 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/16 22:58:24 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,5 @@ void	calculate_pixel(t_data *data, int x, int y, t_iteration_func func)
 	const double		scaled_y = scale_y(y, data);
 	const int			iterations = func(scaled_x, scaled_y, data);
 
-	pixel_put(data, x, y, color_func(iterations, data->max_iterations));
+	pixel_put(data, x, y, color_func(iterations, MAX_ITERATIONS));
 }
