@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:06:02 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/16 02:56:43 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/16 02:59:51 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 
 # include <math.h>
 # include <stdbool.h>
+# include <stdio.h> // TODO
 
 # define WINDOW_WIDTH 800
 # define WINDOW_HEIGHT 800
