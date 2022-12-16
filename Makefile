@@ -6,7 +6,7 @@
 #    By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 12:42:52 by axbrisse          #+#    #+#              #
-#    Updated: 2022/12/16 22:16:06 by axbrisse         ###   ########.fr        #
+#    Updated: 2022/12/17 00:32:36 by axbrisse         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -79,6 +79,6 @@ bonus: ${OBJS_B}
 	${MAKE} -s -C ${PATH_MLX} all
 	${CC} ${CFLAGS} ${OBJS_B} -L${PATH_LIBFT} -lft -lX11 -lXext -L${PATH_MLX} -lmlx -lm -o ${NAME}
 
-rebonus: re bonus
+rebonus: fclean bonus
 
 .PHONY: all clean fclean re
