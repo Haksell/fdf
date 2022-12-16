@@ -6,11 +6,11 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 00:24:48 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/16 01:29:31 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/16 02:54:46 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fractol.h"
+#include "fractol_bonus.h"
 
 int	get_color_5(int iterations, int max_iterations)
 {

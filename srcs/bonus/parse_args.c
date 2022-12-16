@@ -1,0 +1,51 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_args.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/12/13 18:17:42 by axbrisse          #+#    #+#             */
+/*   Updated: 2022/12/16 02:54:55 by axbrisse         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "fractol_bonus.h"
+
+static bool	ft_atod(const char *s, double *ans)
+{
+	size_t	i;
+	double	sign;
+	double	decimal;
+
+	i = s[0] == '-';
+	sign = (s[0] != '-') - (s[0] == '-');
+	*ans = 0.0;
+	while (ft_isdigit(s[i]))
+		*ans = 10 * *ans + s[i++] - '0';
+	if (s[i] == '.')
+	{
+		++i;
+		decimal = 1.0;
+		while (ft_isdigit(s[i]))
+		{
+			decimal /= 10;
+			*ans += decimal * (s[i++] - '0');
+		}
+	}
+	*ans *= sign;
+	return (s[i] == '\0');
+}
+
+bool	parse_args(int argc, char **argv, t_args *args)
+{
+	if (argc == 2 && ft_strcmp(argv[1], "mandelbrot") == 0)
+		args->fractal = MANDELBROT;
+	else if (argc == 4 && ft_strcmp(argv[1], "julia") == 0
+		&& ft_atod(argv[2], &args->julia_start_x)
+		&& ft_atod(argv[3], &args->julia_start_y))
+		args->fractal = JULIA;
+	else
+		return (false);
+	return (true);
+}
