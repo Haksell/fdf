@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 18:17:42 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/16 02:54:55 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/16 21:39:22 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,14 @@ bool	parse_args(int argc, char **argv, t_args *args)
 		&& ft_atod(argv[2], &args->julia_start_x)
 		&& ft_atod(argv[3], &args->julia_start_y))
 		args->fractal = JULIA;
+	else if (argc == 2 && ft_strcmp(argv[1], "tricorn") == 0)
+		args->fractal = TRICORN;
+	else if (argc == 2 && ft_strcmp(argv[1], "burning_ship") == 0)
+		args->fractal = BURNING_SHIP;
+	else if (argc == 2 && ft_strcmp(argv[1], "cactus") == 0)
+		args->fractal = CACTUS;
+	else if (argc == 2 && ft_strcmp(argv[1], "hmmm") == 0)
+		args->fractal = HMMM;
 	else
 		return (false);
 	return (true);

@@ -6,17 +6,22 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:04:35 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/16 02:54:52 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/16 21:40:38 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol_bonus.h"
 
+// TODO better limits
 static void	set_limits(t_data *data)
 {
 	static t_limits	limits[] = {
 	{-2.25, 0.75, -1.5, 1.5},
-	{-1.5, 1.5, -1.5, 1.5}};
+	{-1.5, 1.5, -1.5, 1.5},
+	{-2.2, 1.3, -1.75, 1.75},
+	{-1.5, 1.5, -1.5, 1.5},
+	{-1.5, 1.5, -1.5, 1.5},
+	{-2.2, 1, -4, 4}};
 
 	data->limits = limits[data->args.fractal];
 }
@@ -24,7 +29,9 @@ static void	set_limits(t_data *data)
 static int	render_frame(t_data *data)
 {
 	static t_iteration_func	funcs[] = {
-		iterations_mandelbrot, iterations_julia
+		iterations_mandelbrot, iterations_julia,
+		iterations_tricorn, iterations_burning_ship,
+		iterations_cactus, iterations_hmmm
 	};
 	const t_iteration_func	func = funcs[data->args.fractal];
 	int						x;
@@ -50,10 +57,15 @@ int	main(int argc, char **argv)
 		ft_putendl_fd("Usage:", STDERR_FILENO);
 		ft_putendl_fd("- ./fractol mandelbrot", STDERR_FILENO);
 		ft_putendl_fd("- ./fractol julia real imag", STDERR_FILENO);
+		ft_putendl_fd("- ./fractol tricorn", STDERR_FILENO);
+		ft_putendl_fd("- ./fractol burning_ship", STDERR_FILENO);
+		ft_putendl_fd("- ./fractol cactus", STDERR_FILENO);
+		ft_putendl_fd("- ./fractol hmmm", STDERR_FILENO);
 		return (EXIT_FAILURE);
 	}
 	set_limits(&data);
 	data.max_iterations = 100;
+	data.colormap = 0;
 	data.mlx = mlx_init();
 	data.win = mlx_new_window(data.mlx, WINDOW_WIDTH, WINDOW_HEIGHT, argv[0]);
 	data.img = mlx_new_image(data.mlx, WINDOW_WIDTH, WINDOW_HEIGHT);

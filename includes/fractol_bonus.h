@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:06:02 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/16 02:59:51 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/16 21:42:29 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,24 @@
 # include "mlx.h"
 
 # include <math.h>
-# include <stdbool.h>
-# include <stdio.h> // TODO
 
 # define WINDOW_WIDTH 800
 # define WINDOW_HEIGHT 800
 # define ESCAPE_RADIUS_SQUARED 100
 # define ZOOM_FACTOR 1.1
+# define MOVE_FACTOR 0.05
 # define BLACK 0x000000
 # define WHITE 0xffffff
+# define MIN_NUMPAD 65429
+# define MAX_NUMPAD 65438
 
 typedef enum e_fractal {
 	MANDELBROT = 0,
-	JULIA = 1
+	JULIA = 1,
+	TRICORN = 2,
+	BURNING_SHIP = 3,
+	CACTUS = 4,
+	HMMM = 5,
 }	t_fractal;
 
 enum {
@@ -45,7 +50,15 @@ enum {
 };
 
 enum {
+	KEY_A = 97,
+	KEY_D = 100,
+	KEY_S = 115,
+	KEY_W = 119,
 	ESC = 65307,
+	ARROW_LEFT = 65361,
+	ARROW_UP = 65362,
+	ARROW_RIGHT = 65363,
+	ARROW_DOWN = 65364,
 };
 
 enum {
@@ -75,10 +88,12 @@ typedef struct s_data {
 	int			endian;
 	int			line_length;
 	int			max_iterations;
+	int			colormap;
 	t_args		args;
 	t_limits	limits;
 }	t_data;
 
+typedef int	(*t_color_func)(int, int);
 typedef int	(*t_iteration_func)(double, double, t_data *);
 
 void	calculate_pixel(t_data *data, int x, int y, t_iteration_func func);
@@ -95,8 +110,12 @@ int		get_color_8(int iterations, int max_iterations);
 int		get_color_9(int iterations, int max_iterations);
 int		handle_key_down(int keycode, t_data *data);
 int		handle_zoom(int button, int x, int y, t_data *data);
+int		iterations_burning_ship(double x0, double y0, t_data *data);
+int		iterations_cactus(double x0, double y0, t_data *data);
+int		iterations_hmmm(double x0, double y0, t_data *data);
 int		iterations_julia(double x0, double y0, t_data *data);
 int		iterations_mandelbrot(double x0, double y0, t_data *data);
+int		iterations_tricorn(double x0, double y0, t_data *data);
 bool	parse_args(int argc, char **argv, t_args *args);
 double	scale_x(int x, t_data *data);
 double	scale_y(int y, t_data *data);

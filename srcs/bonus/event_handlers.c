@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 18:16:05 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/16 02:54:50 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/16 03:19:40 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,30 @@ int	close_window(t_data *data)
 	return (0);
 }
 
+void	move(t_data *data, int dx, int dy)
+{
+	const double	fractal_size = data->limits.max_x - data->limits.min_x;
+
+	data->limits.min_x += fractal_size * dx * MOVE_FACTOR;
+	data->limits.max_x += fractal_size * dx * MOVE_FACTOR;
+	data->limits.min_y += fractal_size * dy * MOVE_FACTOR;
+	data->limits.max_y += fractal_size * dy * MOVE_FACTOR;
+}
+
 int	handle_key_down(int keycode, t_data *data)
 {
 	if (keycode == ESC)
 		close_window(data);
+	else if (keycode == ARROW_UP || keycode == KEY_W)
+		move(data, 0, -1);
+	else if (keycode == ARROW_RIGHT || keycode == KEY_D)
+		move(data, 1, 0);
+	else if (keycode == ARROW_DOWN || keycode == KEY_S)
+		move(data, 0, 1);
+	else if (keycode == ARROW_LEFT || keycode == KEY_A)
+		move(data, -1, 0);
+	else if (MIN_NUMPAD <= keycode && keycode <= MAX_NUMPAD)
+		data->colormap = keycode - MIN_NUMPAD;
 	return (0);
 }
 
