@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 18:17:42 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/16 21:51:02 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/16 22:09:13 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,28 +37,46 @@ static bool	ft_atod(const char *s, double *ans)
 	return (s[i] == '\0');
 }
 
-bool	parse_args(int argc, char **argv, t_args *args)
+bool	parse_args_4(char **argv, t_args *args)
 {
-	if (argc == 2 && ft_strcmp(argv[1], "mandelbrot") == 0)
+	if (ft_strcmp(argv[1], "julia") == 0
+		&& ft_atod(argv[2], &args->julia_start_x)
+		&& ft_atod(argv[3], &args->julia_start_y))
+	{
+		args->fractal = JULIA;
+		args->julia_follows_mouse = false;
+		return (true);
+	}
+	return (false);
+}
+
+bool	parse_args_2(char **argv, t_args *args)
+{
+	if (ft_strcmp(argv[1], "mandelbrot") == 0)
 		args->fractal = MANDELBROT;
-	if (argc == 2 && ft_strcmp(argv[1], "julia") == 0)
+	else if (ft_strcmp(argv[1], "julia") == 0)
 	{
 		args->fractal = JULIA;
 		args->julia_follows_mouse = true;
 	}
-	else if (argc == 4 && ft_strcmp(argv[1], "julia") == 0
-		&& ft_atod(argv[2], &args->julia_start_x)
-		&& ft_atod(argv[3], &args->julia_start_y))
-		args->fractal = JULIA;
-	else if (argc == 2 && ft_strcmp(argv[1], "tricorn") == 0)
+	else if (ft_strcmp(argv[1], "tricorn") == 0)
 		args->fractal = TRICORN;
-	else if (argc == 2 && ft_strcmp(argv[1], "burning_ship") == 0)
+	else if (ft_strcmp(argv[1], "burning_ship") == 0)
 		args->fractal = BURNING_SHIP;
-	else if (argc == 2 && ft_strcmp(argv[1], "cactus") == 0)
+	else if (ft_strcmp(argv[1], "cactus") == 0)
 		args->fractal = CACTUS;
-	else if (argc == 2 && ft_strcmp(argv[1], "hmmm") == 0)
+	else if (ft_strcmp(argv[1], "hmmm") == 0)
 		args->fractal = HMMM;
 	else
 		return (false);
 	return (true);
+}
+
+bool	parse_args(int argc, char **argv, t_args *args)
+{
+	if (argc == 2)
+		return parse_args_2(argv, args);
+	else if (argc == 4)
+		return parse_args_4(argv, args);
+	return (false);
 }

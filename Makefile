@@ -6,7 +6,7 @@
 #    By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 12:42:52 by axbrisse          #+#    #+#              #
-#    Updated: 2022/12/16 02:57:48 by axbrisse         ###   ########.fr        #
+#    Updated: 2022/12/16 22:16:06 by axbrisse         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,9 +30,10 @@ MANDATORY += scale_coords
 
 BONUS += colors01234
 BONUS += colors56789
-BONUS += count_iterations
 BONUS += event_handlers
 BONUS += main
+BONUS += mandelbrot
+BONUS += other_fractals
 BONUS += parse_args
 BONUS += pixels
 BONUS += scale_coords

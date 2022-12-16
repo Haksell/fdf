@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:04:35 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/16 21:55:31 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/16 21:57:30 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,7 @@ void	display_usage(void)
 {
 	ft_putendl_fd("Usage:", STDERR_FILENO);
 	ft_putendl_fd("- ./fractol mandelbrot", STDERR_FILENO);
-	ft_putendl_fd("- ./fractol julia", STDERR_FILENO);
-	ft_putendl_fd("- ./fractol julia real imag", STDERR_FILENO);
+	ft_putendl_fd("- ./fractol julia [real imag]", STDERR_FILENO);
 	ft_putendl_fd("- ./fractol tricorn", STDERR_FILENO);
 	ft_putendl_fd("- ./fractol burning_ship", STDERR_FILENO);
 	ft_putendl_fd("- ./fractol cactus", STDERR_FILENO);
