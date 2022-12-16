@@ -6,7 +6,7 @@
 #    By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 12:42:52 by axbrisse          #+#    #+#              #
-#    Updated: 2022/12/17 00:32:36 by axbrisse         ###   ########.fr        #
+#    Updated: 2022/12/17 00:42:03 by axbrisse         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,10 +40,14 @@ BONUS += scale_coords
 
 SRCS_M = ${addsuffix .c, ${MANDATORY}}
 SRCS_B = ${addsuffix .c, ${BONUS}}
-vpath %.c ${PATH_SRCS_B}
-vpath %.c ${PATH_SRCS_M}
 OBJS_M = ${patsubst %.c, ${PATH_OBJS_M}/%.o, ${SRCS_M}}
 OBJS_B = ${patsubst %.c, ${PATH_OBJS_B}/%.o, ${SRCS_B}}
+
+ifeq (bonus, ${findstring bonus, ${MAKECMDGOALS}})
+	vpath %.c ${PATH_SRCS_B}
+else
+	vpath %.c ${PATH_SRCS_M}
+endif
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
