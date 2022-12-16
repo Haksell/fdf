@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:06:02 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/16 21:42:29 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/16 21:45:48 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ enum {
 
 typedef struct s_args {
 	t_fractal	fractal;
+	bool		julia_follows_mouse;
 	double		julia_start_x;
 	double		julia_start_y;
 }	t_args;

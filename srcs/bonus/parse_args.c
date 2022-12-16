@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 18:17:42 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/16 21:39:22 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/16 21:51:02 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,11 @@ bool	parse_args(int argc, char **argv, t_args *args)
 {
 	if (argc == 2 && ft_strcmp(argv[1], "mandelbrot") == 0)
 		args->fractal = MANDELBROT;
+	if (argc == 2 && ft_strcmp(argv[1], "julia") == 0)
+	{
+		args->fractal = JULIA;
+		args->julia_follows_mouse = true;
+	}
 	else if (argc == 4 && ft_strcmp(argv[1], "julia") == 0
 		&& ft_atod(argv[2], &args->julia_start_x)
 		&& ft_atod(argv[3], &args->julia_start_y))

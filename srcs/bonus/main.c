@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:04:35 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/16 21:40:38 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/16 21:55:31 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,12 @@ static int	render_frame(t_data *data)
 	int						x;
 	int						y;
 
+	if (data->args.julia_follows_mouse)
+	{
+		mlx_mouse_get_pos(data->mlx, data->win, &x, &y);
+		data->args.julia_start_x = scale_x(x, data);
+		data->args.julia_start_y = scale_y(y, data);
+	}
 	y = -1;
 	while (++y < WINDOW_HEIGHT)
 	{
@@ -48,19 +54,25 @@ static int	render_frame(t_data *data)
 	return (0);
 }
 
+void	display_usage(void)
+{
+	ft_putendl_fd("Usage:", STDERR_FILENO);
+	ft_putendl_fd("- ./fractol mandelbrot", STDERR_FILENO);
+	ft_putendl_fd("- ./fractol julia", STDERR_FILENO);
+	ft_putendl_fd("- ./fractol julia real imag", STDERR_FILENO);
+	ft_putendl_fd("- ./fractol tricorn", STDERR_FILENO);
+	ft_putendl_fd("- ./fractol burning_ship", STDERR_FILENO);
+	ft_putendl_fd("- ./fractol cactus", STDERR_FILENO);
+	ft_putendl_fd("- ./fractol hmmm", STDERR_FILENO);
+}
+
 int	main(int argc, char **argv)
 {
 	t_data	data;
 
 	if (!parse_args(argc, argv, &data.args))
 	{
-		ft_putendl_fd("Usage:", STDERR_FILENO);
-		ft_putendl_fd("- ./fractol mandelbrot", STDERR_FILENO);
-		ft_putendl_fd("- ./fractol julia real imag", STDERR_FILENO);
-		ft_putendl_fd("- ./fractol tricorn", STDERR_FILENO);
-		ft_putendl_fd("- ./fractol burning_ship", STDERR_FILENO);
-		ft_putendl_fd("- ./fractol cactus", STDERR_FILENO);
-		ft_putendl_fd("- ./fractol hmmm", STDERR_FILENO);
+		display_usage();
 		return (EXIT_FAILURE);
 	}
 	set_limits(&data);
