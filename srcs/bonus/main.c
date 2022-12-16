@@ -6,21 +6,20 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:04:35 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/16 21:57:30 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/16 22:28:38 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol_bonus.h"
 
-// TODO better limits
 static void	set_limits(t_data *data)
 {
 	static t_limits	limits[] = {
 	{-2.25, 0.75, -1.5, 1.5},
 	{-1.5, 1.5, -1.5, 1.5},
 	{-2.2, 1.3, -1.75, 1.75},
-	{-1.5, 1.5, -1.5, 1.5},
-	{-1.5, 1.5, -1.5, 1.5},
+	{-2.1, 1.1, -2.1, 1.1},
+	{-0.9, 1.1, -1, 1},
 	{-2.2, 1, -4, 4}};
 
 	data->limits = limits[data->args.fractal];
