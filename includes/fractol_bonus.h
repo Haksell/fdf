@@ -6,12 +6,12 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:06:02 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/16 21:45:48 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/16 22:33:43 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FRACTOL_H
-# define FRACTOL_H
+#ifndef FRACTOL_BONUS_H
+# define FRACTOL_BONUS_H
 
 # include "libft.h"
 # include "mlx.h"

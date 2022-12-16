@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 18:24:36 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/16 22:16:25 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/16 22:31:03 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,8 @@ int	iterations_cactus(double x0, double y0, t_data *data)
 	n = 0;
 	while (n < data->max_iterations && x * x + y * y <= ESCAPE_RADIUS_SQUARED)
 	{
-		xtemp = x*x*x - 3*x*y*y + x0*x - y0*y - x - x0;
-		y = 3*x*x*y - y*y*y + x0*y + x*y0 -y - y0;
+		xtemp = x * x * x - 3 * x * y * y + x0 * x - y0 * y - x - x0;
+		y = 3 * x * x * y - y * y * y + x0 * y + x * y0 - y - y0;
 		x = xtemp;
 		++n;
 	}
@@ -105,7 +105,7 @@ int	iterations_hmmm(double x0, double y0, t_data *data)
 	while (n < data->max_iterations && x * x + y * y <= ESCAPE_RADIUS_SQUARED)
 	{
 		xtemp = x * x - y * y + x0;
-		y =  x * y + y0;
+		y = x * y + y0;
 		x = xtemp;
 		++n;
 	}

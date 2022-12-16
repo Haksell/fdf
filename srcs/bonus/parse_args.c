@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 18:17:42 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/16 22:09:13 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/16 22:30:03 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,8 @@ bool	parse_args_2(char **argv, t_args *args)
 bool	parse_args(int argc, char **argv, t_args *args)
 {
 	if (argc == 2)
-		return parse_args_2(argv, args);
+		return (parse_args_2(argv, args));
 	else if (argc == 4)
-		return parse_args_4(argv, args);
+		return (parse_args_4(argv, args));
 	return (false);
 }
