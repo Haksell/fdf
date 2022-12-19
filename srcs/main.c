@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:04:35 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/19 04:48:06 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/19 04:52:40 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,19 @@ int	render_frame(t_data *data)
 
 bool	endswith(char *s, char *end)
 {
-	const size_t s_len = ft_strlen(s);
-	const size_t end_len = ft_strlen(end);
+	const size_t	s_len = ft_strlen(s);
+	const size_t	end_len = ft_strlen(end);
+	size_t			i;
 
 	if (end_len > s_len)
 		return (false);
-	for (size_t i = 0; i < end_len; ++i)
-		if (s[s_len - i - 1] != end[end_len - i - 1])
+	i = 1;
+	while (i <= end_len)
+	{
+		if (s[s_len - i] != end[end_len - i])
 			return (false);
+		++i;
+	}
 	return (true);
 }
 

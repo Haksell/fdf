@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 04:42:40 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/19 04:48:50 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/19 04:51:27 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,12 @@
 
 enum {
 	ON_KEY_DOWN = 2,
-	ON_MOUSE_DOWN = 4,
 	ON_DESTROY = 17
 };
 
 enum {
 	NO_EVENT_MASK = 0,
 	KEY_PRESS_MASK = 1,
-	BUTTON_PRESS_MASK = 4
 };
 
 enum {
@@ -39,13 +37,13 @@ enum {
 };
 
 typedef struct s_data {
-	void		*mlx;
-	void		*win;
-	void		*img;
-	char		*addr;
-	int			bits_per_pixel;
-	int			endian;
-	int			line_length;
+	void	*mlx;
+	void	*win;
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		endian;
+	int		line_length;
 }	t_data;
 
 #endif
