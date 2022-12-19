@@ -1,1 +1,0 @@
-../minilibx/mlx.h

@@ -6,62 +6,73 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:04:35 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/16 02:38:51 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/19 04:48:06 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fractol.h"
+#include "fdf.h"
 
-static void	set_limits(t_data *data)
+int	close_window(t_data *data)
 {
-	static t_limits	limits[] = {
-	{-2.25, 0.75, -1.5, 1.5},
-	{-1.5, 1.5, -1.5, 1.5}};
-
-	data->limits = limits[data->args.fractal];
+	mlx_destroy_image(data->mlx, data->img);
+	mlx_destroy_window(data->mlx, data->win);
+	mlx_destroy_display(data->mlx);
+	free(data->mlx);
+	exit(0);
+	return (0);
 }
 
-static int	render_frame(t_data *data)
+int	handle_key_down(int keycode, t_data *data)
 {
-	static t_iteration_func	funcs[] = {
-		iterations_mandelbrot, iterations_julia
-	};
-	const t_iteration_func	func = funcs[data->args.fractal];
-	int						x;
-	int						y;
+	if (keycode == ESC)
+		close_window(data);
+	return (0);
+}
 
-	y = -1;
-	while (++y < WINDOW_HEIGHT)
-	{
-		x = -1;
-		while (++x < WINDOW_WIDTH)
-			calculate_pixel(data, x, y, func);
-	}
+void	pixel_put(t_data *data, int x, int y, int color)
+{
+	char	*dst;
+
+	if (x < 0 || x >= WINDOW_WIDTH || y < 0 || y >= WINDOW_HEIGHT)
+		return ;
+	dst = data->addr + data->line_length * y + data->bits_per_pixel / 8 * x;
+	*(unsigned int *)dst = color;
+}
+
+int	render_frame(t_data *data)
+{
 	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
 	return (0);
+}
+
+bool	endswith(char *s, char *end)
+{
+	const size_t s_len = ft_strlen(s);
+	const size_t end_len = ft_strlen(end);
+
+	if (end_len > s_len)
+		return (false);
+	for (size_t i = 0; i < end_len; ++i)
+		if (s[s_len - i - 1] != end[end_len - i - 1])
+			return (false);
+	return (true);
 }
 
 int	main(int argc, char **argv)
 {
 	t_data	data;
 
-	if (!parse_args(argc, argv, &data.args))
+	if (argc != 2 || !endswith(argv[1], ".fdf"))
 	{
-		ft_putendl_fd("Usage:", STDERR_FILENO);
-		ft_putendl_fd("- ./fractol mandelbrot", STDERR_FILENO);
-		ft_putendl_fd("- ./fractol julia real imag", STDERR_FILENO);
+		ft_putendl_fd("Usage: ./fdf *.fdf", STDERR_FILENO);
 		return (EXIT_FAILURE);
 	}
-	set_limits(&data);
-	data.max_iterations = 100;
 	data.mlx = mlx_init();
 	data.win = mlx_new_window(data.mlx, WINDOW_WIDTH, WINDOW_HEIGHT, argv[0]);
 	data.img = mlx_new_image(data.mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
-	data.addr = mlx_get_data_addr(data.img, &data.bits_per_pixel,
-			&data.line_length, &data.endian);
+	data.addr = mlx_get_data_addr(data.img, &data.bits_per_pixel, &data.line_length, &data.endian);
 	mlx_hook(data.win, ON_DESTROY, NO_EVENT_MASK, close_window, &data);
 	mlx_hook(data.win, ON_KEY_DOWN, KEY_PRESS_MASK, handle_key_down, &data);
-	mlx_hook(data.win, ON_MOUSE_DOWN, BUTTON_PRESS_MASK, handle_zoom, &data);
 	mlx_loop_hook(data.mlx, &render_frame, &data);
 	mlx_loop(data.mlx);
 	return (EXIT_SUCCESS);
