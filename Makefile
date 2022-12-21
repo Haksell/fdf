@@ -6,7 +6,7 @@
 #    By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 12:42:52 by axbrisse          #+#    #+#              #
-#    Updated: 2022/12/21 05:51:17 by axbrisse         ###   ########.fr        #
+#    Updated: 2022/12/21 06:29:56 by axbrisse         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ MANDATORY += event_handlers
 MANDATORY += get_map_dimensions
 MANDATORY += initialization
 MANDATORY += main
+MANDATORY += parse_map
 
 SRCS = ${addsuffix .c, ${MANDATORY}}
 OBJS = ${patsubst %.c, ${PATH_OBJS}/%.o, ${SRCS}}

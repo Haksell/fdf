@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 04:42:40 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/21 05:50:45 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/21 06:29:42 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,5 +64,6 @@ bool	get_map_dimensions(char *filename, t_map *map);
 int		handle_key_down(int keycode, t_data *data);
 bool	initialize_grid(int ***grid, size_t width, size_t height);
 void	initialize_map(t_map *map);
+bool	parse_map(char *filename, t_map *map);
 
 #endif
