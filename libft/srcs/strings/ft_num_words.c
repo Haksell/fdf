@@ -1,24 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ds_new.c                                        :+:      :+:    :+:   */
+/*   ft_num_words.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/09 10:00:38 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/18 19:06:34 by axbrisse         ###   ########.fr       */
+/*   Created: 2022/12/21 00:23:34 by axbrisse          #+#    #+#             */
+/*   Updated: 2022/12/21 00:23:41 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_dynamic_string	ft_ds_new(char *s)
+size_t	ft_num_words(char const *s, char c)
 {
-	const size_t		length = ft_strlen(s);
-	t_dynamic_string	dynamic_string;
+	bool	last_is_separator;
+	size_t	res;
+	size_t	i;
 
-	dynamic_string.content = ft_substr(s, 0, length);
-	dynamic_string.length = length;
-	dynamic_string.capacity = length + 1;
-	return (dynamic_string);
+	last_is_separator = true;
+	res = 0;
+	i = 0;
+	while (s[i] != '\0')
+	{
+		if (s[i] == c)
+			last_is_separator = true;
+		else
+		{
+			if (last_is_separator)
+				res++;
+			last_is_separator = false;
+		}
+		i++;
+	}
+	return (res);
 }

@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2022/12/20 22:24:32 by axbrisse          #+#    #+#              #
+#    Updated: 2022/12/21 00:25:42 by axbrisse         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 NAME = libft
 LIBRARY = ${addsuffix .a, ${NAME}}
 SHARED_LIBRARY = ${addsuffix .so, ${NAME}}
@@ -17,6 +29,7 @@ FILES += ft_bzero
 FILES += ft_calloc
 FILES += ft_ds_extend
 FILES += ft_ds_new
+FILES += ft_free_double_pointer
 FILES += ft_isalnum
 FILES += ft_isalpha
 FILES += ft_isascii
@@ -39,6 +52,7 @@ FILES += ft_memcmp
 FILES += ft_memcpy
 FILES += ft_memmove
 FILES += ft_memset
+FILES += ft_num_words
 FILES += ft_printf
 FILES += ft_putbase_fd
 FILES += ft_putchar_fd

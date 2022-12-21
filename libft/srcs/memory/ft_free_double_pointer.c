@@ -1,24 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ds_new.c                                        :+:      :+:    :+:   */
+/*   ft_free_double_pointer.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/09 10:00:38 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/18 19:06:34 by axbrisse         ###   ########.fr       */
+/*   Created: 2022/12/20 22:24:08 by axbrisse          #+#    #+#             */
+/*   Updated: 2022/12/21 03:57:25 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_dynamic_string	ft_ds_new(char *s)
+void	ft_free_double_pointer(void **grid, size_t height)
 {
-	const size_t		length = ft_strlen(s);
-	t_dynamic_string	dynamic_string;
+	size_t	i;
 
-	dynamic_string.content = ft_substr(s, 0, length);
-	dynamic_string.length = length;
-	dynamic_string.capacity = length + 1;
-	return (dynamic_string);
+	i = 0;
+	while (i < height)
+	{
+		free(grid[i]);
+		++i;
+	}
+	free(grid);
 }

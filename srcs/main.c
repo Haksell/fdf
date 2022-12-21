@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:04:35 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/19 04:52:40 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/21 03:56:39 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,11 +63,142 @@ bool	endswith(char *s, char *end)
 	return (true);
 }
 
+bool	get_map_height(char *filename, t_map *map)
+{
+	const int	fd = open(filename, O_RDONLY);
+	char		*line;
+
+	if (fd < 0)
+		return (false);
+	line = get_next_line(fd);
+	while (line != NULL)
+	{
+		++map->height;
+		line = get_next_line(fd);
+	}
+	close(fd);
+	return (true);
+}
+
+bool	get_map_width(char *filename, t_map *map)
+{
+	const int	fd = open(filename, O_RDONLY);
+	char		*line;
+
+	if (fd < 0)
+		return (false);
+	line = get_next_line(fd);
+	if (line == NULL)
+		return (false);
+	map->width = ft_num_words(line, ' ');
+	free(line);
+	close(fd);
+	return (true);
+}
+
+bool	parse_cell(char *cell, t_map *map, size_t x, size_t y)
+{
+	map->zs[y][x] = ft_atoi(cell);
+	map->colors[y][x] = DEFAULT_COLOR;
+	return (true);
+}
+
+bool	parse_row(size_t y, char *line, t_map *map)
+{
+	char	**cells;
+	size_t	x;
+
+	if (ft_num_words(line, ' ') != map->width)
+		return (false);
+	cells = ft_split(line, ' ');
+	if (cells == NULL)
+		return (false);
+	x = 0;
+	while (x < map->width)
+	{
+		if (!parse_cell(cells[x], map, x, y))
+		{
+			ft_free_double_pointer(cells, map->width);
+			return (false);
+		}
+		++x;
+	}
+	ft_free_double_pointer(cells, map->width);
+	return (true);
+}
+
+void	finish_reading_file(int fd)
+{
+	char	*line;
+
+	line = get_next_line(fd);
+	while (line != NULL)
+		line = get_next_line(fd);
+	close(fd);
+}
+
+bool	initialize_grid(int ***grid, int width, int height)
+{
+	size_t	i;
+
+	*grid = malloc(sizeof(int *) * height);
+	if (*grid == NULL)
+		return (false);
+	i = 0;
+	while (i < height)
+	{
+		(*grid)[i] = malloc(sizeof(int) * width);
+		if ((*grid)[i] == NULL)
+		{
+			ft_free_double_pointer(*grid, i);
+			return (false);
+		}
+		++i;
+	}
+	return (true);
+}
+
+bool	parse_map(char *filename, t_map *map)
+{
+	const int	fd = open(filename, O_RDONLY);
+	char		*line;
+	size_t		y;
+
+	if (fd < 0 || !get_map_height(filename, map) || !get_map_width(filename, map)
+		|| !initialize_grid(&map->zs, map->width, map->height)
+		|| !initialize_grid(&map->colors, map->width, map->height))
+		return (false);
+	y = 0;
+	while (y < map->height)
+	{
+		line = get_next_line(fd);
+		if (line == NULL || !parse_row(y, line, map))
+		{
+			ft_free_double_pointer(map->zs, y);
+			ft_free_double_pointer(map->colors, y);
+			finish_reading_file(fd);
+			return (false);
+		}
+		++y;
+	}
+	close(fd);
+	return (true);
+}
+
+void	initialize_map(t_map *map)
+{
+	map->height = 0;
+	map->width = 0;
+	map->zs = NULL;
+	map->colors = NULL;
+}
+
 int	main(int argc, char **argv)
 {
 	t_data	data;
 
-	if (argc != 2 || !endswith(argv[1], ".fdf"))
+	initialize_map(&data.map);
+	if (argc != 2 || !endswith(argv[1], ".fdf") || !parse_map(argv[1]))
 	{
 		ft_putendl_fd("Usage: ./fdf *.fdf", STDERR_FILENO);
 		return (EXIT_FAILURE);

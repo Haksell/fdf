@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 11:27:39 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/13 15:15:12 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/21 03:58:42 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ int					ft_lstsize(t_list *lst);
 //srcs/memory
 void				ft_bzero(void *s, size_t n);
 void				*ft_calloc(size_t nmemb, size_t size);
+void				ft_free_double_pointer(void **grid, size_t height);
 void				*ft_memchr(const void *s, int c, size_t n);
 int					ft_memcmp(const void *s1, const void *s2, size_t n);
 void				*ft_memcpy(void *dest, const void *src, size_t n);
@@ -100,6 +101,7 @@ int					ft_putnbr_fd(int n, int fd);
 int					ft_putstr_fd(char *s, int fd);
 
 // src/strings
+size_t				ft_num_words(char const *s, char c);
 char				**ft_split(char const *s, char c);
 char				*ft_strchr(const char *s, int c);
 int					ft_strcmp(const char *s1, const char *s2);
