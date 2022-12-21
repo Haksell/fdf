@@ -6,28 +6,11 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:04:35 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/21 05:41:59 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/21 05:50:56 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-
-int	close_window(t_data *data)
-{
-	mlx_destroy_image(data->mlx, data->img);
-	mlx_destroy_window(data->mlx, data->win);
-	mlx_destroy_display(data->mlx);
-	free(data->mlx);
-	exit(0);
-	return (0);
-}
-
-int	handle_key_down(int keycode, t_data *data)
-{
-	if (keycode == ESC)
-		close_window(data);
-	return (0);
-}
 
 void	pixel_put(t_data *data, int x, int y, int color)
 {
@@ -137,34 +120,13 @@ void	finish_reading_file(int fd)
 	close(fd);
 }
 
-bool	initialize_grid(int ***grid, size_t width, size_t height)
-{
-	size_t	i;
-
-	*grid = malloc(sizeof(int *) * height);
-	if (*grid == NULL)
-		return (false);
-	i = 0;
-	while (i < height)
-	{
-		(*grid)[i] = malloc(sizeof(int) * width);
-		if ((*grid)[i] == NULL)
-		{
-			ft_free_double_pointer((void **)*grid, i);
-			return (false);
-		}
-		++i;
-	}
-	return (true);
-}
-
 bool	parse_map(char *filename, t_map *map)
 {
 	const int	fd = open(filename, O_RDONLY);
 	char		*line;
 	size_t		y;
 
-	if (fd < 0 || !get_map_height(filename, map) || !get_map_width(filename, map)
+	if (fd < 0 || !get_map_dimensions(filename, map)
 		|| !initialize_grid(&map->zs, map->width, map->height)
 		|| !initialize_grid(&map->colors, map->width, map->height))
 		return (false);
@@ -185,13 +147,6 @@ bool	parse_map(char *filename, t_map *map)
 	return (true);
 }
 
-void	initialize_map(t_map *map)
-{
-	map->height = 0;
-	map->width = 0;
-	map->zs = NULL;
-	map->colors = NULL;
-}
 
 // TODO rm
 void display_grid(int **grid, size_t width, size_t height)

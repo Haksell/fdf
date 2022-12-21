@@ -6,7 +6,7 @@
 #    By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 12:42:52 by axbrisse          #+#    #+#              #
-#    Updated: 2022/12/19 04:47:35 by axbrisse         ###   ########.fr        #
+#    Updated: 2022/12/21 05:51:17 by axbrisse         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,9 @@ PATH_MLX = minilibx
 
 INCLUDES = -I./includes -I./libft/includes -I./minilibx
 
+MANDATORY += event_handlers
+MANDATORY += get_map_dimensions
+MANDATORY += initialization
 MANDATORY += main
 
 SRCS = ${addsuffix .c, ${MANDATORY}}
