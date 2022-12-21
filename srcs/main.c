@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:04:35 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/21 05:33:58 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/21 05:41:59 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ bool	get_map_height(char *filename, t_map *map)
 	const int	fd = open(filename, O_RDONLY);
 	char		*line;
 
-	ft_printf("height\n");
 	if (fd < 0)
 		return (false);
 	line = get_next_line(fd);
@@ -86,14 +85,11 @@ bool	get_map_width(char *filename, t_map *map)
 	const int	fd = open(filename, O_RDONLY);
 	char		*line;
 
-	ft_printf("width\n");
 	if (fd < 0)
 		return (false);
-	ft_printf("width\n");
 	line = get_next_line(fd);
 	if (line == NULL)
 		return (false);
-	ft_printf("width\n");
 	map->width = ft_num_words(line, ' ');
 	free(line);
 	close(fd);
@@ -145,7 +141,6 @@ bool	initialize_grid(int ***grid, size_t width, size_t height)
 {
 	size_t	i;
 
-	ft_printf("grid\n");
 	*grid = malloc(sizeof(int *) * height);
 	if (*grid == NULL)
 		return (false);
@@ -169,13 +164,11 @@ bool	parse_map(char *filename, t_map *map)
 	char		*line;
 	size_t		y;
 
-	ft_printf("hmmm1\n");
 	if (fd < 0 || !get_map_height(filename, map) || !get_map_width(filename, map)
 		|| !initialize_grid(&map->zs, map->width, map->height)
 		|| !initialize_grid(&map->colors, map->width, map->height))
 		return (false);
 	y = 0;
-	ft_printf("hmmm2\n");
 	while (y < map->height)
 	{
 		line = get_next_line(fd);
@@ -189,7 +182,6 @@ bool	parse_map(char *filename, t_map *map)
 		++y;
 	}
 	close(fd);
-	ft_printf("hmmm3\n");
 	return (true);
 }
 
@@ -199,6 +191,22 @@ void	initialize_map(t_map *map)
 	map->width = 0;
 	map->zs = NULL;
 	map->colors = NULL;
+}
+
+// TODO rm
+void display_grid(int **grid, size_t width, size_t height)
+{
+	for (size_t i = 0; i < height; ++i)
+	{
+		ft_putstr_fd("{", 1);
+		for (size_t j = 0; j < width; ++j)
+		{
+			ft_putnbr_fd(grid[i][j], 1);
+			if (j != width - 1)
+				ft_putstr_fd(", ", 1);
+		}
+		ft_putstr_fd("}\n", 1);
+	}
 }
 
 int	main(int argc, char **argv)
@@ -217,6 +225,9 @@ int	main(int argc, char **argv)
 	data.addr = mlx_get_data_addr(data.img, &data.bits_per_pixel, &data.line_length, &data.endian);
 	mlx_hook(data.win, ON_DESTROY, NO_EVENT_MASK, close_window, &data);
 	mlx_hook(data.win, ON_KEY_DOWN, KEY_PRESS_MASK, handle_key_down, &data);
+	display_grid(data.map.zs, data.map.width, data.map.height);
+	ft_printf("\n");
+	display_grid(data.map.colors, data.map.width, data.map.height);
 	mlx_loop_hook(data.mlx, &render_frame, &data);
 	mlx_loop(data.mlx);
 	return (EXIT_SUCCESS);
