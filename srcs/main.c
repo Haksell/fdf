@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:04:35 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/21 06:31:34 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/21 06:56:32 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,15 @@ void	pixel_put(t_data *data, int x, int y, int color)
 
 int	render_frame(t_data *data)
 {
+	for (size_t y = 0; y < data->map.height; ++y)
+	{
+		for (size_t x = 0; x < data->map.width; ++x)
+		{
+			double xx = WINDOW_WIDTH / 2.0 + x * 5 - y * 5;
+			double yy = x * 5 + y * 5;
+			pixel_put(data, (int)xx, (int)yy, 0x7c292a);
+		}
+	}
 	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
 	return (0);
 }
