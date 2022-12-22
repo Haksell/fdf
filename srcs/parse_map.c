@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 06:27:14 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/22 03:08:58 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/22 03:11:21 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static bool	parse_cell(char *cell, t_map *map, size_t x, size_t y)
 	map->zs[y][x] = absolute * sign;
 	if (is_end_line(cell[i]))
 	{
-		map->colors[y][x] = DEFAULT_COLOR;
+		map->colors[y][x] = WHITE;
 		return (true);
 	}
 	if (cell[i] != ',' || cell[i+1] != '0' || cell[i+2] != 'x')

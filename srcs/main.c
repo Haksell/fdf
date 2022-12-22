@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:04:35 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/22 03:08:43 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/22 03:38:27 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,19 @@ void	pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-void	line(t_data *data, int x0, int y0, int x1, int y1, int color)
+int lerp_component(int c0, int c1, int dist, int dist_max)
+{
+	return ((c0 * dist + c1 * (dist_max - dist)) / dist_max);
+}
+
+int	lerp_color(int c0, int c1, int dist, int dist_max)
+{
+	return (lerp_component(c0 >> 16, c1 >> 16, dist, dist_max) << 16
+		| lerp_component(c0 >> 8 & 255, c1 >> 8 & 255, dist, dist_max) << 8
+		| lerp_component(c0 & 255, c1 & 255, dist, dist_max));
+}
+
+void	line(t_data *data, int x0, int y0, int c0, int x1, int y1, int c1)
 {
     int dx = abs(x1 - x0);
     int sx = x0 < x1 ? 1 : -1;
@@ -33,20 +45,20 @@ void	line(t_data *data, int x0, int y0, int x1, int y1, int color)
     
     while (true)
 	{
-        pixel_put(data, x0, y0, color);
-        if (x0 == x1 && y0 == y1) break;
+        pixel_put(data, x0, y0, lerp_color(c0, c1, abs(x0-x1) + abs(y0-y1), dx-dy));
+        if (x0 == x1 && y0 == y1) return ;
         int e2 = 2 * error;
         if (e2 >= dy)
 		{
-            if (x0 == x1) break;
-            error = error + dy;
-            x0 = x0 + sx;
+            if (x0 == x1) return ;
+            error += dy;
+            x0 += sx;
 		}
         if (e2 <= dx)
 		{
-            if (y0 == y1) break;
-            error = error + dx;
-            y0 = y0 + sy;
+            if (y0 == y1) return ;
+            error += dx;
+            y0 += sy;
 		}
     }
 }
@@ -77,9 +89,9 @@ int	render_frame(t_data *data)
 		for (size_t x = 0; x < data->map.width; ++x)
 		{
 			if (x+1 != data->map.width)
-				line(data, xs[y][x], ys[y][x], xs[y][x+1], ys[y][x+1], data->map.colors[y][x]);
+				line(data, xs[y][x], ys[y][x], data->map.colors[y][x], xs[y][x+1], ys[y][x+1], data->map.colors[y][x+1]);
 			if (y+1 != data->map.height)
-				line(data, xs[y][x], ys[y][x], xs[y+1][x], ys[y+1][x], data->map.colors[y][x]);
+				line(data, xs[y][x], ys[y][x], data->map.colors[y][x], xs[y+1][x], ys[y+1][x], data->map.colors[y+1][x]);
 		}
 	}
 	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
