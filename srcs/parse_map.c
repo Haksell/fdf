@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 06:27:14 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/22 05:32:38 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/22 05:40:39 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,17 +122,23 @@ static bool	parse_row(size_t y, char *line, t_map *map)
 	return (true);
 }
 
-void	minify_zs(unsigned int **zs, unsigned int width, unsigned int height)
+void	minify_zs(t_map *map)
 {
-	unsigned int	min_height = UINT_MAX;
+	unsigned int	min_z = UINT_MAX;
 
-	for (size_t y = 0; y < height; ++y)
-		for (size_t x = 0; x < width; ++x)
-			if (zs[y][x] < min_height)
-				min_height = zs[y][x];
-	for (size_t y = 0; y < height; ++y)
-		for (size_t x = 0; x < width; ++x)
-			zs[y][x] -= min_height;
+	for (size_t y = 0; y < map->height; ++y)
+		for (size_t x = 0; x < map->width; ++x)
+			if (map->zs[y][x] < min_z)
+				min_z = map->zs[y][x];
+	for (size_t y = 0; y < map->height; ++y)
+	{
+		for (size_t x = 0; x < map->width; ++x)
+		{
+			map->zs[y][x] -= min_z;
+			if (map->zs[y][x] > map->max_z)
+				map->max_z = map->zs[y][x];
+		}
+	}
 }
 
 bool	parse_map(char *filename, t_map *map)
@@ -143,13 +149,11 @@ bool	parse_map(char *filename, t_map *map)
 
 	if (!endswith(filename, ".fdf"))
 		return (false);
-	ft_printf("1\n");
 	fd = open(filename, O_RDONLY);
 	if (fd < 0 || !get_map_dimensions(filename, map)
 		|| !initialize_grid((int ***)&map->zs, map->width, map->height)
 		|| !initialize_grid(&map->colors, map->width, map->height))
 		return (false);
-	ft_printf("2\n");
 	y = 0;
 	while (y < map->height)
 	{
@@ -163,8 +167,7 @@ bool	parse_map(char *filename, t_map *map)
 		}
 		++y;
 	}
-	ft_printf("3\n");
 	close(fd);
-	minify_zs(map->zs, map->width, map->height);
+	minify_zs(map);
 	return (true);
 }

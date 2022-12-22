@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:04:35 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/22 05:31:35 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/22 05:42:41 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	render_frame(t_data *data)
 		{
 			size_t ty = data->map.height - y - 1;
 			double xx = start_x + dx * (int)(x - ty);
-			double yy = start_y - dy * (x + ty) - 4 * data->map.zs[y][x];
+			double yy = start_y - dy * (x + ty) - data->z_factor * data->map.zs[y][x] / data->map.max_z;
 			xs[y][x] = (int)xx;
 			ys[y][x] = (int)yy;
 		}
@@ -69,6 +69,7 @@ int	main(int argc, char **argv)
 		ft_putendl_fd("Usage: ./fdf *.fdf", STDERR_FILENO);
 		return (EXIT_FAILURE);
 	}
+	data.z_factor = 50.0;
 	data.mlx = mlx_init();
 	data.win = mlx_new_window(data.mlx, WINDOW_WIDTH, WINDOW_HEIGHT, argv[0]);
 	data.img = mlx_new_image(data.mlx, WINDOW_WIDTH, WINDOW_HEIGHT);

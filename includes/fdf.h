@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 04:42:40 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/22 05:01:55 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/22 05:41:56 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ typedef struct s_map {
 	unsigned int	**zs;
 	unsigned int	height;
 	unsigned int	width;
+	unsigned int	max_z;
 }	t_map;
 
 typedef struct s_data {
@@ -57,6 +58,7 @@ typedef struct s_data {
 	int		bits_per_pixel;
 	int		endian;
 	int		line_length;
+	double	z_factor;
 	t_map	map;
 }	t_data;
 

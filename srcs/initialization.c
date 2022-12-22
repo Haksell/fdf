@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 05:45:51 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/22 04:33:52 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/22 05:36:39 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	initialize_map(t_map *map)
 {
 	map->height = 0;
 	map->width = 0;
+	map->max_z = 0;
 	map->zs = NULL;
 	map->colors = NULL;
 }
