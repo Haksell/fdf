@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 04:42:40 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/21 06:29:42 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/22 02:05:29 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,10 @@
 # include <sys/stat.h>
 # include <sys/types.h>
 
-# define WINDOW_WIDTH 960
-# define WINDOW_HEIGHT 540
+# define WINDOW_WIDTH 800
+# define WINDOW_HEIGHT 800
 
+# define WHITE 0xffffff
 # define DEFAULT_COLOR 0xffffff
 
 enum {
