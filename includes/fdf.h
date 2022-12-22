@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 04:42:40 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/22 03:56:16 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/22 05:01:55 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,14 @@
 # include "mlx.h"
 
 # include <fcntl.h>
+# include <limits.h>
 # include <math.h>
 # include <stdbool.h>
 # include <sys/stat.h>
 # include <sys/types.h>
 
-# define WINDOW_WIDTH 800
-# define WINDOW_HEIGHT 800
+# define WINDOW_WIDTH 1000
+# define WINDOW_HEIGHT 1000
 
 # define WHITE 0xffffff
 
@@ -42,11 +43,10 @@ enum {
 };
 
 typedef struct s_map {
-	int				**zs;
 	int				**colors;
+	unsigned int	**zs;
 	unsigned int	height;
 	unsigned int	width;
-	int				max_z;
 }	t_map;
 
 typedef struct s_data {

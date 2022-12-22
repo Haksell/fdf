@@ -6,19 +6,28 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:04:35 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/22 03:53:49 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/22 05:31:35 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include <stdio.h> // TODO
 
+static unsigned int get_max(unsigned int n1, unsigned int n2)
+{
+	if (n1 > n2)
+		return (n1);
+	else
+		return (n2);
+}
+
 int	render_frame(t_data *data)
 {
-	const double start_x = WINDOW_WIDTH / 2.0;
-	const double start_y = 100.0;
-	const double dx = cos(M_PI / 6) * 20;
-	const double dy = sin(M_PI / 6) * 20;
+	const double	start_x = WINDOW_WIDTH / 2.0;
+	const double	start_y = WINDOW_HEIGHT - 50.0;
+	const double	cell_size = start_x / get_max(data->map.width, data->map.height);
+	const double	dx = cos(M_PI / 6) * cell_size;
+	const double	dy = sin(M_PI / 6) * cell_size;
 	int	**xs;
 	int	**ys;
 
@@ -29,8 +38,9 @@ int	render_frame(t_data *data)
 	{
 		for (size_t x = 0; x < data->map.width; ++x)
 		{
-			double xx = start_x + dx * (int)(x - y);
-			double yy = start_y + dy * (x + y) - data->map.zs[y][x] * 2;
+			size_t ty = data->map.height - y - 1;
+			double xx = start_x + dx * (int)(x - ty);
+			double yy = start_y - dy * (x + ty) - 4 * data->map.zs[y][x];
 			xs[y][x] = (int)xx;
 			ys[y][x] = (int)yy;
 		}

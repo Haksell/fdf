@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 06:27:14 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/22 03:55:09 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/22 05:32:38 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,6 @@ static bool	endswith(char *s, char *end)
 		++i;
 	}
 	return (true);
-}
-
-static bool	is_end_line(char c)
-{
-	return (c == '\n' || c == '\0');
 }
 
 static void	finish_reading_file(int fd)
@@ -67,8 +62,8 @@ static bool	parse_cell(char *cell, t_map *map, size_t x, size_t y)
 			return (false);
 		++i;
 	}
-	map->zs[y][x] = absolute * sign;
-	if (is_end_line(cell[i]))
+	map->zs[y][x] = 2147483648 + absolute * sign;
+	if (cell[i] == '\0')
 	{
 		map->colors[y][x] = WHITE;
 		return (true);
@@ -76,13 +71,13 @@ static bool	parse_cell(char *cell, t_map *map, size_t x, size_t y)
 	if (cell[i] != ',' || cell[i+1] != '0' || cell[i+2] != 'x')
 		return (false);
 	i += 3;
-	if (is_end_line(cell[i]))
+	if (cell[i] == '\0')
 		return (false);
 	absolute = 0;
 	while (true)
 	{
 		char c = ft_tolower(cell[i]);
-		if (is_end_line(c))
+		if (c == '\0')
 		{
 			map->colors[y][x] = absolute;
 			return (true);
@@ -104,11 +99,13 @@ static bool	parse_row(size_t y, char *line, t_map *map)
 {
 	char	**cells;
 	size_t	x;
+	char *trimmed = ft_strtrim(line, " \t\n\v\f\r");
 
-	if (ft_num_words(line, ' ') != map->width)
-		return (false);
-	cells = ft_split(line, ' ');
 	free(line);
+	if (trimmed == NULL || ft_num_words(trimmed, ' ') != map->width)
+		return (false);
+	cells = ft_split(trimmed, ' ');
+	free(trimmed);
 	if (cells == NULL)
 		return (false);
 	x = 0;
@@ -125,6 +122,19 @@ static bool	parse_row(size_t y, char *line, t_map *map)
 	return (true);
 }
 
+void	minify_zs(unsigned int **zs, unsigned int width, unsigned int height)
+{
+	unsigned int	min_height = UINT_MAX;
+
+	for (size_t y = 0; y < height; ++y)
+		for (size_t x = 0; x < width; ++x)
+			if (zs[y][x] < min_height)
+				min_height = zs[y][x];
+	for (size_t y = 0; y < height; ++y)
+		for (size_t x = 0; x < width; ++x)
+			zs[y][x] -= min_height;
+}
+
 bool	parse_map(char *filename, t_map *map)
 {
 	int		fd;
@@ -133,11 +143,13 @@ bool	parse_map(char *filename, t_map *map)
 
 	if (!endswith(filename, ".fdf"))
 		return (false);
+	ft_printf("1\n");
 	fd = open(filename, O_RDONLY);
 	if (fd < 0 || !get_map_dimensions(filename, map)
-		|| !initialize_grid(&map->zs, map->width, map->height)
+		|| !initialize_grid((int ***)&map->zs, map->width, map->height)
 		|| !initialize_grid(&map->colors, map->width, map->height))
 		return (false);
+	ft_printf("2\n");
 	y = 0;
 	while (y < map->height)
 	{
@@ -151,6 +163,8 @@ bool	parse_map(char *filename, t_map *map)
 		}
 		++y;
 	}
+	ft_printf("3\n");
 	close(fd);
+	minify_zs(map->zs, map->width, map->height);
 	return (true);
 }
