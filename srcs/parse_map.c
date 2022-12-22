@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 06:27:14 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/22 03:11:21 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/22 03:55:09 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ static bool	parse_row(size_t y, char *line, t_map *map)
 	if (ft_num_words(line, ' ') != map->width)
 		return (false);
 	cells = ft_split(line, ' ');
+	free(line);
 	if (cells == NULL)
 		return (false);
 	x = 0;

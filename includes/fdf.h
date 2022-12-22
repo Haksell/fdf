@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 04:42:40 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/22 03:11:10 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/22 03:56:16 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_map {
 	int				**colors;
 	unsigned int	height;
 	unsigned int	width;
+	int				max_z;
 }	t_map;
 
 typedef struct s_data {
@@ -65,5 +66,6 @@ int		handle_key_down(int keycode, t_data *data);
 bool	initialize_grid(int ***grid, size_t width, size_t height);
 void	initialize_map(t_map *map);
 bool	parse_map(char *filename, t_map *map);
+void	line(t_data *data, int x0, int y0, int c0, int x1, int y1, int c1);
 
 #endif
