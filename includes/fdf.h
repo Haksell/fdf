@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 04:42:40 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/22 05:41:56 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/28 13:29:45 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,11 @@
 # include <sys/stat.h>
 # include <sys/types.h>
 
+
 # define WINDOW_WIDTH 1000
 # define WINDOW_HEIGHT 1000
-
 # define WHITE 0xffffff
+# define M_PI 3.141592653589793
 
 enum {
 	ON_KEY_DOWN = 2,
