@@ -1,37 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_num_words.c                                     :+:      :+:    :+:   */
+/*   ft_lst_get.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/21 00:23:34 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/25 02:32:09 by axbrisse         ###   ########.fr       */
+/*   Created: 2022/12/25 14:07:43 by axbrisse          #+#    #+#             */
+/*   Updated: 2022/12/25 14:09:56 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_num_words(char const *s, char c)
+void	*ft_lst_get(const t_list *lst, size_t idx)
 {
-	bool	last_is_separator;
-	size_t	res;
-	size_t	i;
-
-	last_is_separator = true;
-	res = 0;
-	i = 0;
-	while (s[i] != '\0')
+	while (true)
 	{
-		if (s[i] == c)
-			last_is_separator = true;
-		else
-		{
-			if (last_is_separator)
-				res++;
-			last_is_separator = false;
-		}
-		i++;
+		if (lst == NULL)
+			return (NULL);
+		if (idx == 0)
+			return (lst->content);
+		lst = lst->next;
+		--idx;
 	}
-	return (res);
 }

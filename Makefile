@@ -6,7 +6,7 @@
 #    By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 12:42:52 by axbrisse          #+#    #+#              #
-#    Updated: 2022/12/22 03:49:49 by axbrisse         ###   ########.fr        #
+#    Updated: 2022/12/28 10:45:26 by axbrisse         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ PATH_LIBFT = libft
 PATH_MLX = minilibx
 
 INCLUDES = -I./includes -I./libft/includes -I./minilibx
+HEADER = includes/fdf.h
 
 MANDATORY += event_handlers
 MANDATORY += get_map_dimensions
@@ -35,7 +36,7 @@ CFLAGS = -Wall -Wextra -Werror
 
 all: ${NAME}
 
-${OBJS}: ${PATH_OBJS}/%.o: %.c
+${OBJS}: ${PATH_OBJS}/%.o: %.c ${HEADER}
 	@mkdir -p ${PATH_OBJS}
 	${CC} ${CFLAGS} -c $< -o $@ ${INCLUDES}
 
@@ -54,7 +55,5 @@ fclean: clean
 	rm -f ${NAME}
 
 re: fclean ${NAME}
-
-rebonus: fclean bonus
 
 .PHONY: all clean fclean re

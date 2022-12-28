@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 06:27:14 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/22 05:40:39 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/25 00:35:27 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,10 @@ static void	finish_reading_file(int fd)
 
 	line = get_next_line(fd);
 	while (line != NULL)
+	{
+		free(line);
 		line = get_next_line(fd);
+	}
 	close(fd);
 }
 

@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:04:35 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/22 05:42:41 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/28 10:44:30 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,17 @@ static unsigned int get_max(unsigned int n1, unsigned int n2)
 		return (n2);
 }
 
-int	render_frame(t_data *data)
+int render_frame(t_data *data)
 {
-	const double	start_x = WINDOW_WIDTH / 2.0;
-	const double	start_y = WINDOW_HEIGHT - 50.0;
-	const double	cell_size = start_x / get_max(data->map.width, data->map.height);
-	const double	dx = cos(M_PI / 6) * cell_size;
-	const double	dy = sin(M_PI / 6) * cell_size;
-	int	**xs;
-	int	**ys;
+	const double start_x = WINDOW_WIDTH / 2.0;
+	const double start_y = WINDOW_HEIGHT - 50.0;
+	const double cell_size = start_x / get_max(data->map.width, data->map.height);
+	const double dx = cos(M_PI / 6) * cell_size;
+	const double dy = sin(M_PI / 6) * cell_size;
+	int **xs;
+	int **ys;
 
-	if (!initialize_grid(&xs, data->map.width, data->map.height)
-		|| !initialize_grid(&ys, data->map.width, data->map.height))
+	if (!initialize_grid(&xs, data->map.width, data->map.height) || !initialize_grid(&ys, data->map.width, data->map.height))
 		close_window(data);
 	for (size_t y = 0; y < data->map.height; ++y)
 	{
@@ -49,19 +48,19 @@ int	render_frame(t_data *data)
 	{
 		for (size_t x = 0; x < data->map.width; ++x)
 		{
-			if (x+1 != data->map.width)
-				line(data, xs[y][x], ys[y][x], data->map.colors[y][x], xs[y][x+1], ys[y][x+1], data->map.colors[y][x+1]);
-			if (y+1 != data->map.height)
-				line(data, xs[y][x], ys[y][x], data->map.colors[y][x], xs[y+1][x], ys[y+1][x], data->map.colors[y+1][x]);
+			if (x + 1 != data->map.width)
+				line(data, xs[y][x], ys[y][x], data->map.colors[y][x], xs[y][x + 1], ys[y][x + 1], data->map.colors[y][x + 1]);
+			if (y + 1 != data->map.height)
+				line(data, xs[y][x], ys[y][x], data->map.colors[y][x], xs[y + 1][x], ys[y + 1][x], data->map.colors[y + 1][x]);
 		}
 	}
 	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
 	return (0);
 }
 
-int	main(int argc, char **argv)
+int main(int argc, char **argv)
 {
-	t_data	data;
+	t_data data;
 
 	initialize_map(&data.map);
 	if (argc != 2 || !parse_map(argv[1], &data.map))

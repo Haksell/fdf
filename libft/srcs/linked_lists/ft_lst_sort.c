@@ -1,37 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_num_words.c                                     :+:      :+:    :+:   */
+/*   ft_lst_sort.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/21 00:23:34 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/25 02:32:09 by axbrisse         ###   ########.fr       */
+/*   Created: 2022/12/25 13:39:00 by axbrisse          #+#    #+#             */
+/*   Updated: 2022/12/25 14:00:48 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_num_words(char const *s, char c)
+void	ft_lst_sort(t_list *lst, int (*cmp)(void *, void *))
 {
-	bool	last_is_separator;
-	size_t	res;
-	size_t	i;
+	const int	size = ft_lstsize(lst);
+	t_list		*cur;
+	int			i;
+	void		*tmp;
 
-	last_is_separator = true;
-	res = 0;
-	i = 0;
-	while (s[i] != '\0')
+	i = 1;
+	while (i < size)
 	{
-		if (s[i] == c)
-			last_is_separator = true;
-		else
+		cur = lst;
+		while (cur && cur->next)
 		{
-			if (last_is_separator)
-				res++;
-			last_is_separator = false;
+			if (cmp(cur->content, cur->next->content) > 0)
+			{
+				tmp = cur->next->content;
+				cur->next->content = cur->content;
+				cur->content = tmp;
+			}
+			cur = cur->next;
 		}
-		i++;
+		++i;
 	}
-	return (res);
 }
