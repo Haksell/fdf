@@ -6,12 +6,11 @@
 #    By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 12:42:52 by axbrisse          #+#    #+#              #
-#    Updated: 2023/02/02 21:58:28 by axbrisse         ###   ########.fr        #
+#    Updated: 2023/02/03 00:16:18 by axbrisse         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = fdf
-SHARED_LIBRARY = fdf.so
 
 PATH_SRCS = srcs
 PATH_OBJS = objs

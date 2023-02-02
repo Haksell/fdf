@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 05:44:19 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/21 05:44:37 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/03 00:02:52 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,6 @@ int	handle_key_down(int keycode, t_data *data)
 {
 	if (keycode == ESC)
 		close_window(data);
+	// TODO if (!data->is_bonus) return (0);
 	return (0);
 }
