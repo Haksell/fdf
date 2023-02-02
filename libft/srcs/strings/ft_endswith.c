@@ -1,26 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_calloc.c                                        :+:      :+:    :+:   */
+/*   ft_endswith.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/08 20:32:10 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/01/07 01:43:56 by axbrisse         ###   ########.fr       */
+/*   Created: 2022/11/08 17:35:36 by axbrisse          #+#    #+#             */
+/*   Updated: 2023/01/20 14:42:30 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_calloc(size_t nmemb, size_t size)
+bool	ft_endswith(const char *str, const char *end)
 {
-	const size_t	bytes = nmemb * size;
-	void			*ptr;
+	const size_t	len_str = ft_strlen(str);
+	const size_t	len_end = ft_strlen(end);
 
-	if (size > 0 && nmemb > SIZE_MAX / size)
-		return (NULL);
-	ptr = malloc(bytes);
-	if (ptr != NULL)
-		ft_bzero(ptr, bytes);
-	return (ptr);
+	return (
+		len_str >= len_end
+		&& ft_strcmp(str + len_str - len_end, end) == 0
+	);
 }

@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 06:27:14 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/25 00:35:27 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/02 22:00:52 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ static bool	parse_row(size_t y, char *line, t_map *map)
 	char *trimmed = ft_strtrim(line, " \t\n\v\f\r");
 
 	free(line);
-	if (trimmed == NULL || ft_num_words(trimmed, ' ') != map->width)
+	if (trimmed == NULL || ft_num_words(trimmed, " ") != map->width)
 		return (false);
 	cells = ft_split(trimmed, ' ');
 	free(trimmed);

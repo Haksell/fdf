@@ -5,112 +5,75 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/09 10:55:49 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/21 05:24:12 by axbrisse         ###   ########.fr       */
+/*   Created: 2023/01/22 04:55:55 by axbrisse          #+#    #+#             */
+/*   Updated: 2023/01/22 05:13:14 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static char	*subnstr(char *s, size_t start, size_t len)
+static void	inplace_strjoin(char **s1, char *s2)
+{
+	char	*joined;
+
+	joined = ft_strjoin(*s1, s2);
+	free(*s1);
+	*s1 = joined;
+}
+
+static char	*get_start(char *s, size_t len)
 {
 	char	*dest;
-	size_t	i;
 
 	dest = malloc(len + 1);
-	if (dest == NULL)
-		return (NULL);
-	i = 0;
-	while (i < len)
-	{
-		dest[i] = s[i + start];
-		i++;
-	}
-	dest[len] = '\0';
+	if (dest != NULL)
+		ft_strlcpy(dest, s, len + 1);
+	free(s);
 	return (dest);
 }
 
-static size_t	find_newline(char *s, size_t lim)
+static int	find_newline(char *s)
 {
-	size_t	i;
+	int	i;
 
-	i = 0;
-	while (s[i] != '\0' && i < lim)
+	if (s != NULL)
 	{
-		if (s[i] == '\n')
-			return (i);
-		i++;
-	}
-	return (SIZE_MAX);
-}
-
-static char	*strcut(char *content, char *buffer, size_t middle)
-{
-	const char		*left = subnstr(content, 0, middle);
-	const size_t	right_length = ft_strlen(content) - middle;
-	const char		*right = subnstr(content, middle, right_length);
-
-	free(content);
-	if (left == NULL || right == NULL)
-	{
-		free((char *)left);
-		free((char *)right);
-		return (NULL);
-	}
-	ft_strlcpy(buffer, right, SIZE_MAX);
-	free((char *)right);
-	return ((char *)left);
-}
-
-static bool	keep_reading(int fd, t_dynamic_string *line, bool *is_last_line)
-{
-	char	buffer[BUFFER_SIZE + 1];
-	ssize_t	bytes_read;
-
-	ft_bzero(buffer, BUFFER_SIZE + 1);
-	bytes_read = BUFFER_SIZE;
-	while (find_newline(buffer, bytes_read) == SIZE_MAX && !*is_last_line)
-	{
-		bytes_read = read(fd, buffer, BUFFER_SIZE);
-		if (
-			bytes_read == -1
-			|| (bytes_read == 0 && line->length == 0)
-			|| !ft_ds_extend(line, buffer, bytes_read)
-		)
+		i = 0;
+		while (s[i] != '\0')
 		{
-			*is_last_line = false;
-			free(line->content);
-			return (false);
+			if (s[i] == '\n')
+				return (i);
+			++i;
 		}
-		if (bytes_read < BUFFER_SIZE)
-			*is_last_line = true;
 	}
-	return (true);
+	return (-1);
 }
 
 char	*get_next_line(int fd)
 {
-	static bool			is_last_line[FILE_DESCRIPTORS] = {false};
-	static char			buffers[FILE_DESCRIPTORS][BUFFER_SIZE + 1] = {0};
-	size_t				nl_index;
-	char				*return_value;
-	t_dynamic_string	line;
+	static char	buffers[FILE_DESCRIPTORS][BUFFER_SIZE + 1] = {0};
+	ssize_t		bytes_read;
+	int			nl_index;
+	char		*line;
 
 	if (fd < 0 || fd >= FILE_DESCRIPTORS)
 		return (NULL);
-	line = ft_ds_new(buffers[fd]);
-	ft_bzero(buffers[fd], BUFFER_SIZE + 1);
-	if (!keep_reading(fd, &line, is_last_line + fd))
-		return (NULL);
-	nl_index = find_newline(line.content, SIZE_MAX);
-	if (is_last_line[fd]
-		&& (nl_index == SIZE_MAX || line.content[nl_index + 1] == '\0'))
+	line = ft_strdup(buffers[fd]);
+	nl_index = find_newline(line);
+	bytes_read = BUFFER_SIZE;
+	while (line != NULL && nl_index == -1 && bytes_read == BUFFER_SIZE)
 	{
-		is_last_line[fd] = false;
-		return (line.content);
+		bytes_read = read(fd, buffers[fd], BUFFER_SIZE);
+		buffers[fd][bytes_read] = '\0';
+		inplace_strjoin(&line, buffers[fd]);
+		nl_index = find_newline(line);
 	}
-	return_value = strcut(line.content, buffers[fd], nl_index + 1);
-	if (return_value == NULL)
-		is_last_line[fd] = false;
-	return (return_value);
+	if (line == NULL || line[0] == '\0')
+		return (free(line), NULL);
+	else if (nl_index == -1)
+		return (buffers[fd][0] = '\0', line);
+	else
+		return (
+			ft_strlcpy(buffers[fd], line + nl_index + 1, INT_MAX),
+			get_start(line, nl_index + 1));
 }

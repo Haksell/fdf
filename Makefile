@@ -6,7 +6,7 @@
 #    By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 12:42:52 by axbrisse          #+#    #+#              #
-#    Updated: 2022/12/28 19:10:03 by axbrisse         ###   ########.fr        #
+#    Updated: 2023/02/02 21:58:28 by axbrisse         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,9 +16,11 @@ SHARED_LIBRARY = fdf.so
 PATH_SRCS = srcs
 PATH_OBJS = objs
 PATH_LIBFT = libft
-PATH_MLX = minilibx
+PATH_MLX = mlx
+LIBFT = ${PATH_LIBFT}/libft.a
+MLX = ${PATH_MLX}/mlx.a
 
-INCLUDES = -I./includes -I./libft/includes -I./minilibx
+INCLUDES = -I./includes -I./libft/includes -I./mlx
 HEADER = includes/fdf.h
 
 MANDATORY += event_handlers

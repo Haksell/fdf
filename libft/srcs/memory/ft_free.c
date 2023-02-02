@@ -1,26 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_calloc.c                                        :+:      :+:    :+:   */
+/*   ft_free.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/08 20:32:10 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/01/07 01:43:56 by axbrisse         ###   ########.fr       */
+/*   Created: 2023/01/16 11:26:50 by axbrisse          #+#    #+#             */
+/*   Updated: 2023/01/20 14:36:09 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <libft.h>
 
-void	*ft_calloc(size_t nmemb, size_t size)
+// TODO test
+
+void	ft_free(void **ptr)
 {
-	const size_t	bytes = nmemb * size;
-	void			*ptr;
-
-	if (size > 0 && nmemb > SIZE_MAX / size)
-		return (NULL);
-	ptr = malloc(bytes);
-	if (ptr != NULL)
-		ft_bzero(ptr, bytes);
-	return (ptr);
+	if (*ptr != NULL)
+	{
+		free(*ptr);
+		*ptr = NULL;
+	}
 }

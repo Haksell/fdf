@@ -6,22 +6,23 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 11:27:39 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/25 14:11:02 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/01/22 05:13:26 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 4096
-# endif
-# define FILE_DESCRIPTORS 256
-
 # define DECIMAL "0123456789"
 # define HEXA_LOWER "0123456789abcdef"
 # define HEXA_UPPER "0123456789ABCDEF"
 
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 1024
+# endif
+# define FILE_DESCRIPTORS 256
+
+# include <limits.h>
 # include <stdarg.h>
 # include <stdbool.h>
 # include <stdint.h>
@@ -48,6 +49,7 @@ int					ft_isascii(int c);
 int					ft_isdigit(int c);
 int					ft_islower(int c);
 int					ft_isprint(int c);
+int					ft_isspace(int c);
 int					ft_isupper(int c);
 int					ft_tolower(int c);
 int					ft_toupper(int c);
@@ -58,10 +60,16 @@ bool				ft_atoi_safe(char *s, int *n);
 char				*ft_itoa(int n);
 
 // srcs/dynamic_strings
+bool				ft_ds_append(t_dynamic_string *s1, char c);
 bool				ft_ds_extend(t_dynamic_string *s1, char *s2, size_t len2);
 t_dynamic_string	ft_ds_new(char *s);
 
-// srcs/get_next_line
+// srcs/ft_split
+size_t				ft_num_words(char const *s, char const *set);
+char				**ft_split_set(char const *s, char const *set);
+char				**ft_split(char const *s, char c);
+
+// get_next_line.c
 char				*get_next_line(int fd);
 
 // srcs/linked_lists
@@ -82,6 +90,7 @@ void				ft_lst_sort(t_list *lst, int (*cmp)(void *, void *));
 //srcs/memory
 void				ft_bzero(void *s, size_t n);
 void				*ft_calloc(size_t nmemb, size_t size);
+void				ft_free(void **ptr);
 void				ft_free_double_pointer(void **grid, size_t height);
 void				*ft_memchr(const void *s, int c, size_t n);
 int					ft_memcmp(const void *s1, const void *s2, size_t n);
@@ -99,8 +108,8 @@ int					ft_putnbr_fd(int n, int fd);
 int					ft_putstr_fd(char *s, int fd);
 
 // src/strings
-size_t				ft_num_words(char const *s, char c);
-char				**ft_split(char const *s, char c);
+bool				ft_endswith(const char *str, const char *end);
+bool				ft_startswith(const char *str, const char *start);
 char				*ft_strchr(const char *s, int c);
 int					ft_strcmp(const char *s1, const char *s2);
 char				*ft_strdup(const char *s);
