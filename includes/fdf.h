@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 04:42:40 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/28 13:29:45 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/28 17:21:29 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,13 @@
 # include <sys/stat.h>
 # include <sys/types.h>
 
+# ifndef M_PI
+#  define M_PI 3.141592653589793
+# endif
 
-# define WINDOW_WIDTH 1000
-# define WINDOW_HEIGHT 1000
+# define WINDOW_WIDTH 800
+# define WINDOW_HEIGHT 800
 # define WHITE 0xffffff
-# define M_PI 3.141592653589793
 
 enum {
 	ON_KEY_DOWN = 2,

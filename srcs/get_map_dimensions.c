@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 05:49:25 by axbrisse          #+#    #+#             */
-/*   Updated: 2022/12/21 05:51:48 by axbrisse         ###   ########.fr       */
+/*   Updated: 2022/12/28 16:31:08 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ static bool	get_map_width(char *filename, t_map *map)
 		return (false);
 	map->width = ft_num_words(line, ' ');
 	free(line);
+	// TODO finish reading file(smarter to do all in one func)
 	close(fd);
 	return (true);
 }
