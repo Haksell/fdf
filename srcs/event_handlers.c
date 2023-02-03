@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 05:44:19 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/03 04:57:02 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/03 05:23:03 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,15 @@ int	close_window(t_data *data)
 	mlx_destroy_window(data->mlx, data->win);
 	mlx_destroy_display(data->mlx);
 	free(data->mlx);
-	exit(0);
-	return (0);
+	exit(EXIT_SUCCESS);
+	return (EXIT_SUCCESS);
 }
 
 int	handle_key_down(int keycode, t_data *data)
 {
 	if (keycode == KEY_ESC)
 		close_window(data);
-	// TODO if (!data->is_bonus) return (0);
+	// TODO if (!data->is_bonus) return (EXIT_SUCCESS);
 	data->is_modified = true;
 	if (keycode == KEY_LEFT)
 		data->params.tx -= TRANSLATION;
@@ -50,20 +50,37 @@ int	handle_key_down(int keycode, t_data *data)
 		init_params(data);
 	else
 		data->is_modified = false;
-	return (0);
+	return (EXIT_SUCCESS);
+}
+
+static double	inverse_transform(double d, double td, double scale)
+{
+	return ((d - td) / scale);
+}
+
+static void	zoom(t_data *data, int x, int y, double scale_shift)
+{
+	const double	x_before = inverse_transform(x, data->params.tx, data->params.scale);
+	const double	y_before = inverse_transform(y, data->params.ty, data->params.scale);
+	double			diff_x;
+	double			diff_y;
+
+	data->params.scale *= scale_shift;
+	diff_x = x_before - inverse_transform(x, data->params.tx, data->params.scale);
+	diff_y = y_before - inverse_transform(y, data->params.ty, data->params.scale);
+	data->params.tx -= diff_x * data->params.scale;
+	data->params.ty -= diff_y * data->params.scale;
 }
 
 int	handle_mouse_down(int button, int x, int y, t_data *data)
 {
-	(void)x;
-	(void)y;
-	// TODO if (!data->is_bonus) return (0);
+	// TODO if (!data->is_bonus) return (EXIT_SUCCESS);
 	data->is_modified = true;
 	if (button == SCROLL_UP)
-		data->params.scale *= SCALE_SHIFT;
+		zoom(data, x, y, SCALE_SHIFT);
 	else if (button == SCROLL_DOWN)
-		data->params.scale /= SCALE_SHIFT;
+		zoom(data, x, y, 1 / SCALE_SHIFT);
 	else
 		data->is_modified = false;
-	return (0);
+	return (EXIT_SUCCESS);
 }
