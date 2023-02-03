@@ -6,19 +6,12 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:04:35 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/03 05:02:02 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/03 05:03:41 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include <stdio.h> // TODO
-
-bool	is_close(double d0, double d1)
-{
-	const double	diff = d0 - d1;
-
-	return (-EPSILON < diff && diff < EPSILON);
-}
 
 void	translate(t_data *data, double **points, double translation)
 {
@@ -26,8 +19,6 @@ void	translate(t_data *data, double **points, double translation)
 	int	j;
 
 	i = 0;
-	if (is_close(translation, 0.0))
-		return ;
 	while (i < data->map.height)
 	{
 		j = 0;
@@ -40,11 +31,6 @@ void	translate(t_data *data, double **points, double translation)
 	}
 }
 
-bool	angle_is_close_to_zero(double angle)
-{
-	return (is_close(fmod(angle + EPSILON / 2, M_TAU), 0));
-}
-
 void	rotate(t_data *data, double **xs, double **ys)
 {
 	int		i;
@@ -53,8 +39,6 @@ void	rotate(t_data *data, double **xs, double **ys)
 	double	angle;
 
 	i = 0;
-	if (angle_is_close_to_zero(data->params.rx))
-		return ;
 	while (i < data->map.height)
 	{
 		j = 0;
@@ -64,6 +48,25 @@ void	rotate(t_data *data, double **xs, double **ys)
 			angle = atan2(ys[i][j], xs[i][j]) + data->params.rx;
 			xs[i][j] = dist * cos(angle);
 			ys[i][j] = dist * sin(angle);
+			++j;
+		}
+		++i;
+	}
+}
+
+void	scale(t_data *data, double **xs, double **ys)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < data->map.height)
+	{
+		j = 0;
+		while (j < data->map.width)
+		{
+			xs[i][j] *= data->params.scale;
+			ys[i][j] *= data->params.scale;
 			++j;
 		}
 		++i;

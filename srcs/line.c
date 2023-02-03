@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 03:48:33 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/03 03:44:19 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/03 05:07:12 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ static int	lerp_component(int c0, int c1, int dist, int dist_max)
 
 static int	lerp_color(int c0, int c1, int dist, int dist_max)
 {
+	if (dist_max == 0)
+		return (c0);
 	return (
 		lerp_component(c0 >> 16, c1 >> 16, dist, dist_max) << 16
 		| lerp_component(c0 >> 8 & 255, c1 >> 8 & 255, dist, dist_max) << 8
