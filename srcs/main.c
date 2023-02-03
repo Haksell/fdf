@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:04:35 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/03 05:42:33 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/03 05:45:17 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,30 +33,30 @@ bool	dup_vertices(t_map *map, t_vertex ***copy)
 	return (true);
 }
 
-void	rotate(t_data *data, t_vertex **vertices)
+void	rotate(t_data *data, t_vertex **copy)
 {
-	int		i;
-	int		j;
+	int		x;
+	int		y;
 	double	dist;
 	double	angle;
 
-	i = 0;
-	while (i < data->map.height)
+	y = 0;
+	while (y < data->map.height)
 	{
-		j = 0;
-		while (j < data->map.width)
+		x = 0;
+		while (x < data->map.width)
 		{
-			dist = hypot(xs[i][j], ys[i][j]);
-			angle = atan2(ys[i][j], xs[i][j]) + data->params.rx;
-			xs[i][j] = dist * cos(angle);
-			ys[i][j] = dist * sin(angle);
-			++j;
+			dist = hypot(copy[y][x].x, copy[y][x].y);
+			angle = atan2(copy[y][x].y, copy[y][x].x) + data->params.rx;
+			copy[y][x].x = dist * cos(angle);
+			copy[y][x].y = dist * sin(angle);
+			++x;
 		}
-		++i;
+		++y;
 	}
 }
 
-void	scale(t_data *data, t_vertex **vertices)
+void	scale(t_data *data, t_vertex **copy)
 {
 	int	i;
 	int	j;
@@ -67,15 +67,16 @@ void	scale(t_data *data, t_vertex **vertices)
 		j = 0;
 		while (j < data->map.width)
 		{
-			vertices[i][j].x *= data->params.scale;
-			vertices[i][j].y *= data->params.scale;
+			copy[i][j].x *= data->params.scale;
+			copy[i][j].y *= data->params.scale;
+			// copy[i][j].z *= data->params.scale; TODO maybe?
 			++j;
 		}
 		++i;
 	}
 }
 
-void	translate(t_data *data, t_vertex **vertices)
+void	translate(t_data *data, t_vertex **copy)
 {
 	int	x;
 	int	y;
@@ -86,8 +87,8 @@ void	translate(t_data *data, t_vertex **vertices)
 		x = 0;
 		while (x < data->map.width)
 		{
-			vertices[y][x].x += data->params.tx;
-			vertices[y][x].y += data->params.ty;
+			copy[y][x].x += data->params.tx;
+			copy[y][x].y += data->params.ty;
 			++x;
 		}
 		++y;
