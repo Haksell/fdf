@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:04:35 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/03 05:59:35 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/03 06:20:06 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,19 @@ bool	dup_vertices(t_map *map, t_vertex ***copy)
 	return (true);
 }
 
+void	rotate_vertex(double *d1, double *d2, double rotation)
+{
+	const double	dist = hypot(*d1, *d2);
+	const double	angle = atan2(*d2, *d1) + rotation;
+
+	*d1 = dist * cos(angle);
+	*d2 = dist * sin(angle);
+}
+
 void	rotate(t_data *data, t_vertex **copy)
 {
 	int		x;
 	int		y;
-	double	dist;
-	double	angle;
 
 	y = 0;
 	while (y < data->map.height)
@@ -46,20 +53,9 @@ void	rotate(t_data *data, t_vertex **copy)
 		x = 0;
 		while (x < data->map.width)
 		{
-			dist = hypot(copy[y][x].x, copy[y][x].y);
-			angle = atan2(copy[y][x].y, copy[y][x].x) + data->params.rz;
-			copy[y][x].x = dist * cos(angle);
-			copy[y][x].y = dist * sin(angle);
-
-			dist = hypot(copy[y][x].x, copy[y][x].z);
-			angle = atan2(copy[y][x].z, copy[y][x].x) + data->params.ry;
-			copy[y][x].x = dist * cos(angle);
-			copy[y][x].z = dist * sin(angle);
-
-			dist = hypot(copy[y][x].y, copy[y][x].z);
-			angle = atan2(copy[y][x].z, copy[y][x].y) + data->params.rx;
-			copy[y][x].y = dist * cos(angle);
-			copy[y][x].z = dist * sin(angle);
+			rotate_vertex(&copy[y][x].x, &copy[y][x].y, data->params.rz);
+			rotate_vertex(&copy[y][x].y, &copy[y][x].z, data->params.rx);
+			rotate_vertex(&copy[y][x].z, &copy[y][x].x, data->params.ry);
 			++x;
 		}
 		++y;
@@ -111,7 +107,6 @@ int render_frame(t_data *data)
 
 	if (!data->is_modified)
 		return (EXIT_SUCCESS);
-	ft_printf("w=%d h=%d\n", data->map.width, data->map.height);
 	black_background(data);
 	if (!dup_vertices(&data->map, &copy))
 		close_window(data);
