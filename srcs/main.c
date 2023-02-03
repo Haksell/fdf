@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:04:35 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/03 05:41:07 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/03 05:42:33 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ bool	dup_vertices(t_map *map, t_vertex ***copy)
 	return (true);
 }
 
-/*void	rotate(t_data *data, t_vertex **vertices)
+void	rotate(t_data *data, t_vertex **vertices)
 {
 	int		i;
 	int		j;
@@ -54,7 +54,7 @@ bool	dup_vertices(t_map *map, t_vertex ***copy)
 		}
 		++i;
 	}
-}*/
+}
 
 void	scale(t_data *data, t_vertex **vertices)
 {
@@ -103,7 +103,7 @@ int render_frame(t_data *data)
 	black_background(data);
 	if (!dup_vertices(&data->map, &copy))
 		close_window(data);
-	//rotate(data, copy);
+	rotate(data, copy);
 	scale(data, copy);
 	translate(data, copy);
 	for (int y = 0; y < data->map.height; ++y)
