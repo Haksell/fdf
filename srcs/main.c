@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:04:35 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/03 02:48:11 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/03 02:49:01 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int render_frame(t_data *data)
 	const double cell_size = start_x / get_max(data->map.width, data->map.height);
 	const double dx = cos(M_PI / 6) * cell_size;
 	const double dy = sin(M_PI / 6) * cell_size;
-	// const double middle_x = start_x + dx * (data->map.width - data->map.height) / 2;
+	const double middle_x = start_x + dx * (data->map.width - data->map.height) / 2;
 	// const double middle_y = start_y - dy * (data->map.width + data->map.height - 2) / 2;
 	double **xs;
 	double **ys;
@@ -66,8 +66,8 @@ int render_frame(t_data *data)
 			ys[y][x] -= data->params.z_factor * data->map.zs[y][x];
 		}
 	}
-	// translate(data, xs, -middle_x);
-	// translate(data, ys, -middle_y);
+	translate(data, xs, -middle_x);
+	// translate(data, ys, -middle_y + middle_y);
 	// rotate(data, xs, ys, middle_x, middle_y); // TODO not as args
 	// translate(data, xs, middle_x);
 	translate(data, ys, 0);
