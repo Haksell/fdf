@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 03:48:33 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/03 02:41:05 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/03 03:44:19 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ void	line(t_data *data, int x0, int y0, int c0, int x1, int y1, int c1)
 	int sy = y0 < y1 ? 1 : -1;
 	int error = dx + dy;
 	
+	// TODO return if no pixel can be drawn
+	// ft_printf("before x0=%d, y0=%d, c0=%d, x1=%d, y1=%d, c1=%d\n", x0, y0, c0, x1, y1, c1);
 	while (true)
 	{
 		pixel_put(data, x0, y0, lerp_color(c0, c1, abs(x0-x1) + abs(y0-y1), dx-dy));

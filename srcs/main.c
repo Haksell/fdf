@@ -6,16 +6,16 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:04:35 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/03 02:49:01 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/03 04:02:56 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include <stdio.h> // TODO
 
-static unsigned int get_max(unsigned int n1, unsigned int n2)
+static int get_min(int n1, int n2)
 {
-	if (n1 > n2)
+	if (n1 < n2)
 		return (n1);
 	else
 		return (n2);
@@ -39,15 +39,34 @@ void	translate(t_data *data, double **points, double translation)
 	}
 }
 
+void	rotate(t_data *data, double **xs, double **ys)
+{
+	int	i;
+	int	j;
+	double	dist;
+	double	angle;
+
+	i = 0;
+	while (i < data->map.height)
+	{
+		j = 0;
+		while (j < data->map.width)
+		{
+			dist = hypot(xs[i][j], ys[i][j]);
+			angle = atan2(ys[i][j], xs[i][j]) + data->params.rx;
+			xs[i][j] = dist * cos(angle);
+			ys[i][j] = dist * sin(angle);
+			++j;
+		}
+		++i;
+	}
+}
+
 int render_frame(t_data *data)
 {
-	const double start_x = WINDOW_WIDTH / 2.0;
-	const double start_y = WINDOW_HEIGHT - 50.0;
-	const double cell_size = start_x / get_max(data->map.width, data->map.height);
+	const double cell_size = get_min(WINDOW_WIDTH / data->map.width, WINDOW_HEIGHT / data->map.height) / 2;
 	const double dx = cos(M_PI / 6) * cell_size;
 	const double dy = sin(M_PI / 6) * cell_size;
-	const double middle_x = start_x + dx * (data->map.width - data->map.height) / 2;
-	// const double middle_y = start_y - dy * (data->map.width + data->map.height - 2) / 2;
 	double **xs;
 	double **ys;
 
@@ -61,36 +80,30 @@ int render_frame(t_data *data)
 	{
 		for (int x = 0; x < data->map.width; ++x)
 		{
-			xs[y][x] = start_x + dx * (x - data->map.height + y + 1);
-			ys[y][x] = start_y - dy * (x + data->map.height - y - 1);
+			xs[y][x] = dx * (x - data->map.height + y + 1);
+			ys[y][x] = dy * -(x + data->map.height - y - 1);
 			ys[y][x] -= data->params.z_factor * data->map.zs[y][x];
 		}
 	}
-	translate(data, xs, -middle_x);
-	// translate(data, ys, -middle_y + middle_y);
-	// rotate(data, xs, ys, middle_x, middle_y); // TODO not as args
-	// translate(data, xs, middle_x);
-	translate(data, ys, 0);
-	// ft_printf("translate 1\n");
-	// ft_printf("translate 2\n");
-	// translate(data, xs, middle_x);
-	// ft_printf("translate 3\n");
-	// translate(data, ys, middle_y);
+	rotate(data, xs, ys);
+	translate(data, xs, WINDOW_WIDTH / 2);
+	translate(data, ys, WINDOW_HEIGHT - 50.0);
 	translate(data, xs, data->params.tx);
 	translate(data, ys, data->params.ty);
 	for (int y = 0; y < data->map.height; ++y)
 	{
 		for (int x = 0; x < data->map.width; ++x)
 		{
-			if (x + 1 != data->map.width)
+			if (x + 1 < data->map.width)
 				line(data, (int)xs[y][x], (int)ys[y][x], data->map.colors[y][x], (int)xs[y][x + 1], (int)ys[y][x + 1], data->map.colors[y][x + 1]);
-			if (y + 1 != data->map.height)
+			if (y + 1 < data->map.height)
 				line(data, (int)xs[y][x], (int)ys[y][x], data->map.colors[y][x], (int)xs[y + 1][x], (int)ys[y + 1][x], data->map.colors[y + 1][x]);
 		}
 	}
 	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
 	data->is_modified = false;
-	// TODO free xs, ys
+	ft_free_double_pointer((void **)xs, data->map.height);
+	ft_free_double_pointer((void **)ys, data->map.height);
 	return (0);
 }
 

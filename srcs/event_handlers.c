@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 05:44:19 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/03 02:46:27 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/03 03:56:55 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	close_window(t_data *data)
 
 int	handle_key_down(int keycode, t_data *data)
 {
-	if (keycode == ESC)
+	if (keycode == KEY_ESC)
 		close_window(data);
 	// TODO if (!data->is_bonus) return (0);
 	data->is_modified = true;
@@ -37,13 +37,15 @@ int	handle_key_down(int keycode, t_data *data)
 	else if (keycode == KEY_DOWN)
 		data->params.ty += TRANSLATION;
 	else if (keycode == 'e')
-		data->params.z_factor *= 1.1;
+		data->params.z_factor *= 1.1; // TODO define this kind of thing
 	else if (keycode == 'd')
 		data->params.z_factor /= 1.1;
 	else if (keycode == 's')
 		data->params.z_factor *= -1;
 	else if (keycode == 'z')
 		data->params.rx += 0.2;
+	else if (keycode == 'x')
+		data->params.rx -= 0.2;
 	else if (keycode == 'r')
 		init_params(&data->params);
 	else
