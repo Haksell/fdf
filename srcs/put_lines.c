@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   line.c                                             :+:      :+:    :+:   */
+/*   lines.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 03:48:33 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/03 05:38:46 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/03 05:52:54 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	lerp_color(int c0, int c1, int dist, int dist_max)
 	);
 }
 
-void	line(t_data *data, int x0, int y0, int c0, int x1, int y1, int c1)
+static void	line(t_data *data, int x0, int y0, int c0, int x1, int y1, int c1)
 {
 	int dx = abs(x1 - x0);
 	int sx = x0 < x1 ? 1 : -1;
@@ -54,6 +54,20 @@ void	line(t_data *data, int x0, int y0, int c0, int x1, int y1, int c1)
 			if (y0 == y1) return ;
 			error += dx;
 			y0 += sy;
+		}
+	}
+}
+
+void	put_lines(t_data *data, t_vertex **copy)
+{
+	for (int y = 0; y < data->map.height; ++y)
+	{
+		for (int x = 0; x < data->map.width; ++x)
+		{
+			if (x + 1 < data->map.width)
+				line(data, (int)copy[y][x].x, (int)copy[y][x].y, copy[y][x].color, (int)copy[y][x + 1].x, (int)copy[y][x + 1].y, copy[y][x + 1].color);
+			if (y + 1 < data->map.height)
+				line(data, (int)copy[y][x].x, (int)copy[y][x].y, copy[y][x].color, (int)copy[y + 1][x].x, (int)copy[y + 1][x].y, copy[y + 1][x].color);
 		}
 	}
 }

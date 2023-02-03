@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 05:44:19 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/03 05:23:03 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/03 05:55:33 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,9 @@ int	handle_key_down(int keycode, t_data *data)
 		close_window(data);
 	// TODO if (!data->is_bonus) return (EXIT_SUCCESS);
 	data->is_modified = true;
-	if (keycode == KEY_LEFT)
+	if (keycode == 'r')
+		init_params(data);
+	else if (keycode == KEY_LEFT)
 		data->params.tx -= TRANSLATION;
 	else if (keycode == KEY_UP)
 		data->params.ty -= TRANSLATION;
@@ -43,11 +45,17 @@ int	handle_key_down(int keycode, t_data *data)
 	else if (keycode == 's')
 		data->params.altitude = -data->params.altitude;
 	else if (keycode == 'z')
-		data->params.rx += 0.2;
+		data->params.rx += ANGLE_SHIFT;
 	else if (keycode == 'x')
-		data->params.rx -= 0.2;
-	else if (keycode == 'r')
-		init_params(data);
+		data->params.rx -= ANGLE_SHIFT;
+	else if (keycode == 'c')
+		data->params.ry += ANGLE_SHIFT;
+	else if (keycode == 'v')
+		data->params.ry -= ANGLE_SHIFT;
+	else if (keycode == 'b')
+		data->params.rz += ANGLE_SHIFT;
+	else if (keycode == 'n')
+		data->params.rz -= ANGLE_SHIFT;
 	else
 		data->is_modified = false;
 	return (EXIT_SUCCESS);

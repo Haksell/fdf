@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:04:35 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/03 05:45:17 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/03 05:59:35 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,19 @@ void	rotate(t_data *data, t_vertex **copy)
 		while (x < data->map.width)
 		{
 			dist = hypot(copy[y][x].x, copy[y][x].y);
-			angle = atan2(copy[y][x].y, copy[y][x].x) + data->params.rx;
+			angle = atan2(copy[y][x].y, copy[y][x].x) + data->params.rz;
 			copy[y][x].x = dist * cos(angle);
 			copy[y][x].y = dist * sin(angle);
+
+			dist = hypot(copy[y][x].x, copy[y][x].z);
+			angle = atan2(copy[y][x].z, copy[y][x].x) + data->params.ry;
+			copy[y][x].x = dist * cos(angle);
+			copy[y][x].z = dist * sin(angle);
+
+			dist = hypot(copy[y][x].y, copy[y][x].z);
+			angle = atan2(copy[y][x].z, copy[y][x].y) + data->params.rx;
+			copy[y][x].y = dist * cos(angle);
+			copy[y][x].z = dist * sin(angle);
 			++x;
 		}
 		++y;
@@ -101,22 +111,14 @@ int render_frame(t_data *data)
 
 	if (!data->is_modified)
 		return (EXIT_SUCCESS);
+	ft_printf("w=%d h=%d\n", data->map.width, data->map.height);
 	black_background(data);
 	if (!dup_vertices(&data->map, &copy))
 		close_window(data);
 	rotate(data, copy);
 	scale(data, copy);
 	translate(data, copy);
-	for (int y = 0; y < data->map.height; ++y)
-	{
-		for (int x = 0; x < data->map.width; ++x)
-		{
-			if (x + 1 < data->map.width)
-				line(data, (int)copy[y][x].x, (int)copy[y][x].y, copy[y][x].color, (int)copy[y][x + 1].x, (int)copy[y][x + 1].y, copy[y][x + 1].color);
-			if (y + 1 < data->map.height)
-				line(data, (int)copy[y][x].x, (int)copy[y][x].y, copy[y][x].color, (int)copy[y + 1][x].x, (int)copy[y + 1][x].y, copy[y + 1][x].color);
-		}
-	}
+	put_lines(data, copy);
 	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
 	data->is_modified = false;
 	return (EXIT_SUCCESS);

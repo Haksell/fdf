@@ -6,7 +6,7 @@
 #    By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 12:42:52 by axbrisse          #+#    #+#              #
-#    Updated: 2023/02/03 04:42:34 by axbrisse         ###   ########.fr        #
+#    Updated: 2023/02/03 05:53:31 by axbrisse         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,10 +24,10 @@ FILES += event_handlers
 FILES += get_map_dimensions
 FILES += image
 FILES += initialization
-FILES += line
 FILES += main
 FILES += math
 FILES += parse_map
+FILES += put_lines
 
 SRCS = ${addsuffix .c, ${FILES}}
 OBJS = ${patsubst %.c, ${PATH_OBJS}/%.o, ${SRCS}}

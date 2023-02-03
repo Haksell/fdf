@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 04:42:40 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/03 05:07:32 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/03 06:01:41 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,15 @@
 # ifndef M_PI
 #  define M_PI 3.141592653589793
 # endif
-# define M_TAU 6.283185307179586
 # define EPSILON 1e-9
 # define WINDOW_WIDTH 800
 # define WINDOW_HEIGHT 800
 # define WHITE 0xffffff
 # define BLACK 0x000000
-# define DEFAULT_ALTITUDE -1.0 // TODO compute optimal
 # define TRANSLATION 10.0
 # define ALTITUDE_SHIFT 1.1
 # define SCALE_SHIFT 1.1
+# define ANGLE_SHIFT (M_PI / 20)
 # define SPACES " \t\n\v\f\r"
 
 enum {
@@ -110,7 +109,7 @@ int		handle_key_down(int keycode, t_data *data);
 int		handle_mouse_down(int button, int x, int y, t_data *data);
 bool	init_grid(void ***grid, size_t width, size_t height, size_t size);
 void	init_params(t_data *data);
-void	line(t_data *data, int x0, int y0, int c0, int x1, int y1, int c1);
+void	put_lines(t_data *data, t_vertex **copy);
 bool	parse_map(char *filename, t_map *map);
 void	pixel_put(t_data *data, int x, int y, int color);
 
