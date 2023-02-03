@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:04:35 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/03 06:20:06 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/03 06:42:10 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,21 +64,45 @@ void	rotate(t_data *data, t_vertex **copy)
 
 void	scale(t_data *data, t_vertex **copy)
 {
-	int	i;
-	int	j;
+	int	x;
+	int	y;
 
-	i = 0;
-	while (i < data->map.height)
+	y = 0;
+	while (y < data->map.height)
 	{
-		j = 0;
-		while (j < data->map.width)
+		x = 0;
+		while (x < data->map.width)
 		{
-			copy[i][j].x *= data->params.scale;
-			copy[i][j].y *= data->params.scale;
-			// copy[i][j].z *= data->params.scale; TODO maybe?
-			++j;
+			copy[y][x].x *= data->params.scale;
+			copy[y][x].y *= data->params.scale;
+			copy[y][x].z *= data->params.scale;
+			++x;
 		}
-		++i;
+		++y;
+	}
+}
+
+void	project(t_data *data, t_vertex **copy)
+{
+	// TODO switch on params.projection
+	const double dx = cos(M_PI / 6);
+	const double dy = sin(M_PI / 6);
+	int	x;
+	int	y;
+
+	y = 0;
+	while (y < data->map.height)
+	{
+		x = 0;
+		while (x < data->map.width)
+		{
+			int tmpx = copy[y][x].x;
+			int tmpy = copy[y][x].y;
+			copy[y][x].x = dx * (tmpx - data->map.height + tmpy + 1);
+			copy[y][x].y = dy * -(tmpx + data->map.height - tmpy - 1);
+			++x;
+		}
+		++y;
 	}
 }
 
@@ -112,6 +136,7 @@ int render_frame(t_data *data)
 		close_window(data);
 	rotate(data, copy);
 	scale(data, copy);
+	project(data, copy); // TODO switch on params.projection
 	translate(data, copy);
 	put_lines(data, copy);
 	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);

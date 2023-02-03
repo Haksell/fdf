@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 05:45:51 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/03 06:01:05 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/03 06:29:45 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ bool	init_grid(void ***grid, size_t width, size_t height, size_t size)
 void	init_params(t_data *data)
 {
 	data->params.altitude = 1.0; // TODO compute optimal
-	data->params.scale = get_min(WINDOW_WIDTH / data->map.width, WINDOW_HEIGHT / data->map.height);
+	data->params.scale = get_min(WINDOW_WIDTH / data->map.width, WINDOW_HEIGHT / data->map.height); // TODO better optimal (smaller)
 	data->params.tx = (WINDOW_WIDTH - 1) / 2.0;
 	data->params.ty = (WINDOW_HEIGHT - 1) / 2.0;
 	data->params.rx = 0.0;
