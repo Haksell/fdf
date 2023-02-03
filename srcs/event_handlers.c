@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 05:44:19 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/03 01:26:46 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/03 02:46:27 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int	handle_key_down(int keycode, t_data *data)
 	if (keycode == ESC)
 		close_window(data);
 	// TODO if (!data->is_bonus) return (0);
+	data->is_modified = true;
 	if (keycode == KEY_LEFT)
 		data->params.tx -= TRANSLATION;
 	else if (keycode == KEY_UP)
@@ -45,6 +46,7 @@ int	handle_key_down(int keycode, t_data *data)
 		data->params.rx += 0.2;
 	else if (keycode == 'r')
 		init_params(&data->params);
-	// TODO else modified = false;
+	else
+		data->is_modified = false;
 	return (0);
 }

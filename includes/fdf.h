@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 04:42:40 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/03 02:43:37 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/03 02:45:53 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ typedef struct s_data {
 	int			bits_per_pixel;
 	int			endian;
 	int			line_length;
-	// TODO bool modified;
+	bool		is_modified;
 	t_map		map;
 	t_params	params;
 }	t_data;

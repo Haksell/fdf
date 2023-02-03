@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:04:35 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/03 02:43:05 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/03 02:48:11 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,7 @@ void	translate(t_data *data, double **points, double translation)
 		j = 0;
 		while (j < data->map.width)
 		{
-			// printf("before i=%d j=%d\n", i, j);
 			points[i][j] += translation;
-			// printf("after  i=%d j=%d\n", i, j);
 			++j;
 		}
 		++i;
@@ -53,7 +51,8 @@ int render_frame(t_data *data)
 	double **xs;
 	double **ys;
 
-	// TODO if (!is_modified)
+	if (!data->is_modified)
+		return (0);
 	black_background(data);
 	if (!init_grid((void ***)&xs, data->map.width, data->map.height, sizeof(double))
 		|| !init_grid((void ***)&ys, data->map.width, data->map.height, sizeof(double)))
@@ -90,7 +89,7 @@ int render_frame(t_data *data)
 		}
 	}
 	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
-	// TODO is_modified = false;
+	data->is_modified = false;
 	// TODO free xs, ys
 	return (0);
 }
@@ -106,6 +105,7 @@ int main(int argc, char **argv)
 		ft_putendl_fd("Usage: ./fdf *.fdf", STDERR_FILENO);
 		return (EXIT_FAILURE);
 	}
+	data.is_modified = true;
 	data.mlx = mlx_init();
 	data.win = mlx_new_window(data.mlx, WINDOW_WIDTH, WINDOW_HEIGHT, argv[0]);
 	data.img = mlx_new_image(data.mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
