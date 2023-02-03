@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 05:44:19 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/03 03:56:55 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/03 04:57:02 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,17 +37,32 @@ int	handle_key_down(int keycode, t_data *data)
 	else if (keycode == KEY_DOWN)
 		data->params.ty += TRANSLATION;
 	else if (keycode == 'e')
-		data->params.z_factor *= 1.1; // TODO define this kind of thing
+		data->params.altitude *= ALTITUDE_SHIFT;
 	else if (keycode == 'd')
-		data->params.z_factor /= 1.1;
+		data->params.altitude /= ALTITUDE_SHIFT;
 	else if (keycode == 's')
-		data->params.z_factor *= -1;
+		data->params.altitude = -data->params.altitude;
 	else if (keycode == 'z')
 		data->params.rx += 0.2;
 	else if (keycode == 'x')
 		data->params.rx -= 0.2;
 	else if (keycode == 'r')
-		init_params(&data->params);
+		init_params(data);
+	else
+		data->is_modified = false;
+	return (0);
+}
+
+int	handle_mouse_down(int button, int x, int y, t_data *data)
+{
+	(void)x;
+	(void)y;
+	// TODO if (!data->is_bonus) return (0);
+	data->is_modified = true;
+	if (button == SCROLL_UP)
+		data->params.scale *= SCALE_SHIFT;
+	else if (button == SCROLL_DOWN)
+		data->params.scale /= SCALE_SHIFT;
 	else
 		data->is_modified = false;
 	return (0);

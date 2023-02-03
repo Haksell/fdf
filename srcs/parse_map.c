@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 06:27:14 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/03 00:54:46 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/03 04:14:50 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,18 +69,20 @@ static bool	parse_cell(char *cell, t_map *map, int x, int y)
 	const char	*comma = ft_strchr(cell, ',');
 	int			i;
 
+	map->vertices[y][x].x = x - (map->width - 1) / 2;
+	map->vertices[y][x].y = y - (map->height - 1) / 2;
 	if (comma == NULL)
 	{
-		map->colors[y][x] = WHITE;
-		return (parse_double(cell, &map->zs[y][x]));
+		map->vertices[y][x].color = WHITE;
+		return (parse_double(cell, &map->vertices[y][x].z));
 	}
 	else
 	{
 		i = comma - cell;
 		cell[i] = '\0';
 		return (
-			parse_double(cell, &map->zs[y][x])
-			&& parse_color(cell + i + 1, &map->colors[y][x])
+			parse_double(cell, &map->vertices[y][x].z)
+			&& parse_color(cell + i + 1, &map->vertices[y][x].color)
 		);
 	}
 }
@@ -94,11 +96,9 @@ static bool	parse_row(int y, char *line, t_map *map)
 
 	return_value = true;
 	trimmed = ft_strtrim(line, SPACES);
-	// free(line);
 	if (trimmed == NULL || ft_num_words(trimmed, SPACES) != (size_t)map->width)
 		return (false);
 	cells = ft_split_set(trimmed, SPACES);
-	// free(trimmed);
 	if (cells == NULL)
 		return (false);
 	x = 0;
@@ -108,7 +108,6 @@ static bool	parse_row(int y, char *line, t_map *map)
 			return_value = false;
 		++x;
 	}
-	// ft_free_double_pointer((void **)cells, map->width);
 	return (return_value);
 }
 
@@ -122,9 +121,11 @@ bool	parse_map(char *filename, t_map *map)
 	if (!ft_endswith(filename, ".fdf"))
 		return (false);
 	fd = open(filename, O_RDONLY);
-	return_value = (fd >= 3 && get_map_dimensions(filename, map)
-			&& init_grid((void ***)&map->zs, map->width, map->height, sizeof(double))
-			&& init_grid((void ***)&map->colors, map->width, map->height, sizeof(int)));
+	return_value = (
+		fd >= 3
+		&& get_map_dimensions(filename, map)
+		&& init_grid((void ***)&map->vertices, map->width, map->height, sizeof(t_vertex))
+	);
 	y = 0;
 	while (return_value && y < map->height)
 	{
@@ -133,8 +134,6 @@ bool	parse_map(char *filename, t_map *map)
 			return_value = false;
 		++y;
 	}
-	// ft_free_double_pointer((void **)map->zs, map->height);
-	// ft_free_double_pointer((void **)map->colors, map->height);
 	close(fd);
 	return (return_value);
 }

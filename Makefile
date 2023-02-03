@@ -6,7 +6,7 @@
 #    By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 12:42:52 by axbrisse          #+#    #+#              #
-#    Updated: 2023/02/03 03:10:54 by axbrisse         ###   ########.fr        #
+#    Updated: 2023/02/03 04:42:34 by axbrisse         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,21 +16,20 @@ PATH_SRCS = srcs
 PATH_OBJS = objs
 PATH_LIBFT = libft
 PATH_MLX = mlx
-LIBFT = ${PATH_LIBFT}/libft.a
-MLX = ${PATH_MLX}/mlx.a
 
-INCLUDES = -I./includes -I./libft/includes -I./mlx
+INCLUDES = -I./includes -I./${PATH_LIBFT}/includes -I./${PATH_MLX}
 HEADER = includes/fdf.h
 
-MANDATORY += event_handlers
-MANDATORY += get_map_dimensions
-MANDATORY += image
-MANDATORY += initialization
-MANDATORY += line
-MANDATORY += main
-MANDATORY += parse_map
+FILES += event_handlers
+FILES += get_map_dimensions
+FILES += image
+FILES += initialization
+FILES += line
+FILES += main
+FILES += math
+FILES += parse_map
 
-SRCS = ${addsuffix .c, ${MANDATORY}}
+SRCS = ${addsuffix .c, ${FILES}}
 OBJS = ${patsubst %.c, ${PATH_OBJS}/%.o, ${SRCS}}
 vpath %.c ${PATH_SRCS}
 

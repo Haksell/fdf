@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 05:49:25 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/02 22:54:43 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/03 04:14:37 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,12 @@ static bool	get_map_height(char *filename, t_map *map)
 
 	if (fd < 0)
 		return (false);
+	map->height = 0;
 	line = get_next_line(fd);
 	while (line != NULL)
 	{
 		++map->height;
+		free(line);
 		line = get_next_line(fd);
 	}
 	close(fd);
@@ -37,11 +39,11 @@ static bool	get_map_width(char *filename, t_map *map)
 	if (fd < 0)
 		return (false);
 	line = get_next_line(fd);
+	close(fd);
 	if (line == NULL)
 		return (false);
 	map->width = ft_num_words(line, SPACES);
 	free(line);
-	close(fd);
 	return (true);
 }
 

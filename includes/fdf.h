@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 04:42:40 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/03 03:56:44 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/03 04:57:42 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,42 +28,60 @@
 # ifndef M_PI
 #  define M_PI 3.141592653589793
 # endif
+# define M_TAU 6.283185307179586
+# define EPSILON 1e-9
 # define WINDOW_WIDTH 800
 # define WINDOW_HEIGHT 800
 # define WHITE 0xffffff
 # define BLACK 0x000000
-# define DEFAULT_Z_FACTOR 42.0 // TODO compute optimal
+# define DEFAULT_ALTITUDE -1.0 // TODO compute optimal
 # define TRANSLATION 10.0
+# define ALTITUDE_SHIFT 1.1
+# define SCALE_SHIFT 1.1
 # define SPACES " \t\n\v\f\r"
 
 enum {
 	ON_KEY_DOWN = 2,
+	ON_MOUSE_DOWN = 4,
 	ON_DESTROY = 17
 };
 
 enum {
 	NO_EVENT_MASK = 0,
 	KEY_PRESS_MASK = 1,
+	BUTTON_PRESS_MASK = 4
 };
+
+enum {
+	SCROLL_UP = 4,
+	SCROLL_DOWN = 5
+};
+
 
 enum {
 	KEY_ESC = 65307,
 	KEY_LEFT = 65361,
 	KEY_UP = 65362,
 	KEY_RIGHT = 65363,
-	KEY_DOWN = 65364,
+	KEY_DOWN = 65364
 };
 
+typedef struct s_vertex {
+	double	x;
+	double	y;
+	double	z;
+	int		color;
+}	t_vertex;
+
 typedef struct s_map {
-	double	**zs;
-	int		**colors;
-	int		height;
-	int		width;
+	t_vertex	**vertices;
+	int			height;
+	int			width;
 }	t_map;
 
 typedef struct s_params {
-	double	z_factor;
-	double	zoom;
+	double	altitude;
+	double	scale;
 	double	tx;
 	double	ty;
 	double	rx;
@@ -87,10 +105,11 @@ typedef struct s_data {
 void	black_background(t_data *data);
 int		close_window(t_data *data);
 bool	get_map_dimensions(char *filename, t_map *map);
+int 	get_min(int n1, int n2);
 int		handle_key_down(int keycode, t_data *data);
+int		handle_mouse_down(int button, int x, int y, t_data *data);
 bool	init_grid(void ***grid, size_t width, size_t height, size_t size);
-void	init_map(t_map *map);
-void	init_params(t_params *params);
+void	init_params(t_data *data);
 void	line(t_data *data, int x0, int y0, int c0, int x1, int y1, int c1);
 bool	parse_map(char *filename, t_map *map);
 void	pixel_put(t_data *data, int x, int y, int color);
