@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 06:27:14 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/03 00:26:44 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/03 00:54:46 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,10 @@ static bool	parse_color(const char *s, int *color)
 	i = 2;
 	while (s[i] != '\0')
 	{
-		if (i == 8)
-			return (false);
 		*color <<= 4;
-		if (ft_isdigit(s[i]))
+		if (*color > WHITE)
+			return (false);
+		else if (ft_isdigit(s[i]))
 			*color |= s[i] - 48;
 		else if ('A' <= s[i] && s[i] <= 'F')
 			*color |= s[i] - 55;
@@ -123,8 +123,8 @@ bool	parse_map(char *filename, t_map *map)
 		return (false);
 	fd = open(filename, O_RDONLY);
 	return_value = (fd >= 3 && get_map_dimensions(filename, map)
-			&& initialize_grid((void ***)&map->zs, map->width, map->height, sizeof(double))
-			&& initialize_grid((void ***)&map->colors, map->width, map->height, sizeof(int)));
+			&& init_grid((void ***)&map->zs, map->width, map->height, sizeof(double))
+			&& init_grid((void ***)&map->colors, map->width, map->height, sizeof(int)));
 	y = 0;
 	while (return_value && y < map->height)
 	{

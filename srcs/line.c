@@ -6,21 +6,11 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 03:48:33 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/03 00:25:13 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/03 02:41:05 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-
-static void	pixel_put(t_data *data, int x, int y, int color)
-{
-	char	*dst;
-
-	if (x < 0 || x >= WINDOW_WIDTH || y < 0 || y >= WINDOW_HEIGHT)
-		return ;
-	dst = data->addr + data->line_length * y + data->bits_per_pixel / 8 * x;
-	*(unsigned int *)dst = color;
-}
 
 static int	lerp_component(int c0, int c1, int dist, int dist_max)
 {

@@ -6,7 +6,7 @@
 #    By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 12:42:52 by axbrisse          #+#    #+#              #
-#    Updated: 2023/02/03 00:16:18 by axbrisse         ###   ########.fr        #
+#    Updated: 2023/02/03 00:46:31 by axbrisse         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ HEADER = includes/fdf.h
 
 MANDATORY += event_handlers
 MANDATORY += get_map_dimensions
+MANDATORY += image
 MANDATORY += initialization
 MANDATORY += line
 MANDATORY += main
