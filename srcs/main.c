@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:04:35 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/04 06:41:22 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/04 07:19:33 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,17 +45,30 @@ void	rotate_vertex(double *d1, double *d2, double rotation)
 
 void	project_vertex(t_vertex *vertex, double height)
 {
-	const double	tmpx = vertex->x;
-	const double	tmpy = vertex->y - height + 1;
+	// TODO switch on params.projection
+	const double	map_x = vertex->x;
+	const double	map_y = vertex->y - height + 1;
 
-	vertex->x = ISOMETRIC_COS * (tmpy + tmpx);
-	vertex->y = ISOMETRIC_SIN * (tmpy - tmpx);
+	vertex->x = ISOMETRIC_COS * (map_y + map_x);
+	vertex->y = ISOMETRIC_SIN * (map_y - map_x);
 	vertex->y -= vertex->z;
+}
+
+void	scale_vertex(t_vertex *vertex, double scale)
+{
+	vertex->x *= scale;
+	vertex->y *= scale;
+	vertex->z *= scale;
+}
+
+void	translate_vertex(t_vertex *vertex, double tx, double ty)
+{
+	vertex->x += tx;
+	vertex->y += ty;
 }
 
 void	compute_coordinates(t_data *data, t_vertex **copy)
 {
-	// TODO switch on params.projection
 	int	x;
 	int	y;
 
@@ -68,12 +81,9 @@ void	compute_coordinates(t_data *data, t_vertex **copy)
 			rotate_vertex(&copy[y][x].x, &copy[y][x].y, data->params.rz);
 			rotate_vertex(&copy[y][x].y, &copy[y][x].z, data->params.rx);
 			rotate_vertex(&copy[y][x].z, &copy[y][x].x, data->params.ry);
-			copy[y][x].x *= data->params.scale;
-			copy[y][x].y *= data->params.scale;
-			copy[y][x].z *= data->params.scale;
+			scale_vertex(&copy[y][x], data->params.scale);
 			project_vertex(&copy[y][x], data->map.height);
-			copy[y][x].x += data->params.tx;
-			copy[y][x].y += data->params.ty;
+			translate_vertex(&copy[y][x], data->params.tx, data->params.ty);
 			++x;
 		}
 		++y;
