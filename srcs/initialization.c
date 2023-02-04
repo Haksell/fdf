@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 05:45:51 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/04 06:58:49 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/04 07:43:47 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ void	init_params(t_data *data)
 {
 	data->params.altitude = 1.0; // TODO compute optimal
 	data->params.scale = get_min(WINDOW_WIDTH / data->map.width, WINDOW_HEIGHT / data->map.height) / 2.0; // TODO better optimal
-	data->params.tx = (WINDOW_WIDTH - 1) / 2.0;
-	data->params.ty = (WINDOW_HEIGHT - 1) / 2.0;
+	data->params.tx = WINDOW_WIDTH / 2.0;
+	data->params.ty = WINDOW_HEIGHT / 2.0;
 	data->params.rx = 0.0;
 	data->params.ry = 0.0;
 	data->params.rz = 0.0;

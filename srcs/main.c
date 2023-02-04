@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:04:35 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/04 07:19:33 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/04 07:23:35 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,20 @@ bool	dup_vertices(t_data *data, t_vertex ***copy)
 	return (true);
 }
 
-void	rotate_vertex(double *d1, double *d2, double rotation)
+void	rotate_2d(double *d1, double *d2, double rotation)
 {
 	const double	dist = hypot(*d1, *d2);
 	const double	angle = atan2(*d2, *d1) + rotation;
 
 	*d1 = dist * cos(angle);
 	*d2 = dist * sin(angle);
+}
+
+void	rotate_vertex(t_vertex *vertex, t_params *params)
+{
+	rotate_2d(&vertex->x, &vertex->y, params->rz);
+	rotate_2d(&vertex->y, &vertex->z, params->rx);
+	rotate_2d(&vertex->z, &vertex->x, params->ry);
 }
 
 void	project_vertex(t_vertex *vertex, double height)
@@ -54,17 +61,17 @@ void	project_vertex(t_vertex *vertex, double height)
 	vertex->y -= vertex->z;
 }
 
-void	scale_vertex(t_vertex *vertex, double scale)
+void	scale_vertex(t_vertex *vertex, t_params *params)
 {
-	vertex->x *= scale;
-	vertex->y *= scale;
-	vertex->z *= scale;
+	vertex->x *= params->scale;
+	vertex->y *= params->scale;
+	vertex->z *= params->scale;
 }
 
-void	translate_vertex(t_vertex *vertex, double tx, double ty)
+void	translate_vertex(t_vertex *vertex, t_params *params)
 {
-	vertex->x += tx;
-	vertex->y += ty;
+	vertex->x += params->tx;
+	vertex->y += params->ty;
 }
 
 void	compute_coordinates(t_data *data, t_vertex **copy)
@@ -78,12 +85,13 @@ void	compute_coordinates(t_data *data, t_vertex **copy)
 		x = 0;
 		while (x < data->map.width)
 		{
-			rotate_vertex(&copy[y][x].x, &copy[y][x].y, data->params.rz);
-			rotate_vertex(&copy[y][x].y, &copy[y][x].z, data->params.rx);
-			rotate_vertex(&copy[y][x].z, &copy[y][x].x, data->params.ry);
-			scale_vertex(&copy[y][x], data->params.scale);
+			// rotate_2d(&copy[y][x].x, &copy[y][x].y, data->params.rz);
+			// rotate_2d(&copy[y][x].y, &copy[y][x].z, data->params.rx);
+			// rotate_2d(&copy[y][x].z, &copy[y][x].x, data->params.ry);
+			rotate_vertex(&copy[y][x], &data->params);
+			scale_vertex(&copy[y][x], &data->params);
 			project_vertex(&copy[y][x], data->map.height);
-			translate_vertex(&copy[y][x], data->params.tx, data->params.ty);
+			translate_vertex(&copy[y][x], &data->params);
 			++x;
 		}
 		++y;
