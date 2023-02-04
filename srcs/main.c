@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:04:35 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/04 06:23:35 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/04 06:41:22 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,21 @@ void	rotate_vertex(double *d1, double *d2, double rotation)
 	*d2 = dist * sin(angle);
 }
 
+void	project_vertex(t_vertex *vertex, double height)
+{
+	const double	tmpx = vertex->x;
+	const double	tmpy = vertex->y - height + 1;
+
+	vertex->x = ISOMETRIC_COS * (tmpy + tmpx);
+	vertex->y = ISOMETRIC_SIN * (tmpy - tmpx);
+	vertex->y -= vertex->z;
+}
+
 void	compute_coordinates(t_data *data, t_vertex **copy)
 {
 	// TODO switch on params.projection
-	const double dx = cos(M_PI / 6);
-	const double dy = sin(M_PI / 6);
-	int		x;
-	int		y;
+	int	x;
+	int	y;
 
 	y = 0;
 	while (y < data->map.height)
@@ -63,11 +71,7 @@ void	compute_coordinates(t_data *data, t_vertex **copy)
 			copy[y][x].x *= data->params.scale;
 			copy[y][x].y *= data->params.scale;
 			copy[y][x].z *= data->params.scale;
-			int tmpx = copy[y][x].x;
-			int tmpy = copy[y][x].y;
-			copy[y][x].x = dx * (tmpx - data->map.height + tmpy + 1);
-			copy[y][x].y = dy * -(tmpx + data->map.height - tmpy - 1);
-			copy[y][x].y -= copy[y][x].z;
+			project_vertex(&copy[y][x], data->map.height);
 			copy[y][x].x += data->params.tx;
 			copy[y][x].y += data->params.ty;
 			++x;

@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 04:42:40 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/04 06:16:25 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/04 06:38:02 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@
 # define TRANSLATION 10.0
 # define ALTITUDE_SHIFT 1.1
 # define SCALE_SHIFT 1.1
+# define ISOMETRIC_COS 0.8660254037844387
+# define ISOMETRIC_SIN 0.5
 # define ANGLE_SHIFT (M_PI / 20)
 # define SPACES " \t\n\v\f\r"
 
