@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 04:42:40 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/04 05:50:02 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/04 06:16:25 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ bool	get_map_dimensions(char *filename, t_map *map);
 int 	get_min(int n1, int n2);
 int		handle_key_down(int keycode, t_data *data);
 int		handle_mouse_down(int button, int x, int y, t_data *data);
+bool	init_minilibx(t_data *data, char *window_title);
 bool	init_grid(void ***grid, size_t width, size_t height, size_t size);
 void	init_params(t_data *data);
 void	put_lines(t_data *data, t_vertex **copy);

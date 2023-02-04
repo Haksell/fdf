@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:04:35 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/04 06:06:06 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/04 06:23:35 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,11 @@ void	rotate_vertex(double *d1, double *d2, double rotation)
 	*d2 = dist * sin(angle);
 }
 
-void	rotate(t_data *data, t_vertex **copy)
+void	compute_coordinates(t_data *data, t_vertex **copy)
 {
+	// TODO switch on params.projection
+	const double dx = cos(M_PI / 6);
+	const double dy = sin(M_PI / 6);
 	int		x;
 	int		y;
 
@@ -57,68 +60,14 @@ void	rotate(t_data *data, t_vertex **copy)
 			rotate_vertex(&copy[y][x].x, &copy[y][x].y, data->params.rz);
 			rotate_vertex(&copy[y][x].y, &copy[y][x].z, data->params.rx);
 			rotate_vertex(&copy[y][x].z, &copy[y][x].x, data->params.ry);
-			++x;
-		}
-		++y;
-	}
-}
-
-void	scale(t_data *data, t_vertex **copy)
-{
-	int	x;
-	int	y;
-
-	y = 0;
-	while (y < data->map.height)
-	{
-		x = 0;
-		while (x < data->map.width)
-		{
 			copy[y][x].x *= data->params.scale;
 			copy[y][x].y *= data->params.scale;
 			copy[y][x].z *= data->params.scale;
-			++x;
-		}
-		++y;
-	}
-}
-
-void	project(t_data *data, t_vertex **copy)
-{
-	// TODO switch on params.projection
-	const double dx = cos(M_PI / 6);
-	const double dy = sin(M_PI / 6);
-	int	x;
-	int	y;
-
-	y = 0;
-	while (y < data->map.height)
-	{
-		x = 0;
-		while (x < data->map.width)
-		{
 			int tmpx = copy[y][x].x;
 			int tmpy = copy[y][x].y;
 			copy[y][x].x = dx * (tmpx - data->map.height + tmpy + 1);
 			copy[y][x].y = dy * -(tmpx + data->map.height - tmpy - 1);
 			copy[y][x].y -= copy[y][x].z;
-			++x;
-		}
-		++y;
-	}
-}
-
-void	translate(t_data *data, t_vertex **copy)
-{
-	int	x;
-	int	y;
-
-	y = 0;
-	while (y < data->map.height)
-	{
-		x = 0;
-		while (x < data->map.width)
-		{
 			copy[y][x].x += data->params.tx;
 			copy[y][x].y += data->params.ty;
 			++x;
@@ -136,31 +85,11 @@ int render_frame(t_data *data)
 	if (!dup_vertices(data, &copy))
 		close_window(data);
 	black_background(data);
-	rotate(data, copy);
-	scale(data, copy);
-	project(data, copy); // TODO switch on params.projection
-	translate(data, copy);
+	compute_coordinates(data, copy);
 	put_lines(data, copy);
 	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
 	data->should_rerender = false;
 	return (EXIT_SUCCESS);
-}
-
-bool	initialize_mlx(t_data *data, char *window_title)
-{
-	data->mlx = mlx_init();
-	if (data->mlx == NULL)
-		return (false);
-	data->win = mlx_new_window(data->mlx, WINDOW_WIDTH, WINDOW_HEIGHT, window_title);
-	if (data->win == NULL)
-		return (false);
-	data->img = mlx_new_image(data->mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
-	if (data->img == NULL)
-		return (false);
-	data->addr = mlx_get_data_addr(data->img, &data->bits_per_pixel, &data->line_length, &data->endian);
-	if (data->addr == NULL)
-		return (false);
-	return (true);
 }
 
 int	complain(char *error_message)
@@ -177,7 +106,7 @@ int main(int argc, char **argv)
 		return (complain("Usage: ./fdf *.fdf"));
 	if (!parse_map(argv[1], &data.map))
 		return (complain("Failed to parse the map"));
-	if (!initialize_mlx(&data, argv[0]))
+	if (!init_minilibx(&data, argv[0]))
 		return (complain("Failed to initialize mlx"));
 	init_params(&data);
 	data.should_rerender = true;
