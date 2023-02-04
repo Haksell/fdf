@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 06:27:14 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/03 04:14:50 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/04 05:46:55 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,8 +118,6 @@ bool	parse_map(char *filename, t_map *map)
 	int		y;
 	bool	return_value;
 
-	if (!ft_endswith(filename, ".fdf"))
-		return (false);
 	fd = open(filename, O_RDONLY);
 	return_value = (
 		fd >= 3

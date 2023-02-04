@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 05:44:19 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/03 05:55:33 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/04 05:50:02 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	handle_key_down(int keycode, t_data *data)
 	if (keycode == KEY_ESC)
 		close_window(data);
 	// TODO if (!data->is_bonus) return (EXIT_SUCCESS);
-	data->is_modified = true;
+	data->should_rerender = true;
 	if (keycode == 'r')
 		init_params(data);
 	else if (keycode == KEY_LEFT)
@@ -57,7 +57,7 @@ int	handle_key_down(int keycode, t_data *data)
 	else if (keycode == 'n')
 		data->params.rz -= ANGLE_SHIFT;
 	else
-		data->is_modified = false;
+		data->should_rerender = false;
 	return (EXIT_SUCCESS);
 }
 
@@ -83,12 +83,12 @@ static void	zoom(t_data *data, int x, int y, double scale_shift)
 int	handle_mouse_down(int button, int x, int y, t_data *data)
 {
 	// TODO if (!data->is_bonus) return (EXIT_SUCCESS);
-	data->is_modified = true;
+	data->should_rerender = true;
 	if (button == SCROLL_UP)
 		zoom(data, x, y, SCALE_SHIFT);
 	else if (button == SCROLL_DOWN)
 		zoom(data, x, y, 1 / SCALE_SHIFT);
 	else
-		data->is_modified = false;
+		data->should_rerender = false;
 	return (EXIT_SUCCESS);
 }
