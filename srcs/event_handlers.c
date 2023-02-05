@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 05:44:19 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/05 07:07:23 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/05 07:22:28 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,18 +64,16 @@ int	handle_key_down(int keycode, t_data *data)
 
 static void	zoom(t_data *data, int x, int y, double scale_shift)
 {
-	t_vertex	before = {(double)x, (double)y, 0, 0};
-	t_vertex	after = {(double)x, (double)y, 0, 0};
+	t_vertex	mouse;
 
-	inverse_transform_vertex(&before, data);
+	mouse.x = x;
+	mouse.y = y;
+	mouse.z = 0;
+	inverse_transform_vertex(&mouse, data);
 	data->params.scale *= scale_shift;
-	inverse_transform_vertex(&after, data);
-	// t_vertex	diff = {after.x - before.x, after.y - before.y, 0, 0};
-	// printf("bx=%lf by=%lf\n", before.x, before.y);
-	// printf("ax=%lf ay=%lf\n", after.x, after.y);
-	// printf("dx=%lf dy=%lf\n\n", diff.x, diff.y);
-	// data->params.tx += diff.x;
-	// data->params.ty += diff.y;
+	transform_vertex(&mouse, data);
+	data->params.tx += x - mouse.x;
+	data->params.ty += y - mouse.y;
 }
 
 int	handle_mouse_down(int button, int x, int y, t_data *data)
