@@ -1,0 +1,17 @@
+import sys
+
+assert len(sys.argv) == 2
+STEPS = int(sys.argv[1])
+carpet = [["5,0x02AAEB"]]
+for _ in range(STEPS):
+    new_carpet = []
+    for row in carpet:
+        new_carpet.append(3 * row)
+    for row in carpet:
+        new_carpet.append(row + ["0,0x000000"] * len(row) + row)
+    for row in carpet:
+        new_carpet.append(3 * row)
+    carpet = new_carpet
+with open(f"maps/generated/carpet_{STEPS}.fdf", "w") as fp:
+    for row in carpet:
+        print(*row, file=fp)

@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:04:35 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/05 07:07:07 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/05 10:57:48 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,15 @@ int render_frame(t_data *data)
 
 int main(int argc, char **argv)
 {
-	t_data data;
+	char	*filename;
+	t_data	data;
 
-	if (argc != 2 || !ft_endswith(argv[1], ".fdf"))
+	filename = argv[1];
+	if (argc != 2 || !ft_endswith(filename, ".fdf"))
 		return (complain("Usage: ./fdf *.fdf"));
-	if (!parse_map(argv[1], &data.map))
+	if (!parse_map(filename, &data.map))
 		return (complain("Failed to parse the map"));
-	if (!init_minilibx(&data, argv[0]))
+	if (!init_minilibx(&data, filename))
 		return (complain("Failed to initialize mlx"));
 	init_params(&data);
 	data.should_rerender = true;

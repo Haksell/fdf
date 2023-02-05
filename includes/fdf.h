@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 04:42:40 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/05 05:37:49 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/05 11:15:21 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ enum {
 };
 
 enum {
+	BUTTON_LEFT = 1,
 	SCROLL_UP = 4,
 	SCROLL_DOWN = 5
 };
@@ -73,6 +74,11 @@ typedef struct s_vertex {
 	double	z;
 	int		color;
 }	t_vertex;
+
+typedef struct s_position {
+	int	x;
+	int	y;
+}	t_position;
 
 typedef struct s_map {
 	t_vertex	**vertices;
@@ -99,6 +105,7 @@ typedef struct s_data {
 	int			endian;
 	int			line_length;
 	bool		should_rerender;
+	t_position	mouse;
 	t_map		map;
 	t_params	params;
 }	t_data;

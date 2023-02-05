@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 05:44:19 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/05 07:22:28 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/05 11:13:59 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ int	handle_mouse_down(int button, int x, int y, t_data *data)
 {
 	// TODO if (!data->is_bonus) return (EXIT_SUCCESS);
 	data->should_rerender = true;
+	ft_printf("b=%d x=%d y=%d\n", button, x, y);
 	if (button == SCROLL_UP)
 		zoom(data, x, y, SCALE_SHIFT);
 	else if (button == SCROLL_DOWN)

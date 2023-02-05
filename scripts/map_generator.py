@@ -64,9 +64,6 @@ def generate_donut(x, y, args):
     return f"{height:.1f}"
 
 
-# TODO text
-# TODO sierpinski
-
 assert len(sys.argv) >= 3
 MAP_TYPE, SIZE, args = sys.argv[1], int(sys.argv[2]), sys.argv[3:]
 GENERATORS = {

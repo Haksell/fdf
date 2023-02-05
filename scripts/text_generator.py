@@ -14,9 +14,9 @@ draw.text((0, 0), text, "white", font=myfont)
 pixels = np.array(img, dtype=np.uint8)
 chars = np.array(["0", "3"], dtype="U1")[pixels]
 strings = list(chars.view("U" + str(chars.shape[1])).flatten())
-filename = f"maps/text/{''.join(c.lower() if c.isalnum() else '_' if c.isspace() else '' for c in text)}.fdf"
 empty = strings[0]
 rows = [empty, empty, *strings[3:], empty, empty]
 rows = [["0", *row, "0"] for row in rows]
 rows = [[h if h == "0" else f"{h},0xDC143C" for h in row] for row in rows]
+filename = f"maps/generated/text_{''.join(c.lower() for c in text if c.isalnum())}.fdf"
 print("\n".join(" ".join(row) for row in rows), file=open(filename, "w"))
