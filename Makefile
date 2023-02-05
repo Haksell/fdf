@@ -6,7 +6,7 @@
 #    By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 12:42:52 by axbrisse          #+#    #+#              #
-#    Updated: 2023/02/03 05:53:31 by axbrisse         ###   ########.fr        #
+#    Updated: 2023/02/05 01:35:55 by axbrisse         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ FILES += main
 FILES += math
 FILES += parse_map
 FILES += put_lines
+FILES += transform
 
 SRCS = ${addsuffix .c, ${FILES}}
 OBJS = ${patsubst %.c, ${PATH_OBJS}/%.o, ${SRCS}}

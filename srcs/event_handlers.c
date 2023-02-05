@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 05:44:19 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/04 05:50:02 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/05 01:49:34 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	handle_key_down(int keycode, t_data *data)
 		close_window(data);
 	// TODO if (!data->is_bonus) return (EXIT_SUCCESS);
 	data->should_rerender = true;
-	if (keycode == 'r')
+	if (keycode == KEY_HOME)
 		init_params(data);
 	else if (keycode == KEY_LEFT)
 		data->params.tx -= TRANSLATION;
@@ -38,23 +38,23 @@ int	handle_key_down(int keycode, t_data *data)
 		data->params.tx += TRANSLATION;
 	else if (keycode == KEY_DOWN)
 		data->params.ty += TRANSLATION;
-	else if (keycode == 'e')
-		data->params.altitude *= ALTITUDE_SHIFT;
-	else if (keycode == 'd')
+	else if (keycode == 'i')
 		data->params.altitude /= ALTITUDE_SHIFT;
-	else if (keycode == 's')
+	else if (keycode == 'o')
 		data->params.altitude = -data->params.altitude;
-	else if (keycode == 'z')
+	else if (keycode == 'p')
+		data->params.altitude *= ALTITUDE_SHIFT;
+	else if (keycode == 'w')
 		data->params.rx += ANGLE_SHIFT;
-	else if (keycode == 'x')
+	else if (keycode == 's')
 		data->params.rx -= ANGLE_SHIFT;
-	else if (keycode == 'c')
+	else if (keycode == 'd')
 		data->params.ry += ANGLE_SHIFT;
-	else if (keycode == 'v')
+	else if (keycode == 'a')
 		data->params.ry -= ANGLE_SHIFT;
-	else if (keycode == 'b')
+	else if (keycode == 'k')
 		data->params.rz += ANGLE_SHIFT;
-	else if (keycode == 'n')
+	else if (keycode == 'l')
 		data->params.rz -= ANGLE_SHIFT;
 	else
 		data->should_rerender = false;

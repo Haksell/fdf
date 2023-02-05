@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 04:42:40 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/04 06:38:02 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/05 01:43:13 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ enum {
 
 enum {
 	KEY_ESC = 65307,
+	KEY_HOME = 65360,
 	KEY_LEFT = 65361,
 	KEY_UP = 65362,
 	KEY_RIGHT = 65363,
@@ -105,7 +106,7 @@ typedef struct s_data {
 void	black_background(t_data *data);
 int		close_window(t_data *data);
 bool	get_map_dimensions(char *filename, t_map *map);
-int 	get_min(int n1, int n2);
+double	get_min(double n1, double n2);
 int		handle_key_down(int keycode, t_data *data);
 int		handle_mouse_down(int button, int x, int y, t_data *data);
 bool	init_minilibx(t_data *data, char *window_title);
@@ -114,5 +115,13 @@ void	init_params(t_data *data);
 void	put_lines(t_data *data, t_vertex **copy);
 bool	parse_map(char *filename, t_map *map);
 void	pixel_put(t_data *data, int x, int y, int color);
+
+void	rotate_2d(double *d1, double *d2, double rotation);
+void	rotate_vertex(t_vertex *vertex, t_params *params);
+void	scale_vertex(t_vertex *vertex, t_params *params);
+void	project_vertex(t_vertex *vertex, double height);
+void	translate_vertex(t_vertex *vertex, t_params *params);
+void	transform_vertex(t_vertex *vertex, t_data *data);
+void	transform_vertices(t_data *data, t_vertex **copy);
 
 #endif
