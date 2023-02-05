@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 01:35:04 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/05 07:00:39 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/05 09:35:55 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	project_vertex(t_vertex *vertex, double height)
 {
 	// TODO switch on params.projection
 	const double	tmp_x = vertex->x;
-	const double	tmp_y = vertex->y - height + 1; // TODO remove height - 1 maybe?
+	const double	tmp_y = vertex->y - height + 1;
 
 	vertex->x = ISOCOS * (tmp_y + tmp_x);
 	vertex->y = ISOSIN * (tmp_y - tmp_x) - vertex->z;
@@ -70,25 +70,11 @@ void	transform_vertex(t_vertex *vertex, t_data *data)
 	translate_vertex(vertex, data->params.tx, data->params.ty);
 }
 
-/*
-tx = c * (y - h + 1 + x)
-ty = s * (y - h + 1 - x)
-
-s*tx + c*ty = cs ((y - h + 1 + x) + (y - h + 1 - x))
-s*tx + c*ty = cs (2y - 2h + 2)
-y = ((s*tx + c*ty) / cs + 2h - 2) / 2
-y = (s*tx + c*ty) / 2cs + h - 1
-
-s*tx - c*ty = cs ((y - h + 1 + x) - (y - h + 1 - x))
-s*tx - c*ty = 2cs x
-x = (s*tx - c*ty) / 2cs
-*/
-
 void	inverse_transform_vertex(t_vertex *vertex, t_data *data)
 {
 	translate_vertex(vertex, -data->params.tx, -data->params.ty);
 	inverse_project_vertex(vertex, data->map.height);
-	rotate_vertex(vertex, -data->params.rx, -data->params.ry, 0);
+	rotate_vertex(vertex, -data->params.rx, -data->params.ry, -data->params.rz);
 	scale_vertex(vertex, 1.0 / data->params.scale);
 }
 

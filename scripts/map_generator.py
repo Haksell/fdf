@@ -31,6 +31,11 @@ def generate_flat(x, y, args):
     return 0
 
 
+def generate_checkerboard(x, y, args):
+    assert len(args) == 0
+    return (x ^ y) & 1
+
+
 def generate_abs(x, y, args):
     assert len(args) == 0
     dx = (SIZE - 1) / 2 - x
@@ -53,14 +58,12 @@ def generate_donut(x, y, args):
     radius = SIZE / 2 - width - 2
     dx = (SIZE - 1) / 2 - x
     dy = (SIZE - 1) / 2 - y
-    dist = hypot(dx, dy)
-    height = max(0, width - abs(dist - radius))
-    height = sqrt(width**2 - (width - height) ** 2)
+    center_dist = hypot(dx, dy)
+    donut_dist = max(0, width - abs(center_dist - radius))
+    height = sqrt(width**2 - (width - donut_dist) ** 2)
     return f"{height:.1f}"
 
 
-# TODO donuts
-# TODO checkerboard
 # TODO text
 # TODO sierpinski
 
