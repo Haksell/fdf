@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 05:44:19 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/05 04:47:41 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/05 07:07:23 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,26 +62,20 @@ int	handle_key_down(int keycode, t_data *data)
 	return (EXIT_SUCCESS);
 }
 
-// static double	inverse_transform(double position, double translation, double scale)
-// {
-// 	return ((position - translation) / scale);
-// }
-
 static void	zoom(t_data *data, int x, int y, double scale_shift)
 {
-	(void)data;
-	(void)x;
-	(void)y;
-	// const double	x_before = inverse_transform(x, data->params.tx, data->params.scale);
-	// const double	y_before = inverse_transform(y, data->params.ty, data->params.scale);
-	// double			diff_x;
-	// double			diff_y;
+	t_vertex	before = {(double)x, (double)y, 0, 0};
+	t_vertex	after = {(double)x, (double)y, 0, 0};
 
+	inverse_transform_vertex(&before, data);
 	data->params.scale *= scale_shift;
-	// diff_x = x_before - inverse_transform(x, data->params.tx, data->params.scale);
-	// diff_y = y_before - inverse_transform(y, data->params.ty, data->params.scale);
-	// data->params.tx -= diff_x * data->params.scale;
-	// data->params.ty -= diff_y * data->params.scale;
+	inverse_transform_vertex(&after, data);
+	// t_vertex	diff = {after.x - before.x, after.y - before.y, 0, 0};
+	// printf("bx=%lf by=%lf\n", before.x, before.y);
+	// printf("ax=%lf ay=%lf\n", after.x, after.y);
+	// printf("dx=%lf dy=%lf\n\n", diff.x, diff.y);
+	// data->params.tx += diff.x;
+	// data->params.ty += diff.y;
 }
 
 int	handle_mouse_down(int button, int x, int y, t_data *data)

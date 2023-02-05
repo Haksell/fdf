@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 04:42:40 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/05 04:24:42 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/05 05:37:49 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@
 # define TRANSLATION 10.0
 # define ALTITUDE_SHIFT 1.1
 # define SCALE_SHIFT 1.1
-# define ISOMETRIC_COS 0.8660254037844387
-# define ISOMETRIC_SIN 0.5
+# define ISOCOS 0.8660254037844387
+# define ISOSIN 0.5
 # define ANGLE_SHIFT (M_PI / 20)
 # define SPACES " \t\n\v\f\r"
 
@@ -115,12 +115,15 @@ bool	parse_map(char *filename, t_map *map);
 void	pixel_put(t_data *data, int x, int y, int color);
 
 void	rotate_2d(double *d1, double *d2, double rotation);
-void	rotate_vertex(t_vertex *vertex, t_params *params);
-void	scale_vertex(t_vertex *vertex, t_params *params);
+void	scale_vertex(t_vertex *vertex, double scale);
+void	rotate_vertex(t_vertex *vertex, double rx, double ry, double rz);
 void	project_vertex(t_vertex *vertex, double height);
-void	translate_vertex(t_vertex *vertex, t_params *params);
+void	translate_vertex(t_vertex *vertex, double tx, double ty);
 void	transform_vertex(t_vertex *vertex, t_data *data);
 void	transform_vertices(t_data *data, t_vertex **copy);
+
+void	inverse_project_vertex(t_vertex *vertex, double height);
+void	inverse_transform_vertex(t_vertex *vertex, t_data *data);
 
 // create_vertices.c
 t_vertex	**init_vertices(int width, int height);
@@ -128,6 +131,7 @@ t_vertex	**copy_vertices(t_data *data);
 
 // utils.c
 int			complain(char *error_message);
-double		get_min(double n1, double n2);
+double		get_max(double x1, double x2);
+double		get_min(double x1, double x2);
 
 #endif

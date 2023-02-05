@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 01:35:04 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/05 04:50:05 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/05 07:00:39 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,42 +21,75 @@ void	rotate_2d(double *d1, double *d2, double rotation)
 	*d2 = dist * sin(angle);
 }
 
-void	rotate_vertex(t_vertex *vertex, t_params *params)
+void	rotate_vertex(t_vertex *vertex, double rx, double ry, double rz)
 {
-	rotate_2d(&vertex->y, &vertex->z, params->rx);
-	rotate_2d(&vertex->z, &vertex->x, params->ry);
-	rotate_2d(&vertex->x, &vertex->y, params->rz);
+	rotate_2d(&vertex->y, &vertex->z, rx);
+	rotate_2d(&vertex->z, &vertex->x, ry);
+	rotate_2d(&vertex->x, &vertex->y, rz);
 }
 
-void	scale_vertex(t_vertex *vertex, t_params *params)
+void	scale_vertex(t_vertex *vertex, double scale)
 {
-	vertex->x *= params->scale;
-	vertex->y *= params->scale;
-	vertex->z *= params->scale;
+	vertex->x *= scale;
+	vertex->y *= scale;
+	vertex->z *= scale;
 }
 
 void	project_vertex(t_vertex *vertex, double height)
 {
 	// TODO switch on params.projection
-	const double	map_x = vertex->x;
-	const double	map_y = vertex->y - height + 1;
+	const double	tmp_x = vertex->x;
+	const double	tmp_y = vertex->y - height + 1; // TODO remove height - 1 maybe?
 
-	vertex->x = ISOMETRIC_COS * (map_y + map_x);
-	vertex->y = ISOMETRIC_SIN * (map_y - map_x) - vertex->z;
+	vertex->x = ISOCOS * (tmp_y + tmp_x);
+	vertex->y = ISOSIN * (tmp_y - tmp_x) - vertex->z;
 }
 
-void	translate_vertex(t_vertex *vertex, t_params *params)
+void	translate_vertex(t_vertex *vertex, double tx, double ty)
 {
-	vertex->x += params->tx;
-	vertex->y += params->ty;
+	vertex->x += tx;
+	vertex->y += ty;
+}
+
+void	inverse_project_vertex(t_vertex *vertex, double height)
+{
+	// TODO switch on params.projection
+	static double	cs2 = ISOCOS * ISOSIN * 2.0;
+	const double	tmp_x = vertex->x;
+	const double	tmp_y = vertex->y;
+
+	vertex->x = (ISOSIN * tmp_x - ISOCOS * tmp_y) / cs2;
+	vertex->y = (ISOSIN * tmp_x + ISOCOS * tmp_y) / cs2 + height - 1;
 }
 
 void	transform_vertex(t_vertex *vertex, t_data *data)
 {
-	scale_vertex(vertex, &data->params);
-	rotate_vertex(vertex, &data->params);
+	scale_vertex(vertex, data->params.scale);
+	rotate_vertex(vertex, data->params.rx, data->params.ry, data->params.rz);
 	project_vertex(vertex, data->map.height);
-	translate_vertex(vertex, &data->params);
+	translate_vertex(vertex, data->params.tx, data->params.ty);
+}
+
+/*
+tx = c * (y - h + 1 + x)
+ty = s * (y - h + 1 - x)
+
+s*tx + c*ty = cs ((y - h + 1 + x) + (y - h + 1 - x))
+s*tx + c*ty = cs (2y - 2h + 2)
+y = ((s*tx + c*ty) / cs + 2h - 2) / 2
+y = (s*tx + c*ty) / 2cs + h - 1
+
+s*tx - c*ty = cs ((y - h + 1 + x) - (y - h + 1 - x))
+s*tx - c*ty = 2cs x
+x = (s*tx - c*ty) / 2cs
+*/
+
+void	inverse_transform_vertex(t_vertex *vertex, t_data *data)
+{
+	translate_vertex(vertex, -data->params.tx, -data->params.ty);
+	inverse_project_vertex(vertex, data->map.height);
+	rotate_vertex(vertex, -data->params.rx, -data->params.ry, 0);
+	scale_vertex(vertex, 1.0 / data->params.scale);
 }
 
 void	transform_vertices(t_data *data, t_vertex **copy)
