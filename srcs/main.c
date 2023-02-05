@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:04:35 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/05 11:19:06 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/06 00:09:37 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int render_frame(t_data *data)
 	vertices = copy_vertices(data);
 	if (vertices == NULL)
 		close_window(data);
-	black_background(data);
+	redraw_background(data);
 	transform_vertices(data, vertices);
 	put_lines(data, vertices);
 	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);

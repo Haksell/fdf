@@ -8,7 +8,7 @@ for _ in range(STEPS):
     for row in carpet:
         new_carpet.append(3 * row)
     for row in carpet:
-        new_carpet.append(row + ["0,0x000000"] * len(row) + row)
+        new_carpet.append(row + ["0,0x111111"] * len(row) + row)
     for row in carpet:
         new_carpet.append(3 * row)
     carpet = new_carpet

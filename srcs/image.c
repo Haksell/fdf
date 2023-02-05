@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 00:45:47 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/03 03:22:29 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/06 00:09:37 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-void	black_background(t_data *data)
+void	redraw_background(t_data *data)
 {
 	int	x;
 	int	y;
@@ -33,7 +33,7 @@ void	black_background(t_data *data)
 		x = 0;
 		while (x < WINDOW_WIDTH)
 		{
-			pixel_put(data, x, y, BLACK);
+			pixel_put(data, x, y, BACKGROUND);
 			++x;
 		}
 		++y;

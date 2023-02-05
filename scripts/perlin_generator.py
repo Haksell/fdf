@@ -2,22 +2,30 @@ import sys
 import numpy as np
 from perlin_noise import PerlinNoise
 
+DEEP_SEA = 0x1E3F5A
+SHALLOW_SEA = 0x92C4EE
+BEACH = 0xF6E3D4
+PLAIN = 0x357A17
+FOREST = 0x095429
+MOUNTAIN = 0x554124
+SNOW = 0xFFFFFF
+
 
 def get_color(height):
     return (
-        0x1E3F5A
-        if height < -1.2
-        else 0x92C4EE
-        if height < -0.5
-        else 0xF6E3D4
+        DEEP_SEA
+        if height < -1
+        else SHALLOW_SEA
         if height < 0
-        else 0x107812
+        else BEACH
+        if height < 0.5
+        else PLAIN
         if height < 2
-        else 0x014421
+        else FOREST
         if height < 5
-        else 0x554124
+        else MOUNTAIN
         if height < 7
-        else 0xFFFFFF
+        else SNOW
     )
 
 
@@ -26,12 +34,13 @@ noise1 = PerlinNoise(octaves=3)
 noise2 = PerlinNoise(octaves=6)
 noise3 = PerlinNoise(octaves=12)
 noise4 = PerlinNoise(octaves=24)
-assert len(sys.argv) == 2
+assert len(sys.argv) == 3
 size = int(sys.argv[1])
-with open(f"maps/generated/perlin_{size}x{size}.fdf", "w") as fp:
-    for y in np.linspace(0, 1, size):
+repeats = int(sys.argv[2])
+with open(f"maps/generated/perlin_{repeats}_{size}x{size}.fdf", "w") as fp:
+    for y in np.linspace(0, repeats, size):
         row = []
-        for x in np.linspace(0, 1, size):
+        for x in np.linspace(0, repeats, size):
             coords = [y, x]
             height = noise1(coords)
             height += 0.5 * noise2(coords)

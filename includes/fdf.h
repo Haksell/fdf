@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 04:42:40 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/05 11:21:28 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/06 00:09:37 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 # define WINDOW_WIDTH 800
 # define WINDOW_HEIGHT 800
 # define WHITE 0xffffff
-# define BLACK 0x000000
+# define BACKGROUND 0x111111
 # define TRANSLATION 10.0
 # define ALTITUDE_SHIFT 1.1
 # define SCALE_SHIFT 1.1
@@ -112,7 +112,7 @@ typedef struct s_data {
 	t_params	params;
 }	t_data;
 
-void	black_background(t_data *data);
+void	redraw_background(t_data *data);
 int		close_window(t_data *data);
 bool	get_map_dimensions(char *filename, t_map *map);
 int		handle_key_down(int keycode, t_data *data);
