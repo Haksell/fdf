@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:04:35 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/05 10:57:48 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/05 11:19:06 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int main(int argc, char **argv)
 	mlx_hook(data.win, ON_DESTROY, NO_EVENT_MASK, close_window, &data);
 	mlx_hook(data.win, ON_KEY_DOWN, KEY_PRESS_MASK, handle_key_down, &data);
 	mlx_hook(data.win, ON_MOUSE_DOWN, BUTTON_PRESS_MASK, handle_mouse_down, &data);
+	mlx_hook(data.win, ON_MOUSE_UP, BUTTON_RELEASE_MASK, handle_mouse_up, &data);
 	mlx_loop_hook(data.mlx, &render_frame, &data);
 	mlx_loop(data.mlx);
 	return (EXIT_SUCCESS);

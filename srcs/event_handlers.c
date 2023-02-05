@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 05:44:19 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/05 11:13:59 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/05 11:23:39 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,13 +79,32 @@ static void	zoom(t_data *data, int x, int y, double scale_shift)
 int	handle_mouse_down(int button, int x, int y, t_data *data)
 {
 	// TODO if (!data->is_bonus) return (EXIT_SUCCESS);
-	data->should_rerender = true;
-	ft_printf("b=%d x=%d y=%d\n", button, x, y);
-	if (button == SCROLL_UP)
+	if (button == BUTTON_LEFT)
+	{
+		data->mouse.x = x;
+		data->mouse.y = y;
+	}
+	else if (button == SCROLL_UP)
+	{
+		data->should_rerender = true;
 		zoom(data, x, y, SCALE_SHIFT);
+	}
 	else if (button == SCROLL_DOWN)
+	{
+		data->should_rerender = true;
 		zoom(data, x, y, 1 / SCALE_SHIFT);
-	else
-		data->should_rerender = false;
+	}
+	return (EXIT_SUCCESS);
+}
+
+int	handle_mouse_up(int button, int x, int y, t_data *data)
+{
+	// TODO if (!data->is_bonus) return (EXIT_SUCCESS);
+	if (button == BUTTON_LEFT)
+	{
+		data->should_rerender = true;
+		data->params.tx += x - data->mouse.x;
+		data->params.ty += y - data->mouse.y;
+	}
 	return (EXIT_SUCCESS);
 }

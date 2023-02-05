@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 04:42:40 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/05 11:15:21 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/05 11:21:28 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,15 @@
 enum {
 	ON_KEY_DOWN = 2,
 	ON_MOUSE_DOWN = 4,
+	ON_MOUSE_UP = 5,
 	ON_DESTROY = 17
 };
 
 enum {
 	NO_EVENT_MASK = 0,
 	KEY_PRESS_MASK = 1,
-	BUTTON_PRESS_MASK = 4
+	BUTTON_PRESS_MASK = 4,
+	BUTTON_RELEASE_MASK = 8
 };
 
 enum {
@@ -115,6 +117,7 @@ int		close_window(t_data *data);
 bool	get_map_dimensions(char *filename, t_map *map);
 int		handle_key_down(int keycode, t_data *data);
 int		handle_mouse_down(int button, int x, int y, t_data *data);
+int		handle_mouse_up(int button, int x, int y, t_data *data);
 bool	init_minilibx(t_data *data, char *window_title);
 void	init_params(t_data *data);
 void	put_lines(t_data *data, t_vertex **copy);
