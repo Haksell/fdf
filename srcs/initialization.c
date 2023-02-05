@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 05:45:51 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/05 04:12:27 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/05 04:45:35 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,15 @@
 
 void	init_params(t_data *data)
 {
+	t_vertex origin = {0, 0, 0, 0};
+
 	data->params.scale = get_min(
 			WINDOW_WIDTH / (double)data->map.width,
-			WINDOW_HEIGHT / (double)data->map.height) / 2; // TODO better
-	data->params.altitude = 1.0; // TODO compute initial
-	data->params.tx = WINDOW_WIDTH / 2.0;
-	data->params.ty = WINDOW_HEIGHT / 2.0;
+			WINDOW_HEIGHT / (double)data->map.height) / 2.0; // TODO different depending on projection
+	project_vertex(&origin, data->map.height);
+	data->params.tx = WINDOW_WIDTH / 2.0 - origin.x;
+	data->params.ty = WINDOW_HEIGHT / 2.0 - origin.y;
+	data->params.altitude = 1.0;
 	data->params.rx = 0.0;
 	data->params.ry = 0.0;
 	data->params.rz = 0.0;

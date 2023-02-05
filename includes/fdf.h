@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 04:42:40 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/05 04:12:56 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/05 04:24:42 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,11 +106,9 @@ typedef struct s_data {
 void	black_background(t_data *data);
 int		close_window(t_data *data);
 bool	get_map_dimensions(char *filename, t_map *map);
-double	get_min(double n1, double n2);
 int		handle_key_down(int keycode, t_data *data);
 int		handle_mouse_down(int button, int x, int y, t_data *data);
 bool	init_minilibx(t_data *data, char *window_title);
-t_vertex	**init_vertices(int width, int height);
 void	init_params(t_data *data);
 void	put_lines(t_data *data, t_vertex **copy);
 bool	parse_map(char *filename, t_map *map);
@@ -124,7 +122,12 @@ void	translate_vertex(t_vertex *vertex, t_params *params);
 void	transform_vertex(t_vertex *vertex, t_data *data);
 void	transform_vertices(t_data *data, t_vertex **copy);
 
+// create_vertices.c
 t_vertex	**init_vertices(int width, int height);
 t_vertex	**copy_vertices(t_data *data);
+
+// utils.c
+int			complain(char *error_message);
+double		get_min(double n1, double n2);
 
 #endif

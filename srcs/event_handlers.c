@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 05:44:19 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/05 03:21:12 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/05 04:47:41 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,23 +62,26 @@ int	handle_key_down(int keycode, t_data *data)
 	return (EXIT_SUCCESS);
 }
 
-static double	inverse_transform(double d, double td, double scale)
-{
-	return ((d - td) / scale);
-}
+// static double	inverse_transform(double position, double translation, double scale)
+// {
+// 	return ((position - translation) / scale);
+// }
 
 static void	zoom(t_data *data, int x, int y, double scale_shift)
 {
-	const double	x_before = inverse_transform(x, data->params.tx, data->params.scale);
-	const double	y_before = inverse_transform(y, data->params.ty, data->params.scale);
-	double			diff_x;
-	double			diff_y;
+	(void)data;
+	(void)x;
+	(void)y;
+	// const double	x_before = inverse_transform(x, data->params.tx, data->params.scale);
+	// const double	y_before = inverse_transform(y, data->params.ty, data->params.scale);
+	// double			diff_x;
+	// double			diff_y;
 
 	data->params.scale *= scale_shift;
-	diff_x = x_before - inverse_transform(x, data->params.tx, data->params.scale);
-	diff_y = y_before - inverse_transform(y, data->params.ty, data->params.scale);
-	data->params.tx -= diff_x * data->params.scale;
-	data->params.ty -= diff_y * data->params.scale;
+	// diff_x = x_before - inverse_transform(x, data->params.tx, data->params.scale);
+	// diff_y = y_before - inverse_transform(y, data->params.ty, data->params.scale);
+	// data->params.tx -= diff_x * data->params.scale;
+	// data->params.ty -= diff_y * data->params.scale;
 }
 
 int	handle_mouse_down(int button, int x, int y, t_data *data)

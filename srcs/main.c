@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:04:35 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/05 04:12:38 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/05 04:46:27 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,6 @@ int render_frame(t_data *data)
 	data->should_rerender = false;
 	ft_free_double_pointer((void **)vertices, data->map.height);
 	return (EXIT_SUCCESS);
-}
-
-int	complain(char *error_message)
-{
-	ft_putendl_fd(error_message, STDERR_FILENO);
-	return (EXIT_FAILURE);
 }
 
 int main(int argc, char **argv)
