@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 06:27:14 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/04 07:43:26 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/05 04:01:48 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,9 @@ static bool	parse_row(int y, char *line, t_map *map)
 	return_value = true;
 	trimmed = ft_strtrim(line, SPACES);
 	if (trimmed == NULL || ft_num_words(trimmed, SPACES) != (size_t)map->width)
-		return (false);
+		return (free(trimmed), false);
 	cells = ft_split_set(trimmed, SPACES);
+	free(trimmed);
 	if (cells == NULL)
 		return (false);
 	x = 0;
@@ -108,6 +109,7 @@ static bool	parse_row(int y, char *line, t_map *map)
 			return_value = false;
 		++x;
 	}
+	ft_free_double_pointer((void **)cells, map->width);
 	return (return_value);
 }
 
@@ -119,19 +121,23 @@ bool	parse_map(char *filename, t_map *map)
 	bool	return_value;
 
 	fd = open(filename, O_RDONLY);
-	return_value = (
-		fd >= 3
-		&& get_map_dimensions(filename, map)
-		&& init_grid((void ***)&map->vertices, map->width, map->height, sizeof(t_vertex))
-	);
+	if (fd < 0)
+		return (false);
+	return_value = get_map_dimensions(filename, map);
+	map->vertices = init_vertices(map->width, map->height);
+	if (map->vertices == NULL)
+		return (false);
 	y = 0;
 	while (return_value && y < map->height)
 	{
 		line = get_next_line(fd);
 		if (line == NULL || !parse_row(y, line, map))
 			return_value = false;
+		free(line);
 		++y;
 	}
 	close(fd);
+	if (!return_value)
+		ft_free_double_pointer((void **)map->vertices, map->height);
 	return (return_value);
 }

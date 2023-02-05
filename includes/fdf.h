@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 04:42:40 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/05 01:43:13 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/05 04:12:56 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ double	get_min(double n1, double n2);
 int		handle_key_down(int keycode, t_data *data);
 int		handle_mouse_down(int button, int x, int y, t_data *data);
 bool	init_minilibx(t_data *data, char *window_title);
-bool	init_grid(void ***grid, size_t width, size_t height, size_t size);
+t_vertex	**init_vertices(int width, int height);
 void	init_params(t_data *data);
 void	put_lines(t_data *data, t_vertex **copy);
 bool	parse_map(char *filename, t_map *map);
@@ -123,5 +123,8 @@ void	project_vertex(t_vertex *vertex, double height);
 void	translate_vertex(t_vertex *vertex, t_params *params);
 void	transform_vertex(t_vertex *vertex, t_data *data);
 void	transform_vertices(t_data *data, t_vertex **copy);
+
+t_vertex	**init_vertices(int width, int height);
+t_vertex	**copy_vertices(t_data *data);
 
 #endif

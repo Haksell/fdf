@@ -6,47 +6,27 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:04:35 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/05 01:34:54 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/05 04:12:38 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-bool	dup_vertices(t_data *data, t_vertex ***copy)
-{
-	int	x;
-	int	y;
-
-	if (!init_grid((void ***)copy, data->map.width, data->map.height, sizeof(t_vertex)))
-		return (false);
-	y = 0;
-	while (y < data->map.height)
-	{
-		x = 0;
-		while (x < data->map.width)
-		{
-			(*copy)[y][x] = data->map.vertices[y][x];
-			(*copy)[y][x].z *= data->params.altitude;
-			++x;
-		}
-		++y;
-	}
-	return (true);
-}
-
 int render_frame(t_data *data)
 {
-	t_vertex **copy;
+	t_vertex **vertices;
 
 	if (!data->should_rerender)
 		return (EXIT_SUCCESS);
-	if (!dup_vertices(data, &copy))
+	vertices = copy_vertices(data);
+	if (vertices == NULL)
 		close_window(data);
 	black_background(data);
-	transform_vertices(data, copy);
-	put_lines(data, copy);
+	transform_vertices(data, vertices);
+	put_lines(data, vertices);
 	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
 	data->should_rerender = false;
+	ft_free_double_pointer((void **)vertices, data->map.height);
 	return (EXIT_SUCCESS);
 }
 

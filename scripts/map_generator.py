@@ -1,3 +1,5 @@
+# TODO donuts
+
 from math import cos, sin
 
 SIZE = 64
