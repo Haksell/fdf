@@ -55,13 +55,29 @@ def generate_parabola(x, y, args):
 def generate_donut(x, y, args):
     assert len(args) == 1
     width = float(args[0])
-    radius = SIZE / 2 - width - 2
+    radius = SIZE / 2 - width - 3
     dx = (SIZE - 1) / 2 - x
     dy = (SIZE - 1) / 2 - y
     center_dist = hypot(dx, dy)
     donut_dist = max(0, width - abs(center_dist - radius))
     height = sqrt(width**2 - (width - donut_dist) ** 2)
-    return f"{height:.1f}"
+    if (x ^ y) & 1:
+        height = -height
+    color = "0xFFFFFF" if height == 0 else "0xFF4264"
+    return f"{height:.1f},{color}"
+
+
+def generate_sphere(x, y, args):
+    assert len(args) == 1
+    width = float(args[0])
+    dx = (SIZE - 1) / 2 - x
+    dy = (SIZE - 1) / 2 - y
+    center_dist = max(0, width - hypot(dx, dy))
+    height = height = sqrt(width**2 - (width - center_dist) ** 2)
+    if (x ^ y) & 1:
+        height = -height
+    color = "0x111111" if height == 0 else "0xDC143C"
+    return f"{height:.1f},{color}"
 
 
 assert len(sys.argv) >= 3
