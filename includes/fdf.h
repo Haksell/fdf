@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 04:42:40 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/06 00:09:37 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/06 07:19:34 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,13 @@ typedef struct s_vertex {
 	int		color;
 }	t_vertex;
 
+typedef struct s_int_vertex {
+	int	x;
+	int	y;
+	int	z;
+	int	color;
+}	t_int_vertex;
+
 typedef struct s_position {
 	int	x;
 	int	y;
@@ -107,6 +114,7 @@ typedef struct s_data {
 	int			endian;
 	int			line_length;
 	bool		should_rerender;
+	t_vertex	**colors; // TODO free
 	t_position	mouse;
 	t_map		map;
 	t_params	params;
