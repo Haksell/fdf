@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 04:42:40 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/06 08:21:07 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/06 08:48:37 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@
 # define ISOSIN 0.5
 # define ANGLE_SHIFT (M_PI / 20)
 # define SPACES " \t\n\v\f\r"
+# define MIN_NUMPAD 65429 // TODO rm if useless
+# define MAX_NUMPAD 65438 // TODO rm if useless
 
 enum {
 	ON_KEY_DOWN = 2,
@@ -69,6 +71,11 @@ enum {
 	KEY_RIGHT = 65363,
 	KEY_DOWN = 65364
 };
+
+typedef enum e_projection {
+	ISOMETRIC = 0,
+	RECTANGULAR,
+}	t_projection;
 
 typedef struct s_vertex {
 	double	x;
@@ -106,19 +113,22 @@ typedef struct s_params {
 }	t_params;
 
 typedef struct s_data {
-	void		*mlx;
-	void		*win;
-	void		*img;
-	char		*addr;
-	int			bits_per_pixel;
-	int			endian;
-	int			line_length;
-	bool		should_rerender;
-	t_vertex	**colors;
-	t_position	mouse;
-	t_map		map;
-	t_params	params;
+	void			*mlx;
+	void			*win;
+	void			*img;
+	char			*addr;
+	int				bits_per_pixel;
+	int				endian;
+	int				line_length;
+	bool			should_rerender;
+	t_vertex		**colors;
+	t_position		mouse;
+	t_map			map;
+	t_params		params;
+	t_projection	projection;
 }	t_data;
+
+typedef void	(*t_project_func)(t_vertex *, t_data *);
 
 void	redraw_background(t_data *data);
 int		close_window(t_data *data);
@@ -135,17 +145,23 @@ void	pixel_put(t_data *data, int x, int y, int color);
 void	rotate_2d(double *d1, double *d2, double rotation);
 void	scale_vertex(t_vertex *vertex, double scale);
 void	rotate_vertex(t_vertex *vertex, double rx, double ry, double rz);
-void	project_vertex(t_vertex *vertex, double height);
 void	translate_vertex(t_vertex *vertex, double tx, double ty);
 void	transform_vertex(t_vertex *vertex, t_data *data);
 void	transform_vertices(t_data *data, t_vertex **copy);
-
-void	inverse_project_vertex(t_vertex *vertex, double height);
 void	inverse_transform_vertex(t_vertex *vertex, t_data *data);
 
 // create_vertices.c
 t_vertex	**init_vertices(int width, int height);
 t_vertex	**copy_vertices(t_data *data);
+
+// projections.c
+void	project_vertex(t_vertex *vertex, t_data *data);
+void	inverse_project_vertex(t_vertex *vertex, t_data *data);
+
+// rotations.c
+void		rotate_2d(double *d1, double *d2, double rotation);
+void		rotate_vertex(t_vertex *vertex, double rx, double ry, double rz);
+void		inverse_rotate_vertex(t_vertex *vertex, double rx, double ry, double rz);
 
 // utils.c
 int			complain(t_data *data, char *error_message);

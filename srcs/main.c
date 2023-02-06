@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:04:35 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/06 07:42:20 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/06 08:40:22 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ int main(int argc, char **argv)
 	if (!init_minilibx(&data, filename))
 		return (complain(&data, "Failed to initialize mlx"));
 	init_params(&data);
+	data.projection = ISOMETRIC;
 	data.should_rerender = true;
 	mlx_hook(data.win, ON_DESTROY, NO_EVENT_MASK, close_window, &data);
 	mlx_hook(data.win, ON_KEY_DOWN, KEY_PRESS_MASK, handle_key_down, &data);

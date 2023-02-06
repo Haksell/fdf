@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 03:48:33 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/06 08:21:23 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/06 08:23:56 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,15 @@ static int	lerp_color(int c0, int c1, int dist, int dist_max)
 	);
 }
 
-static void	colorize_pixel(t_data *data, t_int_vertex *vertex, int color)
+static void	colorize_pixel(t_data *data, t_int_vertex *v, int color)
 {
     if (
-        0 <= vertex->x && vertex->x < WINDOW_WIDTH && 0 <= vertex->y && vertex->y < WINDOW_HEIGHT
-		&& vertex->z > data->colors[vertex->y][vertex->x].z
+        0 <= v->x && v->x < WINDOW_WIDTH && 0 <= v->y && v->y < WINDOW_HEIGHT
+		&& v->z > data->colors[v->y][v->x].z
     )
     {
-        data->colors[vertex->y][vertex->x].z = vertex->z;
-        data->colors[vertex->y][vertex->x].color = color;
+        data->colors[v->y][v->x].z = v->z;
+        data->colors[v->y][v->x].color = color;
     }
 }
 
@@ -51,7 +51,7 @@ static t_int_vertex    create_int_vertex(t_vertex *vertex)
     return (int_vertex);
 }
 
-void    line(t_data *data, t_int_vertex v0, t_int_vertex v1)
+void    bresenham(t_data *data, t_int_vertex v0, t_int_vertex v1)
 {
 	const t_int_vertex	dv = {abs(v1.x - v0.x), abs(v1.y - v0.y), abs(v1.z - v0.z), 0};
 	const t_int_vertex	sv = {get_sign(v1.x - v0.x), get_sign(v1.y - v0.y), get_sign(v1.z - v0.z), 0};
@@ -120,9 +120,9 @@ void	put_lines(t_data *data, t_vertex **copy)
         for (int x = 0; x < data->map.width; ++x)
         {
             if (x + 1 < data->map.width)
-                line(data, create_int_vertex(&copy[y][x]), create_int_vertex(&copy[y][x + 1]));
+                bresenham(data, create_int_vertex(&copy[y][x]), create_int_vertex(&copy[y][x + 1]));
             if (y + 1 < data->map.height)
-                line(data, create_int_vertex(&copy[y][x]), create_int_vertex(&copy[y + 1][x]));
+                bresenham(data, create_int_vertex(&copy[y][x]), create_int_vertex(&copy[y + 1][x]));
         }
     }
 }
