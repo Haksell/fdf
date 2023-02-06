@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 01:35:04 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/05 11:55:04 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/06 02:19:04 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,10 @@ void	inverse_transform_vertex(t_vertex *vertex, t_data *data)
 {
 	translate_vertex(vertex, -data->params.tx, -data->params.ty);
 	inverse_project_vertex(vertex, data->map.height);
-	rotate_2d(&vertex->x, &vertex->y, -data->params.rz);
-	rotate_2d(&vertex->z, &vertex->x, -data->params.ry);
-	rotate_2d(&vertex->y, &vertex->z, -data->params.rx);
+	rotate_vertex(vertex, -data->params.rx, -data->params.ry, -data->params.rz);
+	// rotate_2d(&vertex->x, &vertex->y, -data->params.rz);
+	// rotate_2d(&vertex->z, &vertex->x, -data->params.ry);
+	// rotate_2d(&vertex->y, &vertex->z, -data->params.rx);
 	scale_vertex(vertex, 1.0 / data->params.scale);
 }
 
