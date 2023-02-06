@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 04:42:40 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/06 08:48:37 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/06 08:59:59 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@
 # define SPACES " \t\n\v\f\r"
 # define MIN_NUMPAD 65429 // TODO rm if useless
 # define MAX_NUMPAD 65438 // TODO rm if useless
+# define MAX_PROJECTION ISOMETRIC
 
 enum {
 	ON_KEY_DOWN = 2,
@@ -73,8 +74,8 @@ enum {
 };
 
 typedef enum e_projection {
-	ISOMETRIC = 0,
-	RECTANGULAR,
+	RECTANGULAR = 0,
+	ISOMETRIC,
 }	t_projection;
 
 typedef struct s_vertex {

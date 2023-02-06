@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 08:30:46 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/06 08:49:44 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/06 09:04:21 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,12 @@ static void	project_isometric(t_vertex *vertex, t_data *data)
 
 void	project_vertex(t_vertex *vertex, t_data *data)
 {
-	static t_project_func	funcs[] = { project_isometric };
-	const t_project_func	func = funcs[data->projection];
+	static t_project_func	funcs[] = {
+		[RECTANGULAR] = project_isometric,
+		[ISOMETRIC] = project_isometric,
+	};
 
-	func(vertex, data);
+	funcs[data->projection](vertex, data);
 }
 
 static void	inverse_project_isometric(t_vertex *vertex, t_data *data)
@@ -41,8 +43,10 @@ static void	inverse_project_isometric(t_vertex *vertex, t_data *data)
 
 void	inverse_project_vertex(t_vertex *vertex, t_data *data)
 {
-	static t_project_func	funcs[] = { inverse_project_isometric };
-	const t_project_func	func = funcs[data->projection];
+	static t_project_func	funcs[] = {
+		[RECTANGULAR] = inverse_project_isometric,
+		[ISOMETRIC] = inverse_project_isometric,
+	};
 
-	func(vertex, data);
+	funcs[data->projection](vertex, data);
 }

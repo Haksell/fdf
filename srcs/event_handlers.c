@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 05:44:19 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/06 07:44:45 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/06 09:05:19 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,20 @@ int	close_window(t_data *data)
 	free_data(data);
 	exit(EXIT_SUCCESS);
 	return (EXIT_SUCCESS);
+}
+
+static bool	handle_numpad(int keycode, t_data *data)
+{
+	static int			numpad[10] = {7, 4, 8, 6, 2, 9, 3, 1, 5, 0};
+	const t_projection	projection = numpad[keycode - MIN_NUMPAD];
+
+	if (projection != data->projection && projection <= MAX_PROJECTION)
+	{
+		data->projection = projection;
+		ft_printf("projection=%d\n", projection);
+		return (true);
+	}
+	return (false);
 }
 
 int	handle_key_down(int keycode, t_data *data)
@@ -57,6 +71,8 @@ int	handle_key_down(int keycode, t_data *data)
 		data->params.rz += ANGLE_SHIFT;
 	else if (keycode == 'l')
 		data->params.rz -= ANGLE_SHIFT;
+	else if (MIN_NUMPAD <= keycode && keycode <= MAX_NUMPAD)
+		data->should_rerender = handle_numpad(keycode, data);
 	else
 		data->should_rerender = false;
 	return (EXIT_SUCCESS);
