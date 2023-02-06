@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 04:42:40 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/06 07:19:34 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/06 07:48:01 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ typedef struct s_data {
 	int			endian;
 	int			line_length;
 	bool		should_rerender;
-	t_vertex	**colors; // TODO free
+	t_vertex	**colors;
 	t_position	mouse;
 	t_map		map;
 	t_params	params;
@@ -148,7 +148,8 @@ t_vertex	**init_vertices(int width, int height);
 t_vertex	**copy_vertices(t_data *data);
 
 // utils.c
-int			complain(char *error_message);
+int			complain(t_data *data, char *error_message);
+void		free_data(t_data *data);
 double		get_max(double x1, double x2);
 double		get_min(double x1, double x2);
 

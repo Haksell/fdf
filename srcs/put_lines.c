@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 03:48:33 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/06 07:37:01 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/06 07:39:09 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,8 @@ static int	lerp_color(int c0, int c1, int dist, int dist_max)
 static void	colorize_pixel(t_data *data, int x, int y, int z, int color)
 {
     if (
-        0 <= x && x < WINDOW_WIDTH && 0 <= y
-        && y < WINDOW_HEIGHT &&
-        z > data->colors[y][x].z
+        0 <= x && x < WINDOW_WIDTH && 0 <= y && y < WINDOW_HEIGHT
+		&& z > data->colors[y][x].z
     )
     {
         data->colors[y][x].z = z;
@@ -52,7 +51,7 @@ static t_int_vertex    create_int_vertex(t_vertex *vertex)
     return (int_vertex);
 }
 
-void    line(t_data *data, t_int_vertex v0, t_int_vertex v1) // TODO lerp color // TODO v0 v0
+void    line(t_data *data, t_int_vertex v0, t_int_vertex v1)
 {
     int dx = abs(v1.x - v0.x);
     int dy = abs(v1.y - v0.y);

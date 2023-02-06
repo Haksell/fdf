@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:04:35 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/06 07:28:22 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/06 07:42:20 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,17 @@ int main(int argc, char **argv)
 	t_data	data;
 
 	filename = argv[1];
+	data.map.vertices = NULL;
+	data.colors = NULL;
 	if (argc != 2 || !ft_endswith(filename, ".fdf"))
-		return (complain("Usage: ./fdf *.fdf"));
+		return (complain(&data, "Usage: ./fdf *.fdf"));
 	if (!parse_map(filename, &data.map))
-		return (complain("Failed to parse the map")); // TODO check leaks
+		return (complain(&data, "Failed to parse the map"));
+	data.colors = init_vertices(WINDOW_WIDTH, WINDOW_HEIGHT);
+	if (data.colors == NULL)
+		return (complain(&data, "Failed to initialize colors"));
 	if (!init_minilibx(&data, filename))
-		return (complain("Failed to initialize mlx")); // TODO check leaks
-	data.colors = init_vertices(WINDOW_WIDTH, WINDOW_HEIGHT); // TODO check fail and leaks
+		return (complain(&data, "Failed to initialize mlx"));
 	init_params(&data);
 	data.should_rerender = true;
 	mlx_hook(data.win, ON_DESTROY, NO_EVENT_MASK, close_window, &data);

@@ -6,16 +6,23 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 04:41:05 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/05 05:02:10 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/06 07:45:37 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int	complain(char *error_message)
+int	complain(t_data *data, char *error_message)
 {
+	free_data(data);
 	ft_putendl_fd(error_message, STDERR_FILENO);
 	return (EXIT_FAILURE);
+}
+
+void	free_data(t_data *data)
+{
+	ft_free_double_pointer((void **)data->map.vertices, data->map.height);
+	ft_free_double_pointer((void **)data->colors, WINDOW_HEIGHT);
 }
 
 double	get_min(double x1, double x2)
