@@ -73,11 +73,25 @@ def generate_sphere(x, y, args):
     dx = (SIZE - 1) / 2 - x
     dy = (SIZE - 1) / 2 - y
     center_dist = max(0, width - hypot(dx, dy))
-    height = height = sqrt(width**2 - (width - center_dist) ** 2)
+    height = sqrt(width**2 - (width - center_dist) ** 2)
     if (x ^ y) & 1:
         height = -height
     color = "0x111111" if height == 0 else "0xDC143C"
     return f"{height:.1f},{color}"
+
+
+def generate_ripple(x, y, args):
+    assert len(args) == 3
+    bumps = int(args[0])
+    amplitude = float(args[1])
+    damp = float(args[2])
+    assert 0 <= damp <= 1
+    center_dist = hypot((SIZE - 1) / 2 - x, (SIZE - 1) / 2 - y)
+    amplitude *= damp**center_dist
+    height = amplitude * (
+        sin(bumps * tau * y / (SIZE - 1)) + cos(bumps * tau * x / (SIZE - 1))
+    )
+    return f"{height:.1f}"
 
 
 assert len(sys.argv) >= 3
