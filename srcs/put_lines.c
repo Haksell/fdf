@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 03:48:33 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/06 07:39:09 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/06 08:21:23 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,15 @@ static int	lerp_color(int c0, int c1, int dist, int dist_max)
 	);
 }
 
-static void	colorize_pixel(t_data *data, int x, int y, int z, int color)
+static void	colorize_pixel(t_data *data, t_int_vertex *vertex, int color)
 {
     if (
-        0 <= x && x < WINDOW_WIDTH && 0 <= y && y < WINDOW_HEIGHT
-		&& z > data->colors[y][x].z
+        0 <= vertex->x && vertex->x < WINDOW_WIDTH && 0 <= vertex->y && vertex->y < WINDOW_HEIGHT
+		&& vertex->z > data->colors[vertex->y][vertex->x].z
     )
     {
-        data->colors[y][x].z = z;
-        data->colors[y][x].color = color;
+        data->colors[vertex->y][vertex->x].z = vertex->z;
+        data->colors[vertex->y][vertex->x].color = color;
     }
 }
 
@@ -53,77 +53,62 @@ static t_int_vertex    create_int_vertex(t_vertex *vertex)
 
 void    line(t_data *data, t_int_vertex v0, t_int_vertex v1)
 {
-    int dx = abs(v1.x - v0.x);
-    int dy = abs(v1.y - v0.y);
-    int dz = abs(v1.z - v0.z);
-    int xs;
-    int ys;
-    int zs;
-    if (v1.x > v0.x)
-        xs = 1;
-    else
-        xs = -1;
-    if (v1.y > v0.y)
-        ys = 1;
-    else
-        ys = -1;
-    if (v1.z > v0.z)
-        zs = 1;
-    else
-        zs = -1;
-    colorize_pixel(data, v0.x, v0.y, v0.z, v0.color);
-    if (dx >= dy && dx >= dz) {
-        int p1 = 2 * dy - dx;
-        int p2 = 2 * dz - dx;
+	const t_int_vertex	dv = {abs(v1.x - v0.x), abs(v1.y - v0.y), abs(v1.z - v0.z), 0};
+	const t_int_vertex	sv = {get_sign(v1.x - v0.x), get_sign(v1.y - v0.y), get_sign(v1.z - v0.z), 0};
+	
+    colorize_pixel(data, &v0, v0.color);
+    if (dv.x >= dv.y && dv.x >= dv.z) {
+        int p1 = 2 * dv.y - dv.x;
+        int p2 = 2 * dv.z - dv.x;
         while (v0.x != v1.x) {
-            v0.x += xs;
+            v0.x += sv.x;
             if (p1 >= 0) {
-                v0.y += ys;
-                p1 -= 2 * dx;
+                v0.y += sv.y;
+                p1 -= 2 * dv.x;
             }
             if (p2 >= 0) {
-                v0.z += zs;
-                p2 -= 2 * dx;
+                v0.z += sv.z;
+                p2 -= 2 * dv.x;
             }
-            p1 += 2 * dy;
-            p2 += 2 * dz;
-            colorize_pixel(data, v0.x, v0.y, v0.z, lerp_color(v0.color, v1.color, abs(v1.x - v0.x) + abs(v1.y - v0.y) + abs(v1.z - v0.z), dx + dy + dz));
+            p1 += 2 * dv.y;
+            p2 += 2 * dv.z;
+            colorize_pixel(data, &v0, lerp_color(v0.color, v1.color, abs(v1.x - v0.x) + abs(v1.y - v0.y) + abs(v1.z - v0.z), dv.x + dv.y + dv.z));
         }
     }
-    else if (dy >= dx && dy >= dz) {
-        int p1 = 2 * dx - dy;
-        int p2 = 2 * dz - dy;
+    else if (dv.y >= dv.x && dv.y >= dv.z) {
+        int p1 = 2 * dv.x - dv.y;
+        int p2 = 2 * dv.z - dv.y;
         while (v0.y != v1.y) {
-            v0.y += ys;
+            v0.y += sv.y;
             if (p1 >= 0) {
-                v0.x += xs;
-                p1 -= 2 * dy;
+                v0.x += sv.x;
+                p1 -= 2 * dv.y;
             }
             if (p2 >= 0) {
-                v0.z += zs;
-                p2 -= 2 * dy;
+                v0.z += sv.z;
+                p2 -= 2 * dv.y;
             }
-            p1 += 2 * dx;
-            p2 += 2 * dz;
-            colorize_pixel(data, v0.x, v0.y, v0.z, lerp_color(v0.color, v1.color, abs(v1.x - v0.x) + abs(v1.y - v0.y) + abs(v1.z - v0.z), dx + dy + dz));
+            p1 += 2 * dv.x;
+            p2 += 2 * dv.z;
+            colorize_pixel(data, &v0, lerp_color(v0.color, v1.color, abs(v1.x - v0.x) + abs(v1.y - v0.y) + abs(v1.z - v0.z), dv.x + dv.y + dv.z));
         }
     }
     else {
-        int p1 = 2 * dy - dz;
-        int p2 = 2 * dx - dz;
+        int p1 = 2 * dv.y - dv.z;
+        int p2 = 2 * dv.x - dv.z;
         while (v0.z != v1.z) {
-            v0.z += zs;
+            v0.z += sv.z;
             if (p1 >= 0) {
-                v0.y += ys;
-                p1 -= 2 * dz;
+                v0.y += sv.y;
+                p1 -= 2 * dv.z;
             }
             if (p2 >= 0) {
-                v0.x += xs;
-                p2 -= 2 * dz;
+                v0.x += sv.x;
+                p2 -= 2 * dv.z;
             }
-            p1 += 2 * dy;
-            p2 += 2 * dx;
-            colorize_pixel(data, v0.x, v0.y, v0.z, lerp_color(v0.color, v1.color, abs(v1.x - v0.x) + abs(v1.y - v0.y) + abs(v1.z - v0.z), dx + dy + dz));
+            p1 += 2 * dv.y;
+            p2 += 2 * dv.x;
+            colorize_pixel(data, &v0, lerp_color(v0.color, v1.color, abs(v1.x - v0.x) + abs(v1.y - v0.y) + abs(v1.z - v0.z), dv.x + dv.y + dv.z));
         }
     }
 }

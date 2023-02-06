@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 04:41:05 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/06 07:45:37 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/06 08:21:02 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,9 @@ double	get_max(double x1, double x2)
 		return (x1);
 	else
 		return (x2);
+}
+
+int	get_sign(int n)
+{
+	return ((n > 0) - (n < 0));
 }

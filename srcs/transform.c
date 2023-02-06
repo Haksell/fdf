@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 01:35:04 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/06 07:32:59 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/06 08:10:50 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,6 @@ void	project_vertex(t_vertex *vertex, double height)
 
 	vertex->x = ISOCOS * (tmp_y + tmp_x);
 	vertex->y = ISOSIN * (tmp_y - tmp_x) - vertex->z;
-	vertex->z = -(tmp_x + tmp_y);
-}
-
-void	translate_vertex(t_vertex *vertex, double tx, double ty)
-{
-	vertex->x += tx;
-	vertex->y += ty;
 }
 
 void	inverse_project_vertex(t_vertex *vertex, double height)
@@ -61,6 +54,12 @@ void	inverse_project_vertex(t_vertex *vertex, double height)
 
 	vertex->x = (ISOSIN * tmp_x - ISOCOS * tmp_y) / cs2;
 	vertex->y = (ISOSIN * tmp_x + ISOCOS * tmp_y) / cs2 + height - 1;
+}
+
+void	translate_vertex(t_vertex *vertex, double tx, double ty)
+{
+	vertex->x += tx;
+	vertex->y += ty;
 }
 
 void	transform_vertex(t_vertex *vertex, t_data *data)

@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 04:42:40 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/06 07:48:01 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/06 08:21:07 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,5 +152,6 @@ int			complain(t_data *data, char *error_message);
 void		free_data(t_data *data);
 double		get_max(double x1, double x2);
 double		get_min(double x1, double x2);
+int			get_sign(int n);
 
 #endif
