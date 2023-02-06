@@ -6,34 +6,35 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 03:48:33 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/06 07:26:09 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/06 07:37:01 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-// static int	lerp_component(int c0, int c1, int dist, int dist_max)
-// {
-// 	return ((c0 * dist + c1 * (dist_max - dist)) / dist_max);
-// }
-
-// static int	lerp_color(int c0, int c1, int dist, int dist_max)
-// {
-// 	if (dist_max == 0)
-// 		return (c0);
-// 	return (
-// 		lerp_component(c0 >> 16, c1 >> 16, dist, dist_max) << 16
-// 		| lerp_component(c0 >> 8 & 255, c1 >> 8 & 255, dist, dist_max) << 8
-// 		| lerp_component(c0 & 255, c1 & 255, dist, dist_max)
-// 	);
-// }
-
-void	colorize_pixel(t_data *data, int x, int y, int z, int color)
+static int	lerp_component(int c0, int c1, int dist, int dist_max)
 {
-    if (x < 0 || x >= WINDOW_WIDTH || y < 0 || y >= WINDOW_HEIGHT)
-        return ;
-    // ft_printf("color pixel x=%d y=%d z=%d color=%d\n", x, y, z, color);
-    if (z > data->colors[y][x].z)
+	return ((c0 * dist + c1 * (dist_max - dist)) / dist_max);
+}
+
+static int	lerp_color(int c0, int c1, int dist, int dist_max)
+{
+	if (dist_max == 0)
+		return (c0);
+	return (
+		lerp_component(c0 >> 16, c1 >> 16, dist, dist_max) << 16
+		| lerp_component(c0 >> 8 & 255, c1 >> 8 & 255, dist, dist_max) << 8
+		| lerp_component(c0 & 255, c1 & 255, dist, dist_max)
+	);
+}
+
+static void	colorize_pixel(t_data *data, int x, int y, int z, int color)
+{
+    if (
+        0 <= x && x < WINDOW_WIDTH && 0 <= y
+        && y < WINDOW_HEIGHT &&
+        z > data->colors[y][x].z
+    )
     {
         data->colors[y][x].z = z;
         data->colors[y][x].color = color;
@@ -51,79 +52,79 @@ static t_int_vertex    create_int_vertex(t_vertex *vertex)
     return (int_vertex);
 }
 
-void    line(t_data *data, t_int_vertex v1, t_int_vertex v2) // TODO lerp color // TODO v0 v1
+void    line(t_data *data, t_int_vertex v0, t_int_vertex v1) // TODO lerp color // TODO v0 v0
 {
-    int dx = abs(v2.x - v1.x);
-    int dy = abs(v2.y - v1.y);
-    int dz = abs(v2.z - v1.z);
+    int dx = abs(v1.x - v0.x);
+    int dy = abs(v1.y - v0.y);
+    int dz = abs(v1.z - v0.z);
     int xs;
     int ys;
     int zs;
-    if (v2.x > v1.x)
+    if (v1.x > v0.x)
         xs = 1;
     else
         xs = -1;
-    if (v2.y > v1.y)
+    if (v1.y > v0.y)
         ys = 1;
     else
         ys = -1;
-    if (v2.z > v1.z)
+    if (v1.z > v0.z)
         zs = 1;
     else
         zs = -1;
-    colorize_pixel(data, v1.x, v1.y, v1.z, v1.color);
+    colorize_pixel(data, v0.x, v0.y, v0.z, v0.color);
     if (dx >= dy && dx >= dz) {
         int p1 = 2 * dy - dx;
         int p2 = 2 * dz - dx;
-        while (v1.x != v2.x) {
-            v1.x += xs;
+        while (v0.x != v1.x) {
+            v0.x += xs;
             if (p1 >= 0) {
-                v1.y += ys;
+                v0.y += ys;
                 p1 -= 2 * dx;
             }
             if (p2 >= 0) {
-                v1.z += zs;
+                v0.z += zs;
                 p2 -= 2 * dx;
             }
             p1 += 2 * dy;
             p2 += 2 * dz;
-            colorize_pixel(data, v1.x, v1.y, v1.z, v1.color);
+            colorize_pixel(data, v0.x, v0.y, v0.z, lerp_color(v0.color, v1.color, abs(v1.x - v0.x) + abs(v1.y - v0.y) + abs(v1.z - v0.z), dx + dy + dz));
         }
     }
     else if (dy >= dx && dy >= dz) {
         int p1 = 2 * dx - dy;
         int p2 = 2 * dz - dy;
-        while (v1.y != v2.y) {
-            v1.y += ys;
+        while (v0.y != v1.y) {
+            v0.y += ys;
             if (p1 >= 0) {
-                v1.x += xs;
+                v0.x += xs;
                 p1 -= 2 * dy;
             }
             if (p2 >= 0) {
-                v1.z += zs;
+                v0.z += zs;
                 p2 -= 2 * dy;
             }
             p1 += 2 * dx;
             p2 += 2 * dz;
-            colorize_pixel(data, v1.x, v1.y, v1.z, v1.color);
+            colorize_pixel(data, v0.x, v0.y, v0.z, lerp_color(v0.color, v1.color, abs(v1.x - v0.x) + abs(v1.y - v0.y) + abs(v1.z - v0.z), dx + dy + dz));
         }
     }
     else {
         int p1 = 2 * dy - dz;
         int p2 = 2 * dx - dz;
-        while (v1.z != v2.z) {
-            v1.z += zs;
+        while (v0.z != v1.z) {
+            v0.z += zs;
             if (p1 >= 0) {
-                v1.y += ys;
+                v0.y += ys;
                 p1 -= 2 * dz;
             }
             if (p2 >= 0) {
-                v1.x += xs;
+                v0.x += xs;
                 p2 -= 2 * dz;
             }
             p1 += 2 * dy;
             p2 += 2 * dx;
-            colorize_pixel(data, v1.x, v1.y, v1.z, v1.color);
+            colorize_pixel(data, v0.x, v0.y, v0.z, lerp_color(v0.color, v1.color, abs(v1.x - v0.x) + abs(v1.y - v0.y) + abs(v1.z - v0.z), dx + dy + dz));
         }
     }
 }
