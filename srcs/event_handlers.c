@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 05:44:19 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/07 12:05:50 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/07 13:38:42 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,30 +23,34 @@ int	close_window(t_data *data)
 	return (EXIT_SUCCESS);
 }
 
-static bool	handle_numpad(int keycode, t_data *data)
+bool	handle_home(int keycode, t_data *data)
 {
-	static int			numpad[10] = {7, 4, 8, 6, 2, 9, 3, 1, 5, 0};
-	const t_projection	projection = numpad[keycode - MIN_NUMPAD];
-
-	if (projection != data->projection && projection <= MAX_PROJECTION)
+	if (keycode == KEY_HOME)
 	{
-		data->projection = projection;
 		init_params(data);
 		return (true);
 	}
 	return (false);
 }
 
-int	handle_key_down(int keycode, t_data *data)
+static bool	handle_numpad(int keycode, t_data *data)
 {
-	if (keycode == KEY_ESC)
-		close_window(data);
-	if (!data->is_bonus)
-		return (EXIT_SUCCESS);
-	data->should_rerender = true;
-	if (keycode == KEY_HOME)
-		init_params(data);
-	else if (keycode == KEY_LEFT)
+	static int		numpad[10] = {7, 4, 8, 6, 2, 9, 3, 1, 5, 0};
+	t_projection	projection;
+
+	if (keycode < MIN_NUMPAD || keycode > MAX_NUMPAD)
+		return (false);
+	projection = numpad[keycode - MIN_NUMPAD];
+	if (projection == data->projection || projection > MAX_PROJECTION)
+		return (false);
+	data->projection = projection;
+	init_params(data);
+	return (true);
+}
+
+bool	handle_translation(int keycode, t_data *data)
+{
+	if (keycode == KEY_LEFT)
 		data->params.tx -= TRANSLATION;
 	else if (keycode == KEY_UP)
 		data->params.ty -= TRANSLATION;
@@ -54,13 +58,27 @@ int	handle_key_down(int keycode, t_data *data)
 		data->params.tx += TRANSLATION;
 	else if (keycode == KEY_DOWN)
 		data->params.ty += TRANSLATION;
-	else if (keycode == 'i')
+	else
+		return (false);
+	return (true);
+}
+
+bool	handle_altitude(int keycode, t_data *data)
+{
+	if (keycode == 'i')
 		data->params.altitude /= ALTITUDE_SHIFT;
 	else if (keycode == 'o')
 		data->params.altitude = -data->params.altitude;
 	else if (keycode == 'p')
 		data->params.altitude *= ALTITUDE_SHIFT;
-	else if (keycode == 'w')
+	else
+		return (false);
+	return (true);
+}
+
+bool	handle_rotation(int keycode, t_data *data)
+{
+	if (keycode == 'w')
 		data->params.rx += ANGLE_SHIFT;
 	else if (keycode == 's')
 		data->params.rx -= ANGLE_SHIFT;
@@ -72,10 +90,22 @@ int	handle_key_down(int keycode, t_data *data)
 		data->params.rz += ANGLE_SHIFT;
 	else if (keycode == 'l')
 		data->params.rz -= ANGLE_SHIFT;
-	else if (MIN_NUMPAD <= keycode && keycode <= MAX_NUMPAD)
-		data->should_rerender = handle_numpad(keycode, data);
 	else
-		data->should_rerender = false;
+		return (false);
+	return (true);
+}
+
+int	handle_key_down(int keycode, t_data *data)
+{
+	if (keycode == KEY_ESC)
+		close_window(data);
+	data->should_rerender = (
+			!data->is_bonus
+			|| handle_home(keycode, data)
+			|| handle_numpad(keycode, data)
+			|| handle_translation(keycode, data)
+			|| handle_altitude(keycode, data)
+			|| handle_rotation(keycode, data));
 	return (EXIT_SUCCESS);
 }
 

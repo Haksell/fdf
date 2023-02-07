@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 01:35:04 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/07 12:00:16 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/07 13:15:15 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,9 @@ static void	inverse_project_isometric(t_vertex *vertex, t_data *data)
 	const double	tmp_y = vertex->y;
 
 	vertex->x = (ISOMETRIC_SIN * tmp_x - ISOMETRIC_COS * tmp_y) / cs2;
-	vertex->y = (ISOMETRIC_SIN * tmp_x + ISOMETRIC_COS * tmp_y) / cs2 + data->map.height - 1;
+	vertex->y = (
+			(ISOMETRIC_SIN * tmp_x + ISOMETRIC_COS * tmp_y) / cs2
+			+ data->map.height - 1);
 }
 
 void	transform_isometric(t_vertex *vertex, t_data *data)
@@ -89,10 +91,9 @@ void	transform_isometric(t_vertex *vertex, t_data *data)
 void	transform_vertex(t_vertex *vertex, t_data *data)
 {
 	static t_transform_func	funcs[] = {
-		[CABINET] = transform_cabinet,
-		[PARALLEL] = transform_parallel,
-		[ISOMETRIC] = transform_isometric,
-	};
+	[CABINET] = transform_cabinet,
+	[PARALLEL] = transform_parallel,
+	[ISOMETRIC] = transform_isometric};
 
 	funcs[data->projection](vertex, data);
 }
@@ -101,17 +102,17 @@ void	inverse_transform_isometric(t_vertex *vertex, t_data *data)
 {
 	translate_vertex(vertex, -data->params.tx, -data->params.ty);
 	inverse_project_isometric(vertex, data);
-	inverse_rotate_vertex(vertex, data->params.rx, data->params.ry, data->params.rz);
+	inverse_rotate_vertex(vertex,
+		data->params.rx, data->params.ry, data->params.rz);
 	scale_vertex(vertex, 1.0 / data->params.scale);
 }
 
 void	inverse_transform_vertex(t_vertex *vertex, t_data *data)
 {
 	static t_transform_func	funcs[] = {
-		[CABINET] = inverse_transform_cabinet,
-		[PARALLEL] = inverse_transform_parallel,
-		[ISOMETRIC] = inverse_transform_isometric,
-	};
+	[CABINET] = inverse_transform_cabinet,
+	[PARALLEL] = inverse_transform_parallel,
+	[ISOMETRIC] = inverse_transform_isometric};
 
 	funcs[data->projection](vertex, data);
 }
