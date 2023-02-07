@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 06:27:14 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/05 04:01:48 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/07 10:33:58 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static bool	parse_color(const char *s, int *color)
 {
 	int	i;
 
-	if (ft_strncmp(s, "0x", 2) != 0)
+	if ((ft_strncmp(s, "0x", 2) != 0) || (s[2] == '\0'))
 		return (false);
 	*color = 0;
 	i = 2;
@@ -131,8 +131,7 @@ bool	parse_map(char *filename, t_map *map)
 	while (return_value && y < map->height)
 	{
 		line = get_next_line(fd);
-		if (line == NULL || !parse_row(y, line, map))
-			return_value = false;
+		return_value = line != NULL && parse_row(y, line, map);
 		free(line);
 		++y;
 	}

@@ -6,14 +6,16 @@
 #    By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 12:42:52 by axbrisse          #+#    #+#              #
-#    Updated: 2023/02/06 08:34:52 by axbrisse         ###   ########.fr        #
+#    Updated: 2023/02/07 10:34:33 by axbrisse         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME := fdf
+TEST := test
 
 PATH_SRCS := srcs
 PATH_OBJS := objs
+PATH_TESTS := tests
 
 PATH_LIBFT := libft
 PATH_MLX := mlx
@@ -28,7 +30,6 @@ FILES += event_handlers
 FILES += get_map_dimensions
 FILES += image
 FILES += initialization
-FILES += main
 FILES += utils
 FILES += parse_map
 FILES += projections
@@ -36,21 +37,27 @@ FILES += rotations
 FILES += put_lines
 FILES += transform
 
+vpath %.c ${PATH_SRCS}
+ifeq (test, ${findstring test, ${MAKECMDGOALS}})
+	vpath %.c ${PATH_TESTS}
+	FILES += test_parse_map
+else
+	FILES += main
+endif
+
 SRCS := ${addsuffix .c, ${FILES}}
 OBJS := ${patsubst %.c, ${PATH_OBJS}/%.o, ${SRCS}}
-vpath %.c ${PATH_SRCS}
 
-CC := cc
-CFLAGS := -Wall -Wextra -Werror
+CC := cc -Wall -Wextra -Werror
 
 all: ${NAME}
 
 ${OBJS}: ${PATH_OBJS}/%.o: %.c ${HEADER}
 	@mkdir -p ${PATH_OBJS}
-	${CC} ${CFLAGS} -c $< -o $@ ${INCLUDES}
+	${CC} -c $< -o $@ ${INCLUDES}
 
 ${NAME}: ${LIBFT} ${MLX} ${OBJS}
-	${CC} ${CFLAGS} ${OBJS} -L${PATH_LIBFT} -lft -lX11 -lXext -L${PATH_MLX} -lmlx -lm -o ${NAME}
+	${CC} ${OBJS} -L${PATH_LIBFT} -lft -lX11 -lXext -L${PATH_MLX} -lmlx -lm -o ${NAME}
 
 ${LIBFT}:
 	${MAKE} -s -C ${PATH_LIBFT} all
@@ -69,4 +76,10 @@ fclean: clean
 
 re: fclean ${NAME}
 
-.PHONY: all clean fclean re
+test: ${LIBFT} ${MLX} ${OBJS}
+	@${CC} ${OBJS} -L${PATH_LIBFT} -lft -lX11 -lXext -L${PATH_MLX} -lmlx -lm -o ${TEST}
+	@./${TEST} 2> /dev/null
+
+retest: fclean test
+
+.PHONY: all clean fclean re test retest

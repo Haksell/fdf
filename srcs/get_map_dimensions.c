@@ -6,48 +6,34 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 05:49:25 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/04 06:50:41 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/07 10:33:31 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static bool	get_map_height(char *filename, t_map *map)
+bool	get_map_dimensions(char *filename, t_map *map)
 {
 	const int	fd = open(filename, O_RDONLY);
 	char		*line;
+	bool		return_value;
 
 	if (fd < 0)
 		return (false);
-	map->height = 0;
 	line = get_next_line(fd);
+	if (line == NULL)
+		return (false);
+	map->width = ft_num_words(line, SPACES);
+	map->height = 0;
+	return_value = true;
 	while (line != NULL)
 	{
+		if (ft_num_words(line, SPACES) != (size_t)map->width)
+			return_value = false;
 		++map->height;
 		free(line);
 		line = get_next_line(fd);
 	}
 	close(fd);
-	return (true);
-}
-
-static bool	get_map_width(char *filename, t_map *map)
-{
-	const int	fd = open(filename, O_RDONLY);
-	char		*line;
-
-	if (fd < 0)
-		return (false);
-	line = get_next_line(fd);
-	close(fd);
-	if (line == NULL)
-		return (false);
-	map->width = ft_num_words(line, SPACES);
-	free(line);
-	return (true);
-}
-
-bool	get_map_dimensions(char *filename, t_map *map)
-{
-	return (get_map_height(filename, map) && get_map_width(filename, map));
+	return (return_value && map->height >= 2 && map->width >= 2);
 }
