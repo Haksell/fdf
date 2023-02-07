@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 04:42:40 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/07 12:10:40 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/07 13:51:45 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ enum {
 enum {
 	NO_EVENT_MASK = 0,
 	KEY_PRESS_MASK = 1,
-	BUTTON_PRESS_MASK = 4,
-	BUTTON_RELEASE_MASK = 8
+	B_PRESS_MASK = 4,
+	B_RELEASE_MASK = 8
 };
 
 enum {

@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 06:27:14 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/07 13:07:12 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/07 13:43:26 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,8 @@ bool	parse_map(char *filename, t_map *map)
 	while (is_valid_map && y < map->height)
 	{
 		line = get_next_line(fd);
-		is_valid_map = line != NULL && parse_row(y, line, map);
+		if (line == NULL || !parse_row(y, line, map))
+			is_valid_map = false;
 		free(line);
 		++y;
 	}
