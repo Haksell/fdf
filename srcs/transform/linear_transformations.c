@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   rotations.c                                        :+:      :+:    :+:   */
+/*   linear_transformations.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/06 08:34:00 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/06 08:34:08 by axbrisse         ###   ########.fr       */
+/*   Created: 2023/02/07 16:10:14 by axbrisse          #+#    #+#             */
+/*   Updated: 2023/02/07 16:10:37 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,22 @@ void	rotate_2d(double *d1, double *d2, double rotation)
 	*d2 = dist * sin(angle);
 }
 
-void	rotate_vertex(t_vertex *vertex, double rx, double ry, double rz)
+void	rotate_3d(t_vertex *vertex, double rx, double ry, double rz)
 {
 	rotate_2d(&vertex->x, &vertex->y, rz);
 	rotate_2d(&vertex->z, &vertex->x, ry);
 	rotate_2d(&vertex->y, &vertex->z, rx);
 }
 
-void	inverse_rotate_vertex(t_vertex *vertex, double rx, double ry, double rz)
+void	scale_vertex(t_vertex *vertex, double scale)
 {
-	rotate_2d(&vertex->y, &vertex->z, -rx);
-	rotate_2d(&vertex->z, &vertex->x, -ry);
-	rotate_2d(&vertex->x, &vertex->y, -rz);
+	vertex->x *= scale;
+	vertex->y *= scale;
+	vertex->z *= scale;
+}
+
+void	translate_vertex(t_vertex *vertex, double tx, double ty)
+{
+	vertex->x += tx;
+	vertex->y += ty;
 }

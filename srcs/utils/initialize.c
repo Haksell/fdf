@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   initialization.c                                   :+:      :+:    :+:   */
+/*   initialize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 05:45:51 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/07 13:51:04 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/07 15:56:08 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,26 @@ bool	init_minilibx(t_data *data, char *window_title)
 	if (data->addr == NULL)
 		return (false);
 	return (true);
+}
+
+t_vertex	**init_vertices(int width, int height)
+{
+	t_vertex	**vertices;
+	int			i;
+
+	vertices = malloc(sizeof(t_vertex *) * height);
+	if (vertices == NULL)
+		return (NULL);
+	i = 0;
+	while (i < height)
+	{
+		vertices[i] = ft_calloc(width, sizeof(t_vertex));
+		if (vertices[i] == NULL)
+		{
+			ft_free_double_pointer((void ***)&vertices, i);
+			return (NULL);
+		}
+		++i;
+	}
+	return (vertices);
 }

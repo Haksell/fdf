@@ -6,7 +6,7 @@
 #    By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 12:42:52 by axbrisse          #+#    #+#              #
-#    Updated: 2023/02/07 14:53:45 by axbrisse         ###   ########.fr        #
+#    Updated: 2023/02/07 16:16:30 by axbrisse         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,25 +26,25 @@ MLX := mlx/libmlx.a
 INCLUDES := -I./includes -I./${PATH_LIBFT}/includes -I./${PATH_MLX}
 HEADER := includes/fdf.h
 
-FILES += bresenham
-FILES += create_vertices
-FILES += get_map_dimensions
-FILES += handle_key_down
-FILES += handle_mouse
-FILES += initialization
-FILES += pixels
-FILES += utils
-FILES += parse_map
-FILES += rotations
-FILES += put_lines
-FILES += render_frame
-FILES += transform
+FILES += bresenham pixels put_lines render_frame
+FILES += handle_key_down handle_mouse
+FILES += parse_cell parse_map
+FILES += cabinet isometric parallel
+FILES += linear_transformations transform_vertex
+FILES += clean initialize math
 
-vpath %.c ${PATH_SRCS}
+vpath %.c ${PATH_SRCS}/display
+vpath %.c ${PATH_SRCS}/events
+vpath %.c ${PATH_SRCS}/parsing
+vpath %.c ${PATH_SRCS}/projections
+vpath %.c ${PATH_SRCS}/transform
+vpath %.c ${PATH_SRCS}/utils
+
 ifeq (test, ${findstring test, ${MAKECMDGOALS}})
 	vpath %.c ${PATH_TESTS}
 	FILES += test_parse_map
 else
+	vpath %.c ${PATH_SRCS}
 	FILES += main
 endif
 

@@ -6,22 +6,11 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:04:35 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/07 14:45:03 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/07 15:53:57 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-
-int	close_window(t_data *data)
-{
-	mlx_destroy_image(data->mlx, data->img);
-	mlx_destroy_window(data->mlx, data->win);
-	mlx_destroy_display(data->mlx);
-	free(data->mlx);
-	free_data(data);
-	exit(EXIT_SUCCESS);
-	return (EXIT_SUCCESS);
-}
 
 int	main(int argc, char **argv)
 {

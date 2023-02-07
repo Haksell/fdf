@@ -1,0 +1,34 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/03 04:41:05 by axbrisse          #+#    #+#             */
+/*   Updated: 2023/02/07 15:54:17 by axbrisse         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "fdf.h"
+
+double	get_min(double x1, double x2)
+{
+	if (x1 < x2)
+		return (x1);
+	else
+		return (x2);
+}
+
+double	get_max(double x1, double x2)
+{
+	if (x1 > x2)
+		return (x1);
+	else
+		return (x2);
+}
+
+int	get_sign(int n)
+{
+	return ((n > 0) - (n < 0));
+}

@@ -6,11 +6,35 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 14:45:09 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/07 14:48:12 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/07 15:43:55 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+static t_vertex	**copy_vertices(t_data *data)
+{
+	t_vertex	**copy;
+	int			x;
+	int			y;
+
+	copy = init_vertices(data->map.width, data->map.height);
+	if (copy == NULL)
+		return (NULL);
+	y = 0;
+	while (y < data->map.height)
+	{
+		x = 0;
+		while (x < data->map.width)
+		{
+			copy[y][x] = data->map.vertices[y][x];
+			copy[y][x].z *= data->params.altitude;
+			++x;
+		}
+		++y;
+	}
+	return (copy);
+}
 
 static void	reset_background(t_data *data)
 {
