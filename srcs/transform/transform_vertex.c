@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 01:35:04 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/07 16:14:41 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/07 16:17:07 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	transform_vertex(t_vertex *vertex, t_data *data)
 
 	funcs[data->projection](vertex, data);
 }
-
 
 void	inverse_transform_vertex(t_vertex *vertex, t_data *data)
 {

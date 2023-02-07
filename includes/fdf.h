@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 04:42:40 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/07 16:16:06 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/07 16:18:01 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,11 +134,11 @@ typedef struct s_data {
 
 typedef void	(*t_transform_func)(t_vertex *, t_data *);
 
-
 // display
 void		bresenham(t_data *data, t_int_vertex *v0, t_int_vertex *v1);
 void		colorize_pixel(t_data *data, t_int_vertex *v, int color);
-int			lerp_color(t_int_vertex *v0, t_int_vertex *v1, const t_int_vertex *dv);
+int			lerp_color(t_int_vertex *v0, t_int_vertex *v1,
+				const t_int_vertex *dv);
 void		pixel_put(t_data *data, int x, int y, int color);
 void		put_lines(t_data *data, t_vertex **copy);
 int			render_frame(t_data *data);
@@ -152,15 +152,6 @@ int			handle_mouse_up(int button, int x, int y, t_data *data);
 bool		parse_map(char *filename, t_map *map);
 bool		parse_cell(char *cell, t_map *map, int x, int y);
 
-// transform
-void		inverse_transform_vertex(t_vertex *vertex, t_data *data);
-void		rotate_2d(double *d1, double *d2, double rotation);
-void		rotate_3d(t_vertex *vertex, double rx, double ry, double rz);
-void		scale_vertex(t_vertex *vertex, double scale);
-void		transform_vertex(t_vertex *vertex, t_data *data);
-void		transform_vertices(t_data *data, t_vertex **copy);
-void		translate_vertex(t_vertex *vertex, double tx, double ty);
-
 // projections
 void		transform_cabinet(t_vertex *vertex, t_data *data);
 void		transform_isometric(t_vertex *vertex, t_data *data);
@@ -169,6 +160,14 @@ void		inverse_transform_cabinet(t_vertex *vertex, t_data *data);
 void		inverse_transform_isometric(t_vertex *vertex, t_data *data);
 void		inverse_transform_parallel(t_vertex *vertex, t_data *data);
 
+// transform
+void		inverse_transform_vertex(t_vertex *vertex, t_data *data);
+void		rotate_2d(double *d1, double *d2, double rotation);
+void		rotate_3d(t_vertex *vertex, double rx, double ry, double rz);
+void		scale_vertex(t_vertex *vertex, double scale);
+void		transform_vertex(t_vertex *vertex, t_data *data);
+void		transform_vertices(t_data *data, t_vertex **copy);
+void		translate_vertex(t_vertex *vertex, double tx, double ty);
 
 // utils
 int			close_window(t_data *data);
