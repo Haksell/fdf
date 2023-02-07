@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 03:48:33 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/07 14:04:21 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/07 14:16:54 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,17 @@ static int	lerp_component(int c0, int c1, int dist, int dist_max)
 	return ((c0 * dist + c1 * (dist_max - dist)) / dist_max);
 }
 
-static int	lerp_color(int c0, int c1, int dist, int dist_max)
+static int	lerp_color(t_int_vertex *v0, t_int_vertex *v1, const t_int_vertex *dv)
 {
+	const int	dist = abs(v1->x - v0->x) + abs(v1->y - v0->y) + abs(v1->z - v0->z);
+	const int	dist_max = dv->x + dv->y + dv->z;
+
 	if (dist_max == 0)
-		return (c0);
+		return (v0->color);
 	return (
-		lerp_component(c0 >> 16, c1 >> 16, dist, dist_max) << 16
-		| lerp_component(c0 >> 8 & 255, c1 >> 8 & 255, dist, dist_max) << 8
-		| lerp_component(c0 & 255, c1 & 255, dist, dist_max)
+		lerp_component(v0->color >> 16, v1->color >> 16, dist, dist_max) << 16
+		| lerp_component(v0->color >> 8 & 255, v1->color >> 8 & 255, dist, dist_max) << 8
+		| lerp_component(v0->color & 255, v1->color & 255, dist, dist_max)
 	);
 }
 
@@ -51,103 +54,103 @@ static t_int_vertex	create_int_vertex(t_vertex *vertex)
 	return (int_vertex);
 }
 
-static t_int_vertex	get_shift_vector(t_int_vertex v0, t_int_vertex v1)
+static t_int_vertex	get_shift_vector(t_int_vertex *v0, t_int_vertex *v1)
 {
-	return ((t_int_vertex){get_sign(v1.x - v0.x), get_sign(v1.y - v0.y), get_sign(v1.z - v0.z), 0});
+	return ((t_int_vertex){get_sign(v1->x - v0->x), get_sign(v1->y - v0->y), get_sign(v1->z - v0->z), 0});
 }
 
-// TODO add start to t_int_vertex
-
-static void	bresenham_x(t_data *data, t_int_vertex v0, t_int_vertex v1, t_int_vertex dv)
+static void	bresenham_x(t_data *data, t_int_vertex *v0, t_int_vertex *v1, const t_int_vertex *dv)
 {
 	const t_int_vertex	sv = get_shift_vector(v0, v1);
-	int p1 = 2 * dv.y - dv.x;
-	int p2 = 2 * dv.z - dv.x;
+	int p1 = 2 * dv->y - dv->x;
+	int p2 = 2 * dv->z - dv->x;
 
-	while (v0.x != v1.x) {
-		v0.x += sv.x;
+	while (v0->x != v1->x) {
+		v0->x += sv.x;
 		if (p1 >= 0)
 		{
-			v0.y += sv.y;
-			p1 -= 2 * dv.x;
+			v0->y += sv.y;
+			p1 -= 2 * dv->x;
 		}
 		if (p2 >= 0)
 		{
-			v0.z += sv.z;
-			p2 -= 2 * dv.x;
+			v0->z += sv.z;
+			p2 -= 2 * dv->x;
 		}
-		p1 += 2 * dv.y;
-		p2 += 2 * dv.z;
-		colorize_pixel(data, &v0, lerp_color(v0.color, v1.color, abs(v1.x - v0.x) + abs(v1.y - v0.y) + abs(v1.z - v0.z), dv.x + dv.y + dv.z));
+		p1 += 2 * dv->y;
+		p2 += 2 * dv->z;
+		colorize_pixel(data, v0, lerp_color(v0, v1, dv));
 	}
 }
 
-static void	bresenham_y(t_data *data, t_int_vertex v0, t_int_vertex v1, t_int_vertex dv)
+static void	bresenham_y(t_data *data, t_int_vertex *v0, t_int_vertex *v1, const t_int_vertex *dv)
 {
 	const t_int_vertex	sv = get_shift_vector(v0, v1);
-	int p1 = 2 * dv.x - dv.y;
-	int p2 = 2 * dv.z - dv.y;
+	int p1 = 2 * dv->x - dv->y;
+	int p2 = 2 * dv->z - dv->y;
 
-	while (v0.y != v1.y) {
-		v0.y += sv.y;
+	while (v0->y != v1->y) {
+		v0->y += sv.y;
 		if (p1 >= 0) {
-			v0.x += sv.x;
-			p1 -= 2 * dv.y;
+			v0->x += sv.x;
+			p1 -= 2 * dv->y;
 		}
 		if (p2 >= 0) {
-			v0.z += sv.z;
-			p2 -= 2 * dv.y;
+			v0->z += sv.z;
+			p2 -= 2 * dv->y;
 		}
-		p1 += 2 * dv.x;
-		p2 += 2 * dv.z;
-		colorize_pixel(data, &v0, lerp_color(v0.color, v1.color, abs(v1.x - v0.x) + abs(v1.y - v0.y) + abs(v1.z - v0.z), dv.x + dv.y + dv.z));
+		p1 += 2 * dv->x;
+		p2 += 2 * dv->z;
+		colorize_pixel(data, v0, lerp_color(v0, v1, dv));
 	}
 }
 
-static void	bresenham_z(t_data *data, t_int_vertex v0, t_int_vertex v1, t_int_vertex dv)
+static void	bresenham_z(t_data *data, t_int_vertex *v0, t_int_vertex *v1, const t_int_vertex *dv)
 {
 	const t_int_vertex	sv = get_shift_vector(v0, v1);
-	int p1 = 2 * dv.y - dv.z;
-	int p2 = 2 * dv.x - dv.z;
+	int					p1 = 2 * dv->y - dv->z;
+	int					p2 = 2 * dv->x - dv->z;
 
-	while (v0.z != v1.z)
+	while (v0->z != v1->z)
 	{
-		v0.z += sv.z;
+		v0->z += sv.z;
 		if (p1 >= 0) {
-			v0.y += sv.y;
-			p1 -= 2 * dv.z;
+			v0->y += sv.y;
+			p1 -= 2 * dv->z;
 		}
 		if (p2 >= 0) {
-			v0.x += sv.x;
-			p2 -= 2 * dv.z;
+			v0->x += sv.x;
+			p2 -= 2 * dv->z;
 		}
-		p1 += 2 * dv.y;
-		p2 += 2 * dv.x;
-		colorize_pixel(data, &v0, lerp_color(v0.color, v1.color, abs(v1.x - v0.x) + abs(v1.y - v0.y) + abs(v1.z - v0.z), dv.x + dv.y + dv.z));
+		p1 += 2 * dv->y;
+		p2 += 2 * dv->x;
+		colorize_pixel(data, v0, lerp_color(v0, v1, dv));
 	}
 }
 
-void	bresenham(t_data *data, t_int_vertex v0, t_int_vertex v1)
+void	bresenham(t_data *data, t_int_vertex *v0, t_int_vertex *v1)
 {
 	const t_int_vertex	dv = {
-		abs(v1.x - v0.x),
-		abs(v1.y - v0.y),
-		abs(v1.z - v0.z),
+		abs(v1->x - v0->x),
+		abs(v1->y - v0->y),
+		abs(v1->z - v0->z),
 		0};
 
-	colorize_pixel(data, &v0, v0.color);
+	colorize_pixel(data, v0, v0->color);
 	if (dv.x >= dv.y && dv.x >= dv.z)
-		bresenham_x(data, v0, v1, dv);
+		bresenham_x(data, v0, v1, &dv);
 	else if (dv.y >= dv.x && dv.y >= dv.z)
-		bresenham_y(data, v0, v1, dv);
+		bresenham_y(data, v0, v1, &dv);
 	else
-		bresenham_z(data, v0, v1, dv);
+		bresenham_z(data, v0, v1, &dv);
 }
 
 void	put_lines(t_data *data, t_vertex **copy)
 {
-	int	x;
-	int	y;
+	t_int_vertex	v0;
+	t_int_vertex	v1;
+	int				x;
+	int				y;
 
 	y = 0;
 	while (y < data->map.height)
@@ -155,16 +158,16 @@ void	put_lines(t_data *data, t_vertex **copy)
 		x = 0;
 		while (x < data->map.width)
 		{
+			v0 = create_int_vertex(&copy[y][x]);
 			if (x + 1 < data->map.width)
-				bresenham(
-					data,
-					create_int_vertex(&copy[y][x]),
-					create_int_vertex(&copy[y][x + 1]));
+				v1 = create_int_vertex(&copy[y][x + 1]);
+			if (x + 1 < data->map.width)
+				bresenham(data, &v0, &v1);
+			v0 = create_int_vertex(&copy[y][x]);
 			if (y + 1 < data->map.height)
-				bresenham(
-					data,
-					create_int_vertex(&copy[y][x]),
-					create_int_vertex(&copy[y + 1][x]));
+				v1 = create_int_vertex(&copy[y + 1][x]);
+			if (y + 1 < data->map.height)
+				bresenham(data, &v0, &v1);
 			++x;
 		}
 		++y;
