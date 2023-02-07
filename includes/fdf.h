@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 04:42:40 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/07 11:06:48 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/07 11:42:18 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ typedef struct s_data {
 	t_projection	projection;
 }	t_data;
 
-typedef void	(*t_project_func)(t_vertex *, t_data *);
+typedef void	(*t_transform_func)(t_vertex *, t_data *);
 
 void	redraw_background(t_data *data);
 int		close_window(t_data *data);
@@ -157,10 +157,6 @@ void	inverse_transform_vertex(t_vertex *vertex, t_data *data);
 // create_vertices.c
 t_vertex	**init_vertices(int width, int height);
 t_vertex	**copy_vertices(t_data *data);
-
-// projections.c
-void	project_vertex(t_vertex *vertex, t_data *data);
-void	inverse_project_vertex(t_vertex *vertex, t_data *data);
 
 // rotations.c
 void		rotate_2d(double *d1, double *d2, double rotation);

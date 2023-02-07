@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 05:45:51 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/07 07:08:12 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/07 11:46:32 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,18 @@
 
 void	init_params(t_data *data)
 {
-	t_vertex origin = {0, 0, 0, 0};
+	t_vertex origin = {0.0, 0.0, 0.0, 0};
 
 	data->params.scale = get_min(WINDOW_WIDTH, WINDOW_HEIGHT) / get_max((double)data->map.width, (double)data->map.height) / 2.0;
-	project_vertex(&origin, data);
-	data->params.tx = WINDOW_WIDTH / 2.0 - origin.x;
-	data->params.ty = WINDOW_HEIGHT / 2.0 - origin.y;
 	data->params.altitude = 1.0;
 	data->params.rx = 0.0;
 	data->params.ry = 0.0;
 	data->params.rz = 0.0;
+	data->params.tx = 0;
+	data->params.ty = 0;
+	transform_vertex(&origin, data);
+	data->params.tx = WINDOW_WIDTH / 2.0 - origin.x;
+	data->params.ty = WINDOW_HEIGHT / 2.0 - origin.y;
 }
 
 bool	init_minilibx(t_data *data, char *window_title)

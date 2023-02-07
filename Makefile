@@ -6,7 +6,7 @@
 #    By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 12:42:52 by axbrisse          #+#    #+#              #
-#    Updated: 2023/02/07 11:05:34 by axbrisse         ###   ########.fr        #
+#    Updated: 2023/02/07 11:42:11 by axbrisse         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,6 @@ FILES += image
 FILES += initialization
 FILES += utils
 FILES += parse_map
-FILES += projections
 FILES += rotations
 FILES += put_lines
 FILES += transform
