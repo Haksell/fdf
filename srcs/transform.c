@@ -6,19 +6,34 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 01:35:04 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/07 11:50:45 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/07 11:59:19 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-// static void	project_cabinet(t_vertex *vertex, t_data *data)
-// {
-// 	(void)data;
-// 	vertex->x += vertex->z * CABINET_COS;
-// 	vertex->y += vertex->z * CABINET_SIN;
-// 	vertex->z = 0;
-// }
+static void	project_cabinet(t_vertex *vertex, t_data *data)
+{
+	(void)data;
+	vertex->x += vertex->z * CABINET_COS;
+	vertex->y += vertex->z * CABINET_SIN;
+	// vertex->z = 0;
+}
+
+void	transform_cabinet(t_vertex *vertex, t_data *data)
+{
+	scale_vertex(vertex, data->params.scale);
+	rotate_2d(&vertex->y, &vertex->z, CABINET_ROTATION);
+	project_cabinet(vertex, data);
+	translate_vertex(vertex, data->params.tx, data->params.ty);
+}
+
+void	inverse_transform_cabinet(t_vertex *vertex, t_data *data)
+{
+	translate_vertex(vertex, -data->params.tx, -data->params.ty);
+	rotate_2d(&vertex->y, &vertex->z, -CABINET_ROTATION);
+	scale_vertex(vertex, 1.0 / data->params.scale);
+}
 
 static void	project_parallel(t_vertex *vertex, t_data *data)
 {
@@ -75,7 +90,7 @@ void	transform_isometric(t_vertex *vertex, t_data *data)
 void	transform_vertex(t_vertex *vertex, t_data *data)
 {
 	static t_transform_func	funcs[] = {
-		[CABINET] = transform_isometric, // TODO
+		[CABINET] = transform_cabinet,
 		[PARALLEL] = transform_parallel,
 		[ISOMETRIC] = transform_isometric,
 	};
@@ -94,7 +109,7 @@ void	inverse_transform_isometric(t_vertex *vertex, t_data *data)
 void	inverse_transform_vertex(t_vertex *vertex, t_data *data)
 {
 	static t_transform_func	funcs[] = {
-		[CABINET] = inverse_transform_isometric, // TODO
+		[CABINET] = inverse_transform_cabinet,
 		[PARALLEL] = inverse_transform_parallel,
 		[ISOMETRIC] = inverse_transform_isometric,
 	};
