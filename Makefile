@@ -6,7 +6,7 @@
 #    By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 12:42:52 by axbrisse          #+#    #+#              #
-#    Updated: 2023/02/07 10:56:36 by axbrisse         ###   ########.fr        #
+#    Updated: 2023/02/07 11:05:34 by axbrisse         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -83,6 +83,6 @@ test: ${LIBFT} ${MLX} ${OBJS}
 retest: fclean test
 
 norm:
-	norminette includes srcs tests
+	norminette includes libft srcs tests
 
 .PHONY: all clean fclean re test retest norm

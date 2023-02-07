@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 08:30:46 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/07 02:40:01 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/07 11:25:37 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	project_parallel(t_vertex *vertex, t_data *data)
 
 	(void)data;
 	vertex->y = -vertex->z;
-	vertex->z = tmp_y;
+	vertex->z = -tmp_y;
 }
 
 static void	project_isometric(t_vertex *vertex, t_data *data)
@@ -36,7 +36,6 @@ static void	project_isometric(t_vertex *vertex, t_data *data)
 
 	vertex->x = ISOMETRIC_COS * (tmp_y + tmp_x);
 	vertex->y = ISOMETRIC_SIN * (tmp_y - tmp_x) - vertex->z;
-	//vertex->z = -(tmp_y + tmp_x);
 }
 
 void	project_vertex(t_vertex *vertex, t_data *data)

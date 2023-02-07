@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 04:42:40 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/07 09:12:54 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/07 11:06:48 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@
 # define ISOMETRIC_SIN 0.5
 # define CABINET_COS 0.4472135954999580
 # define CABINET_SIN 0.8944271909999159
-# define ANGLE_SHIFT (M_PI / 20)
+# define ANGLE_SHIFT 0.18479956785822313
 # define SPACES " \t\n\v\f\r"
 # define MIN_NUMPAD 65429
 # define MAX_NUMPAD 65438
