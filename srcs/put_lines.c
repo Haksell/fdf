@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 03:48:33 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/07 14:16:54 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/07 14:21:51 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,26 @@ static int	lerp_component(int c0, int c1, int dist, int dist_max)
 	return ((c0 * dist + c1 * (dist_max - dist)) / dist_max);
 }
 
-static int	lerp_color(t_int_vertex *v0, t_int_vertex *v1, const t_int_vertex *dv)
+static int	lerp_color(
+	t_int_vertex *v0,
+	t_int_vertex *v1,
+	const t_int_vertex *dv
+)
 {
-	const int	dist = abs(v1->x - v0->x) + abs(v1->y - v0->y) + abs(v1->z - v0->z);
+	const int	c0 = v0->color;
+	const int	c1 = v1->color;
 	const int	dist_max = dv->x + dv->y + dv->z;
+	const int	dist = (
+			abs(v1->x - v0->x)
+			+ abs(v1->y - v0->y)
+			+ abs(v1->z - v0->z));
 
 	if (dist_max == 0)
-		return (v0->color);
+		return (c0);
 	return (
-		lerp_component(v0->color >> 16, v1->color >> 16, dist, dist_max) << 16
-		| lerp_component(v0->color >> 8 & 255, v1->color >> 8 & 255, dist, dist_max) << 8
-		| lerp_component(v0->color & 255, v1->color & 255, dist, dist_max)
+		lerp_component(c0 >> 16, c1 >> 16, dist, dist_max) << 16
+		| lerp_component(c0 >> 8 & 255, c1 >> 8 & 255, dist, dist_max) << 8
+		| lerp_component(c0 & 255, c1 & 255, dist, dist_max)
 	);
 }
 
@@ -56,16 +65,27 @@ static t_int_vertex	create_int_vertex(t_vertex *vertex)
 
 static t_int_vertex	get_shift_vector(t_int_vertex *v0, t_int_vertex *v1)
 {
-	return ((t_int_vertex){get_sign(v1->x - v0->x), get_sign(v1->y - v0->y), get_sign(v1->z - v0->z), 0});
+	return ((t_int_vertex){
+		get_sign(v1->x - v0->x),
+		get_sign(v1->y - v0->y),
+		get_sign(v1->z - v0->z), 0});
 }
 
-static void	bresenham_x(t_data *data, t_int_vertex *v0, t_int_vertex *v1, const t_int_vertex *dv)
+static void	bresenham_x(
+	t_data *data,
+	t_int_vertex *v0,
+	t_int_vertex *v1,
+	const t_int_vertex *dv
+)
 {
 	const t_int_vertex	sv = get_shift_vector(v0, v1);
-	int p1 = 2 * dv->y - dv->x;
-	int p2 = 2 * dv->z - dv->x;
+	int					p1;
+	int					p2;
 
-	while (v0->x != v1->x) {
+	p1 = 2 * dv->y - dv->x;
+	p2 = 2 * dv->z - dv->x;
+	while (v0->x != v1->x)
+	{
 		v0->x += sv.x;
 		if (p1 >= 0)
 		{
@@ -83,19 +103,29 @@ static void	bresenham_x(t_data *data, t_int_vertex *v0, t_int_vertex *v1, const 
 	}
 }
 
-static void	bresenham_y(t_data *data, t_int_vertex *v0, t_int_vertex *v1, const t_int_vertex *dv)
+static void	bresenham_y(
+	t_data *data,
+	t_int_vertex *v0,
+	t_int_vertex *v1,
+	const t_int_vertex *dv
+)
 {
 	const t_int_vertex	sv = get_shift_vector(v0, v1);
-	int p1 = 2 * dv->x - dv->y;
-	int p2 = 2 * dv->z - dv->y;
+	int					p1;
+	int					p2;
 
-	while (v0->y != v1->y) {
+	p2 = 2 * dv->z - dv->y;
+	p1 = 2 * dv->x - dv->y;
+	while (v0->y != v1->y)
+	{
 		v0->y += sv.y;
-		if (p1 >= 0) {
+		if (p1 >= 0)
+		{
 			v0->x += sv.x;
 			p1 -= 2 * dv->y;
 		}
-		if (p2 >= 0) {
+		if (p2 >= 0)
+		{
 			v0->z += sv.z;
 			p2 -= 2 * dv->y;
 		}
@@ -105,20 +135,29 @@ static void	bresenham_y(t_data *data, t_int_vertex *v0, t_int_vertex *v1, const 
 	}
 }
 
-static void	bresenham_z(t_data *data, t_int_vertex *v0, t_int_vertex *v1, const t_int_vertex *dv)
+static void	bresenham_z(
+	t_data *data,
+	t_int_vertex *v0,
+	t_int_vertex *v1,
+	const t_int_vertex *dv
+)
 {
 	const t_int_vertex	sv = get_shift_vector(v0, v1);
-	int					p1 = 2 * dv->y - dv->z;
-	int					p2 = 2 * dv->x - dv->z;
+	int					p1;
+	int					p2;
 
+	p1 = 2 * dv->y - dv->z;
+	p2 = 2 * dv->x - dv->z;
 	while (v0->z != v1->z)
 	{
 		v0->z += sv.z;
-		if (p1 >= 0) {
+		if (p1 >= 0)
+		{
 			v0->y += sv.y;
 			p1 -= 2 * dv->z;
 		}
-		if (p2 >= 0) {
+		if (p2 >= 0)
+		{
 			v0->x += sv.x;
 			p2 -= 2 * dv->z;
 		}
