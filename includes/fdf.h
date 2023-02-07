@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 04:42:40 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/07 12:04:21 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/07 12:10:40 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@
 # include <stdbool.h>
 # include <sys/stat.h>
 # include <sys/types.h>
-
-# include <stdio.h> // TODO
 
 # ifndef M_PI
 #  define M_PI 3.141592653589793
