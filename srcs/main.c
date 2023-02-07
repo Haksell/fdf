@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:04:35 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/07 12:04:51 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/07 12:24:48 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,11 @@ void	reset_background(t_data *data)
 	}
 }
 
-void	colors_to_image(t_data *data)
+void	put_colors_to_image(t_data *data)
 {
-	for (int y = 0; y < WINDOW_HEIGHT; ++y) {
-		for (int x = 0; x < WINDOW_WIDTH; ++x) {
+	for (int y = 0; y < WINDOW_HEIGHT; ++y)
+		for (int x = 0; x < WINDOW_WIDTH; ++x)
 			pixel_put(data, x, y, data->colors[y][x].color);
-		}	
-	}
 }
 
 int render_frame(t_data *data)
@@ -43,7 +41,7 @@ int render_frame(t_data *data)
 	reset_background(data);
 	transform_vertices(data, vertices);
 	put_lines(data, vertices);
-	colors_to_image(data);
+	put_colors_to_image(data);
 	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
 	data->should_rerender = false;
 	ft_free_double_pointer((void **)vertices, data->map.height);
@@ -55,7 +53,7 @@ int main(int argc, char **argv)
 	char	*filename;
 	t_data	data;
 
-	data.is_bonus = ft_strcmp(argv[0], "fdf_bonus") == 0;
+	data.is_bonus = ft_endswith(argv[0], "bonus");
 	filename = argv[1];
 	data.map.vertices = NULL;
 	data.colors = NULL;

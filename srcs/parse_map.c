@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 06:27:14 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/07 10:33:58 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/07 12:22:33 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,11 +90,11 @@ static bool	parse_cell(char *cell, t_map *map, int x, int y)
 static bool	parse_row(int y, char *line, t_map *map)
 {
 	char	**cells;
-	bool	return_value;
+	bool	is_valid_row;
 	char	*trimmed;
 	int		x;
 
-	return_value = true;
+	is_valid_row = true;
 	trimmed = ft_strtrim(line, SPACES);
 	if (trimmed == NULL || ft_num_words(trimmed, SPACES) != (size_t)map->width)
 		return (free(trimmed), false);
@@ -103,14 +103,14 @@ static bool	parse_row(int y, char *line, t_map *map)
 	if (cells == NULL)
 		return (false);
 	x = 0;
-	while (return_value && x < map->width)
+	while (is_valid_row && x < map->width)
 	{
 		if (!parse_cell(cells[x], map, x, y))
-			return_value = false;
+			is_valid_row = false;
 		++x;
 	}
 	ft_free_double_pointer((void **)cells, map->width);
-	return (return_value);
+	return (is_valid_row);
 }
 
 bool	parse_map(char *filename, t_map *map)
@@ -118,25 +118,25 @@ bool	parse_map(char *filename, t_map *map)
 	int		fd;
 	char	*line;
 	int		y;
-	bool	return_value;
+	bool	is_valid_map;
 
 	fd = open(filename, O_RDONLY);
-	if (fd < 0)
-		return (false);
-	return_value = get_map_dimensions(filename, map);
+	if (fd < 0 || !get_map_dimensions(filename, map))
+		return (close(fd), false);
 	map->vertices = init_vertices(map->width, map->height);
 	if (map->vertices == NULL)
-		return (false);
+		return (close(fd), false);
+	is_valid_map = true;
 	y = 0;
-	while (return_value && y < map->height)
+	while (is_valid_map && y < map->height)
 	{
 		line = get_next_line(fd);
-		return_value = line != NULL && parse_row(y, line, map);
+		is_valid_map = line != NULL && parse_row(y, line, map);
 		free(line);
 		++y;
 	}
 	close(fd);
-	if (!return_value)
+	if (!is_valid_map)
 		ft_free_double_pointer((void **)map->vertices, map->height);
-	return (return_value);
+	return (is_valid_map);
 }

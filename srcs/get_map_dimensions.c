@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 05:49:25 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/07 10:33:31 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/07 12:12:43 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ bool	get_map_dimensions(char *filename, t_map *map)
 {
 	const int	fd = open(filename, O_RDONLY);
 	char		*line;
-	bool		return_value;
+	bool		is_rectangle;
 
 	if (fd < 0)
 		return (false);
@@ -25,15 +25,15 @@ bool	get_map_dimensions(char *filename, t_map *map)
 		return (false);
 	map->width = ft_num_words(line, SPACES);
 	map->height = 0;
-	return_value = true;
+	is_rectangle = true;
 	while (line != NULL)
 	{
 		if (ft_num_words(line, SPACES) != (size_t)map->width)
-			return_value = false;
+			is_rectangle = false;
 		++map->height;
 		free(line);
 		line = get_next_line(fd);
 	}
 	close(fd);
-	return (return_value && map->height >= 2 && map->width >= 2);
+	return (is_rectangle && map->height >= 2 && map->width >= 2);
 }
