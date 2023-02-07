@@ -6,7 +6,7 @@
 #    By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 12:42:52 by axbrisse          #+#    #+#              #
-#    Updated: 2023/02/07 10:34:33 by axbrisse         ###   ########.fr        #
+#    Updated: 2023/02/07 10:35:41 by axbrisse         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -72,7 +72,7 @@ clean:
 
 fclean: clean
 	${MAKE} -s -C ${PATH_LIBFT} fclean
-	rm -f ${NAME}
+	rm -f ${NAME} ${TEST}
 
 re: fclean ${NAME}
 
