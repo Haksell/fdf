@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 01:35:04 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/07 11:59:19 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/07 12:00:16 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ static void	project_cabinet(t_vertex *vertex, t_data *data)
 	(void)data;
 	vertex->x += vertex->z * CABINET_COS;
 	vertex->y += vertex->z * CABINET_SIN;
-	// vertex->z = 0;
 }
 
 void	transform_cabinet(t_vertex *vertex, t_data *data)

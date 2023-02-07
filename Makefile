@@ -6,11 +6,12 @@
 #    By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 12:42:52 by axbrisse          #+#    #+#              #
-#    Updated: 2023/02/07 11:42:11 by axbrisse         ###   ########.fr        #
+#    Updated: 2023/02/07 12:03:09 by axbrisse         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME := fdf
+BONUS := fdf_bonus
 TEST := test
 
 PATH_SRCS := srcs
@@ -55,8 +56,8 @@ ${OBJS}: ${PATH_OBJS}/%.o: %.c ${HEADER}
 	@mkdir -p ${PATH_OBJS}
 	${CC} -c $< -o $@ ${INCLUDES}
 
-${NAME}: ${LIBFT} ${MLX} ${OBJS}
-	${CC} ${OBJS} -L${PATH_LIBFT} -lft -lX11 -lXext -L${PATH_MLX} -lmlx -lm -o ${NAME}
+${BONUS} ${NAME}: ${LIBFT} ${MLX} ${OBJS}
+	${CC} ${OBJS} -L${PATH_LIBFT} -lft -lX11 -lXext -L${PATH_MLX} -lmlx -lm -o $@
 
 ${LIBFT}:
 	${MAKE} -s -C ${PATH_LIBFT} all
@@ -71,7 +72,7 @@ clean:
 
 fclean: clean
 	${MAKE} -s -C ${PATH_LIBFT} fclean
-	rm -f ${NAME} ${TEST}
+	rm -f ${BONUS} ${NAME} ${TEST}
 
 re: fclean ${NAME}
 
@@ -84,4 +85,6 @@ retest: fclean test
 norm:
 	norminette includes libft srcs tests
 
-.PHONY: all clean fclean re test retest norm
+bonus: ${BONUS}
+
+.PHONY: all bonus clean fclean norm re retest test
