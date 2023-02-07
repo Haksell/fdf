@@ -1,37 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   event_handlers.c                                   :+:      :+:    :+:   */
+/*   handle_key_down.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/21 05:44:19 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/07 13:38:42 by axbrisse         ###   ########.fr       */
+/*   Created: 2023/02/07 14:37:30 by axbrisse          #+#    #+#             */
+/*   Updated: 2023/02/07 14:38:18 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-
-int	close_window(t_data *data)
-{
-	mlx_destroy_image(data->mlx, data->img);
-	mlx_destroy_window(data->mlx, data->win);
-	mlx_destroy_display(data->mlx);
-	free(data->mlx);
-	free_data(data);
-	exit(EXIT_SUCCESS);
-	return (EXIT_SUCCESS);
-}
-
-bool	handle_home(int keycode, t_data *data)
-{
-	if (keycode == KEY_HOME)
-	{
-		init_params(data);
-		return (true);
-	}
-	return (false);
-}
 
 static bool	handle_numpad(int keycode, t_data *data)
 {
@@ -48,9 +27,11 @@ static bool	handle_numpad(int keycode, t_data *data)
 	return (true);
 }
 
-bool	handle_translation(int keycode, t_data *data)
+static bool	handle_special(int keycode, t_data *data)
 {
-	if (keycode == KEY_LEFT)
+	if (keycode == KEY_HOME)
+		init_params(data);
+	else if (keycode == KEY_LEFT)
 		data->params.tx -= TRANSLATION;
 	else if (keycode == KEY_UP)
 		data->params.ty -= TRANSLATION;
@@ -63,7 +44,7 @@ bool	handle_translation(int keycode, t_data *data)
 	return (true);
 }
 
-bool	handle_altitude(int keycode, t_data *data)
+static bool	handle_letters(int keycode, t_data *data)
 {
 	if (keycode == 'i')
 		data->params.altitude /= ALTITUDE_SHIFT;
@@ -71,14 +52,7 @@ bool	handle_altitude(int keycode, t_data *data)
 		data->params.altitude = -data->params.altitude;
 	else if (keycode == 'p')
 		data->params.altitude *= ALTITUDE_SHIFT;
-	else
-		return (false);
-	return (true);
-}
-
-bool	handle_rotation(int keycode, t_data *data)
-{
-	if (keycode == 'w')
+	else if (keycode == 'w')
 		data->params.rx += ANGLE_SHIFT;
 	else if (keycode == 's')
 		data->params.rx -= ANGLE_SHIFT;
@@ -101,59 +75,8 @@ int	handle_key_down(int keycode, t_data *data)
 		close_window(data);
 	data->should_rerender = (
 			!data->is_bonus
-			|| handle_home(keycode, data)
 			|| handle_numpad(keycode, data)
-			|| handle_translation(keycode, data)
-			|| handle_altitude(keycode, data)
-			|| handle_rotation(keycode, data));
-	return (EXIT_SUCCESS);
-}
-
-static void	zoom(t_data *data, int x, int y, double scale_shift)
-{
-	t_vertex	mouse;
-
-	mouse.x = x;
-	mouse.y = y;
-	mouse.z = 0;
-	inverse_transform_vertex(&mouse, data);
-	data->params.scale *= scale_shift;
-	transform_vertex(&mouse, data);
-	data->params.tx += x - mouse.x;
-	data->params.ty += y - mouse.y;
-}
-
-int	handle_mouse_down(int button, int x, int y, t_data *data)
-{
-	if (!data->is_bonus)
-		return (EXIT_SUCCESS);
-	if (button == BUTTON_LEFT)
-	{
-		data->mouse.x = x;
-		data->mouse.y = y;
-	}
-	else if (button == SCROLL_UP)
-	{
-		data->should_rerender = true;
-		zoom(data, x, y, SCALE_SHIFT);
-	}
-	else if (button == SCROLL_DOWN)
-	{
-		data->should_rerender = true;
-		zoom(data, x, y, 1 / SCALE_SHIFT);
-	}
-	return (EXIT_SUCCESS);
-}
-
-int	handle_mouse_up(int button, int x, int y, t_data *data)
-{
-	if (!data->is_bonus)
-		return (EXIT_SUCCESS);
-	if (button == BUTTON_LEFT)
-	{
-		data->should_rerender = true;
-		data->params.tx += x - data->mouse.x;
-		data->params.ty += y - data->mouse.y;
-	}
+			|| handle_special(keycode, data)
+			|| handle_letters(keycode, data));
 	return (EXIT_SUCCESS);
 }

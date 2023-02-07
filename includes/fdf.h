@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 04:42:40 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/07 13:51:45 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/07 14:53:38 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,40 +134,39 @@ typedef struct s_data {
 
 typedef void	(*t_transform_func)(t_vertex *, t_data *);
 
-void	redraw_background(t_data *data);
-int		close_window(t_data *data);
-bool	get_map_dimensions(char *filename, t_map *map);
-int		handle_key_down(int keycode, t_data *data);
-int		handle_mouse_down(int button, int x, int y, t_data *data);
-int		handle_mouse_up(int button, int x, int y, t_data *data);
-bool	init_minilibx(t_data *data, char *window_title);
-void	init_params(t_data *data);
-void	put_lines(t_data *data, t_vertex **copy);
-bool	parse_map(char *filename, t_map *map);
-void	pixel_put(t_data *data, int x, int y, int color);
-
-void	rotate_2d(double *d1, double *d2, double rotation);
-void	scale_vertex(t_vertex *vertex, double scale);
-void	rotate_vertex(t_vertex *vertex, double rx, double ry, double rz);
-void	translate_vertex(t_vertex *vertex, double tx, double ty);
-void	transform_vertex(t_vertex *vertex, t_data *data);
-void	transform_vertices(t_data *data, t_vertex **copy);
-void	inverse_transform_vertex(t_vertex *vertex, t_data *data);
-
-// create_vertices.c
-t_vertex	**init_vertices(int width, int height);
-t_vertex	**copy_vertices(t_data *data);
-
-// rotations.c
+int			close_window(t_data *data);
+int			complain(t_data *data, char *error_message);
+int			get_sign(int n);
+int			handle_key_down(int keycode, t_data *data);
+int			handle_mouse_down(int button, int x, int y, t_data *data);
+int			handle_mouse_up(int button, int x, int y, t_data *data);
+int			render_frame(t_data *data);
+bool		get_map_dimensions(char *filename, t_map *map);
+bool		init_minilibx(t_data *data, char *window_title);
+bool		parse_map(char *filename, t_map *map);
+void		init_params(t_data *data);
+void		put_lines(t_data *data, t_vertex **copy);
+void		rotate_2d(double *d1, double *d2, double rotation);
+void		scale_vertex(t_vertex *vertex, double scale);
+void		rotate_vertex(t_vertex *vertex, double rx, double ry, double rz);
+void		translate_vertex(t_vertex *vertex, double tx, double ty);
+void		transform_vertex(t_vertex *vertex, t_data *data);
+void		transform_vertices(t_data *data, t_vertex **copy);
+void		inverse_transform_vertex(t_vertex *vertex, t_data *data);
 void		rotate_2d(double *d1, double *d2, double rotation);
 void		rotate_vertex(t_vertex *vertex, double rx, double ry, double rz);
 void		inverse_rotate_vertex(t_vertex *vertex, double rx, double ry, double rz);
-
-// utils.c
-int			complain(t_data *data, char *error_message);
 void		free_data(t_data *data);
 double		get_max(double x1, double x2);
 double		get_min(double x1, double x2);
-int			get_sign(int n);
+t_vertex	**init_vertices(int width, int height);
+t_vertex	**copy_vertices(t_data *data);
+
+void		colorize_pixel(t_data *data, t_int_vertex *v, int color);
+void		pixel_put(t_data *data, int x, int y, int color);
+int			lerp_color(t_int_vertex *v0, t_int_vertex *v1, const t_int_vertex *dv);
+int			lerp_component(int c0, int c1, int dist, int dist_max);
+
+void		bresenham(t_data *data, t_int_vertex *v0, t_int_vertex *v1);
 
 #endif

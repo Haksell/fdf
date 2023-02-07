@@ -6,7 +6,7 @@
 #    By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 12:42:52 by axbrisse          #+#    #+#              #
-#    Updated: 2023/02/07 12:14:27 by axbrisse         ###   ########.fr        #
+#    Updated: 2023/02/07 14:53:45 by axbrisse         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,15 +26,18 @@ MLX := mlx/libmlx.a
 INCLUDES := -I./includes -I./${PATH_LIBFT}/includes -I./${PATH_MLX}
 HEADER := includes/fdf.h
 
+FILES += bresenham
 FILES += create_vertices
-FILES += event_handlers
 FILES += get_map_dimensions
-FILES += image
+FILES += handle_key_down
+FILES += handle_mouse
 FILES += initialization
+FILES += pixels
 FILES += utils
 FILES += parse_map
 FILES += rotations
 FILES += put_lines
+FILES += render_frame
 FILES += transform
 
 vpath %.c ${PATH_SRCS}
