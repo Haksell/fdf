@@ -36,6 +36,15 @@ def iterations_mandelbrot(z0):
     return i
 
 
+def iterations_burning_ship(z0):
+    z = 0
+    i = 0
+    while i < MAX_ITERATIONS and abs(z) <= ESCAPE_RADIUS:
+        z = complex(abs(z.real), abs(z.imag)) ** 2 + z0
+        i += 1
+    return i
+
+
 def iterations_julia(z0):
     z = z0
     i = 0
@@ -51,10 +60,12 @@ def float_representation(x):
 
 ITERATIONS = {
     "mandelbrot": iterations_mandelbrot,
+    "burning_ship": iterations_burning_ship,
     "julia": iterations_julia,
 }
 LIMITS = {
     "mandelbrot": Limits(-2.25, 0.75, -1.5, 1.5),
+    "burning_ship": Limits(-2.1, 1.1, -2.1, 1.1),
     "julia": Limits(-1.5, 1.5, -1.5, 1.5),
 }
 fractal = sys.argv[1]

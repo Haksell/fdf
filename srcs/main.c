@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:04:35 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/07 12:24:48 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/07 13:07:01 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int render_frame(t_data *data)
 	put_colors_to_image(data);
 	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
 	data->should_rerender = false;
-	ft_free_double_pointer((void **)vertices, data->map.height);
+	ft_free_double_pointer((void ***)&vertices, data->map.height);
 	return (EXIT_SUCCESS);
 }
 

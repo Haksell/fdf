@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 04:12:04 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/05 04:12:46 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/07 13:06:52 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_vertex	**init_vertices(int width, int height)
 		vertices[i] = ft_calloc(width, sizeof(t_vertex));
 		if (vertices[i] == NULL)
 		{
-			ft_free_double_pointer((void **)vertices, i);
+			ft_free_double_pointer((void ***)&vertices, i);
 			return (NULL);
 		}
 		++i;

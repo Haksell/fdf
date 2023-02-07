@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 06:27:14 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/07 12:22:33 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/07 13:07:12 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ static bool	parse_row(int y, char *line, t_map *map)
 			is_valid_row = false;
 		++x;
 	}
-	ft_free_double_pointer((void **)cells, map->width);
+	ft_free_double_pointer((void ***)&cells, map->width);
 	return (is_valid_row);
 }
 
@@ -137,6 +137,6 @@ bool	parse_map(char *filename, t_map *map)
 	}
 	close(fd);
 	if (!is_valid_map)
-		ft_free_double_pointer((void **)map->vertices, map->height);
+		ft_free_double_pointer((void ***)&map->vertices, map->height);
 	return (is_valid_map);
 }

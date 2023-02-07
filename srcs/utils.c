@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 04:41:05 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/06 08:21:02 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/07 13:07:32 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ int	complain(t_data *data, char *error_message)
 
 void	free_data(t_data *data)
 {
-	ft_free_double_pointer((void **)data->map.vertices, data->map.height);
-	ft_free_double_pointer((void **)data->colors, WINDOW_HEIGHT);
+	ft_free_double_pointer((void ***)&data->map.vertices, data->map.height);
+	ft_free_double_pointer((void ***)&data->colors, WINDOW_HEIGHT);
 }
 
 double	get_min(double x1, double x2)
