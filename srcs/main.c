@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:04:35 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/06 10:22:32 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/07 12:04:51 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ int main(int argc, char **argv)
 	char	*filename;
 	t_data	data;
 
+	data.is_bonus = ft_strcmp(argv[0], "fdf_bonus") == 0;
 	filename = argv[1];
 	data.map.vertices = NULL;
 	data.colors = NULL;

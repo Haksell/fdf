@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 05:44:19 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/07 11:58:18 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/07 12:05:50 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ int	handle_key_down(int keycode, t_data *data)
 {
 	if (keycode == KEY_ESC)
 		close_window(data);
-	// TODO if (!data->is_bonus) return (EXIT_SUCCESS);
+	if (!data->is_bonus)
+		return (EXIT_SUCCESS);
 	data->should_rerender = true;
 	if (keycode == KEY_HOME)
 		init_params(data);
@@ -94,7 +95,8 @@ static void	zoom(t_data *data, int x, int y, double scale_shift)
 
 int	handle_mouse_down(int button, int x, int y, t_data *data)
 {
-	// TODO if (!data->is_bonus) return (EXIT_SUCCESS);
+	if (!data->is_bonus)
+		return (EXIT_SUCCESS);
 	if (button == BUTTON_LEFT)
 	{
 		data->mouse.x = x;
@@ -115,7 +117,8 @@ int	handle_mouse_down(int button, int x, int y, t_data *data)
 
 int	handle_mouse_up(int button, int x, int y, t_data *data)
 {
-	// TODO if (!data->is_bonus) return (EXIT_SUCCESS);
+	if (!data->is_bonus)
+		return (EXIT_SUCCESS);
 	if (button == BUTTON_LEFT)
 	{
 		data->should_rerender = true;

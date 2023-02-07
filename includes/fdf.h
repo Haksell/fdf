@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 04:42:40 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/07 11:58:15 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/07 12:04:21 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,7 @@ typedef struct s_data {
 	int				bits_per_pixel;
 	int				endian;
 	int				line_length;
+	bool			is_bonus;
 	bool			should_rerender;
 	t_vertex		**colors;
 	t_position		mouse;
