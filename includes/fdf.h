@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 04:42:40 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/06 11:06:20 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/07 02:15:47 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,7 @@ enum {
 
 typedef enum e_projection {
 	CABINET = 0,
-	PARALLEL_TOP,
-	PARALLEL_SIDE,
+	PARALLEL,
 	ISOMETRIC,
 }	t_projection;
 

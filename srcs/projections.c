@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 08:30:46 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/06 11:28:27 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/07 02:40:01 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,13 @@ static void	project_cabinet(t_vertex *vertex, t_data *data)
 	vertex->z = 0;
 }
 
-static void	project_parallel_side(t_vertex *vertex, t_data *data)
+static void	project_parallel(t_vertex *vertex, t_data *data)
 {
+	const double	tmp_y = vertex->y;
+
 	(void)data;
 	vertex->y = -vertex->z;
+	vertex->z = tmp_y;
 }
 
 static void	project_isometric(t_vertex *vertex, t_data *data)
@@ -33,14 +36,14 @@ static void	project_isometric(t_vertex *vertex, t_data *data)
 
 	vertex->x = ISOMETRIC_COS * (tmp_y + tmp_x);
 	vertex->y = ISOMETRIC_SIN * (tmp_y - tmp_x) - vertex->z;
+	//vertex->z = -(tmp_y + tmp_x);
 }
 
 void	project_vertex(t_vertex *vertex, t_data *data)
 {
 	static t_project_func	funcs[] = {
 		[CABINET] = project_cabinet,
-		[PARALLEL_TOP] = NULL,
-		[PARALLEL_SIDE] = project_parallel_side,
+		[PARALLEL] = project_parallel,
 		[ISOMETRIC] = project_isometric,
 	};
 	const t_project_func	func = funcs[data->projection];
@@ -63,8 +66,7 @@ void	inverse_project_vertex(t_vertex *vertex, t_data *data)
 {
 	static t_project_func	funcs[] = {
 		[CABINET] = NULL,
-		[PARALLEL_TOP] = NULL,
-		[PARALLEL_SIDE] = NULL,
+		[PARALLEL] = project_parallel,
 		[ISOMETRIC] = inverse_project_isometric,
 	};
 	const t_project_func	func = funcs[data->projection];

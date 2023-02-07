@@ -6,7 +6,7 @@
 /*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 05:44:19 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/06 11:27:43 by axbrisse         ###   ########.fr       */
+/*   Updated: 2023/02/07 02:15:01 by axbrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,6 @@ static bool	handle_numpad(int keycode, t_data *data)
 	if (projection != data->projection && projection <= MAX_PROJECTION)
 	{
 		data->projection = projection;
-		if (projection == PARALLEL_SIDE)
-		{
-			data->params.rx = 0;
-			data->params.ry = 0;
-			data->params.rz = 0;
-		}
 		return (true);
 	}
 	return (false);
