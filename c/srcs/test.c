@@ -1,16 +1,16 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   test_parse_map.c                                   :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: axbrisse <axbrisse@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/07 08:40:52 by axbrisse          #+#    #+#             */
-/*   Updated: 2023/02/07 11:04:59 by axbrisse         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+#include "../includes/fdf.h"
 
-#include "fdf_test.h"
+#include <dirent.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+
+#define RESET "\033[0m"
+#define BOLDBLUE "\033[1m\033[34m"
+#define RED "\033[31m"
+#define GREEN "\033[32m"
+
+#define VALID_DIRECTORY "../maps/valid/"
+#define INVALID_DIRECTORY "../maps/invalid/"
 
 void display_title(char* s) { ft_printf(BOLDBLUE "--- %s ---\n" RESET, s); }
 
@@ -52,7 +52,7 @@ void test(char* title, char* directory, bool expected) {
 
     display_title(title);
     filenames = ls(directory);
-    if (!expected) ft_lstadd_front(&filenames, ft_lstnew("maps/invalid/notfound.fdf"));
+    if (!expected) ft_lstadd_front(&filenames, ft_lstnew("../maps/invalid/notfound.fdf"));
     while (filenames != NULL) {
         filename = filenames->content;
         ft_assert(filename, parse_map(filename, &map), expected);
@@ -62,7 +62,7 @@ void test(char* title, char* directory, bool expected) {
 
 int main(void) {
     test("VALID MAPS", VALID_DIRECTORY, true);
-    chmod("maps/invalid/unreadable.fdf", 0000);
+    chmod("../maps/invalid/unreadable.fdf", 0000);
     test("INVALID MAPS", INVALID_DIRECTORY, false);
-    chmod("maps/invalid/unreadable.fdf", 0644);
+    chmod("../maps/invalid/unreadable.fdf", 0644);
 }

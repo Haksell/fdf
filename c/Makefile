@@ -1,4 +1,5 @@
 NAME := fdf
+TEST := fdf_test
 
 PATH_SRCS := srcs
 PATH_OBJS := objs
@@ -26,7 +27,6 @@ INCLUDES := -I./$(PATH_INCLUDES) -I./$(PATH_LIBFT) -I./$(PATH_MLX)
 LIBRARIES := -L$(PATH_LIBFT) -lft -L$(PATH_MLX) -lmlx -lXext -lX11 -lm
 
 # TOOD: wildcard
-FILENAMES += main
 FILENAMES += display/bresenham
 FILENAMES += display/pixels
 FILENAMES += display/put_lines
@@ -44,7 +44,13 @@ FILENAMES += utils/clean
 FILENAMES += utils/initialize
 FILENAMES += utils/math
 
-HEADERS := fdf fdf_test
+ifeq (test, ${findstring test, ${MAKECMDGOALS}})
+	FILENAMES += test
+else
+	FILENAMES += main
+endif
+
+HEADERS := fdf
 
 SRCS := $(addprefix $(PATH_SRCS)/, $(addsuffix .c, $(FILENAMES)))
 OBJS := $(addprefix $(PATH_OBJS)/, $(addsuffix .o, $(FILENAMES)))
@@ -70,6 +76,9 @@ endef
 
 all: $(NAME)
 
+test: $(TEST)
+	@./$(TEST)
+
 $(PATH_OBJS):
 	@mkdir -p $(sort $(dir $(OBJS)))
 
@@ -78,7 +87,7 @@ $(OBJS): $(PATH_OBJS)/%.o: $(PATH_SRCS)/%.c $(HEADERS) $(LIBFT) $(MLX) | $(PATH_
 	@$(CC) -c $< -o $@ $(INCLUDES)
 	@echo "$(BLUE)+++ $@$(RESET)"
 
-$(NAME): $(OBJS)
+$(NAME) $(TEST): $(OBJS)
 	@$(CC) $(OBJS) $(LIBRARIES) -o $@
 	@echo "$(PINK)$@ is compiled.$(RESET)"
 
@@ -102,8 +111,12 @@ clean:
 
 fclean: clean
 	$(call remove_target,$(NAME))
+	$(call remove_target,$(TEST))
 
 re: fclean
 	@$(MAKE) -s $(NAME)
 
-.PHONY: all clean fclean re
+retest: fclean
+	@$(MAKE) -s test
+
+.PHONY: all test clean fclean re retest
