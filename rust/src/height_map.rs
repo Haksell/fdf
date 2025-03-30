@@ -5,30 +5,21 @@ use std::{
     num::{ParseFloatError, ParseIntError},
 };
 
+const MINIMUM_DIMENSION: usize = 2;
+
 #[derive(Debug)]
 pub enum MapParseError {
     IoError(std::io::Error),
-    ParseHeight(ParseFloatError),
-    ParseColor(ParseIntError),
+    ParseHeight(String),
+    ParseColor(String),
     NotRectangular { expected: usize, found: usize },
     Empty,
+    TooSmall,
 }
 
 impl From<std::io::Error> for MapParseError {
     fn from(err: std::io::Error) -> Self {
         MapParseError::IoError(err)
-    }
-}
-
-impl From<ParseFloatError> for MapParseError {
-    fn from(err: ParseFloatError) -> Self {
-        MapParseError::ParseHeight(err)
-    }
-}
-
-impl From<ParseIntError> for MapParseError {
-    fn from(err: ParseIntError) -> Self {
-        MapParseError::ParseColor(err)
     }
 }
 
@@ -42,6 +33,11 @@ impl fmt::Display for MapParseError {
                 write!(f, "Expected {} columns, found {}", expected, found)
             }
             MapParseError::Empty => write!(f, "Map is empty"),
+            MapParseError::TooSmall => write!(
+                f,
+                "Map is too small (should be at least {}x{}",
+                MINIMUM_DIMENSION, MINIMUM_DIMENSION
+            ),
         }
     }
 }
@@ -56,16 +52,28 @@ pub struct VertexData {
 
 impl VertexData {
     pub fn parse(token: &str) -> Result<Self, MapParseError> {
-        Ok(
-            if let Some((height_str, color_str)) = token.split_once(',') {
-                let height: f32 = height_str.parse()?;
-                let color: u32 = u32::from_str_radix(color_str.trim_start_matches("0x"), 16)?;
-                VertexData { height, color }
-            } else {
-                let height: f32 = token.parse()?;
-                VertexData { height, color: !0 }
-            },
-        )
+        if let Some((height_str, color_str)) = token.split_once(',') {
+            let height: f32 = match height_str.parse() {
+                Ok(height) => height,
+                Err(_) => return Err(MapParseError::ParseHeight(height_str.into())),
+            };
+
+            if !color_str.starts_with("0x") {
+                return Err(MapParseError::ParseColor(color_str.into()));
+            }
+
+            let color = match u32::from_str_radix(&color_str[2..], 16) {
+                Ok(color) => color,
+                Err(_) => return Err(MapParseError::ParseColor(color_str.into())),
+            };
+
+            Ok(VertexData { height, color })
+        } else {
+            match token.parse() {
+                Ok(height) => Ok(VertexData { height, color: !0 }),
+                Err(_) => return Err(MapParseError::ParseHeight(token.into())),
+            }
+        }
     }
 }
 
@@ -94,6 +102,9 @@ impl HeightMap {
 
             if height == 0 {
                 width = tokens.len();
+                if width < MINIMUM_DIMENSION {
+                    return Err(MapParseError::TooSmall);
+                }
             } else if tokens.len() != width {
                 return Err(MapParseError::NotRectangular {
                     expected: width,
@@ -110,6 +121,8 @@ impl HeightMap {
 
         if height == 0 {
             return Err(MapParseError::Empty);
+        } else if height < MINIMUM_DIMENSION {
+            return Err(MapParseError::TooSmall);
         }
 
         data.shrink_to_fit();
@@ -125,5 +138,47 @@ impl HeightMap {
         assert!(x < self.width);
         assert!(y < self.height);
         self.data[y * self.width + x]
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use {
+        super::*,
+        std::{fs, path::Path},
+    };
+
+    #[test]
+    fn test_valid_and_invalid_maps() {
+        let valid_dir = Path::new("../maps/valid");
+        let invalid_dir = Path::new("../maps/invalid");
+
+        assert!(valid_dir.is_dir(), "Missing ../maps/valid directory");
+        assert!(invalid_dir.is_dir(), "Missing ../maps/invalid directory");
+
+        for entry in fs::read_dir(valid_dir).expect("Reading valid directory failed") {
+            let path = entry.unwrap().path();
+            if path.extension().and_then(|s| s.to_str()) == Some("fdf") {
+                let result = HeightMap::parse(path.to_str().unwrap());
+                assert!(
+                    result.is_ok(),
+                    "Expected OK for valid file: {:?}, got error: {:?}",
+                    path,
+                    result.err()
+                );
+            }
+        }
+
+        for entry in fs::read_dir(invalid_dir).expect("Reading invalid directory failed") {
+            let path = entry.unwrap().path();
+            if path.extension().and_then(|s| s.to_str()) == Some("fdf") {
+                let result = HeightMap::parse(path.to_str().unwrap());
+                assert!(
+                    result.is_err(),
+                    "Expected ERR for invalid file: {:?}, got OK",
+                    path
+                );
+            }
+        }
     }
 }
