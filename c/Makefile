@@ -26,25 +26,7 @@ CC := cc -Wall -Wextra -Werror -Ofast -mavx -g3
 INCLUDES := -I./$(PATH_INCLUDES) -I./$(PATH_LIBFT) -I./$(PATH_MLX)
 LIBRARIES := -L$(PATH_LIBFT) -lft -L$(PATH_MLX) -lmlx -lXext -lX11 -lm
 
-# TOOD: wildcard
-FILENAMES += display/bresenham
-FILENAMES += display/pixels
-FILENAMES += display/put_lines
-FILENAMES += display/render_frame
-FILENAMES += events/handle_key_down
-FILENAMES += events/handle_mouse
-FILENAMES += parsing/parse_cell
-FILENAMES += parsing/parse_map
-FILENAMES += projections/cabinet
-FILENAMES += projections/isometric
-FILENAMES += projections/parallel
-FILENAMES += transform/linear_transformations
-FILENAMES += transform/transform_vertex
-FILENAMES += utils/clean
-FILENAMES += utils/initialize
-FILENAMES += utils/math
-
-ifeq (test, ${findstring test, ${MAKECMDGOALS}})
+ifeq (test, $(findstring test, $(MAKECMDGOALS)))
 	FILENAMES += test
 else
 	FILENAMES += main
@@ -52,8 +34,14 @@ endif
 
 HEADERS := fdf.h
 
-SRCS := $(addprefix $(PATH_SRCS)/, $(addsuffix .c, $(FILENAMES)))
-OBJS := $(addprefix $(PATH_OBJS)/, $(addsuffix .o, $(FILENAMES)))
+SRCS := $(wildcard $(PATH_SRCS)/*/*.c)
+ifeq (test, $(findstring test, $(MAKECMDGOALS)))
+	SRCS += $(PATH_SRCS)/test.c
+else
+	SRCS += $(PATH_SRCS)/main.c
+endif
+
+OBJS := $(patsubst $(PATH_SRCS)/%.c, $(PATH_OBJS)/%.o, $(SRCS))
 
 define clone_repo
 	@echo "$(GREEN)==> Cloning $(1)$(RESET)"
