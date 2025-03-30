@@ -53,26 +53,24 @@ pub struct VertexData {
 impl VertexData {
     pub fn parse(token: &str) -> Result<Self, MapParseError> {
         if let Some((height_str, color_str)) = token.split_once(',') {
-            let height: f32 = match height_str.parse() {
-                Ok(height) => height,
-                Err(_) => return Err(MapParseError::ParseHeight(height_str.into())),
-            };
+            let height: f32 = height_str
+                .parse()
+                .map_err(|_| MapParseError::ParseHeight(height_str.into()))?;
 
             if !color_str.starts_with("0x") {
                 return Err(MapParseError::ParseColor(color_str.into()));
             }
 
-            let color = match u32::from_str_radix(&color_str[2..], 16) {
-                Ok(color) => color,
-                Err(_) => return Err(MapParseError::ParseColor(color_str.into())),
-            };
+            let color = u32::from_str_radix(&color_str[2..], 16)
+                .map_err(|_| MapParseError::ParseColor(color_str.into()))?;
 
             Ok(VertexData { height, color })
         } else {
-            match token.parse() {
-                Ok(height) => Ok(VertexData { height, color: !0 }),
-                Err(_) => return Err(MapParseError::ParseHeight(token.into())),
-            }
+            let height: f32 = token
+                .parse()
+                .map_err(|_| MapParseError::ParseHeight(token.into()))?;
+
+            Ok(VertexData { height, color: !0 })
         }
     }
 }
