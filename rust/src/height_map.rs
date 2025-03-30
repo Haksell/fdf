@@ -52,7 +52,7 @@ pub struct VertexData {
 impl VertexData {
     pub fn parse(token: &str) -> Result<Self, MapParseError> {
         if let Some((height_str, color_str)) = token.split_once(',') {
-            let height: f32 = height_str
+            let height = height_str
                 .parse()
                 .map_err(|_| MapParseError::ParseHeight(height_str.into()))?;
 
@@ -67,7 +67,7 @@ impl VertexData {
 
             Ok(VertexData { height, color })
         } else {
-            let height: f32 = token
+            let height = token
                 .parse()
                 .map_err(|_| MapParseError::ParseHeight(token.into()))?;
 
