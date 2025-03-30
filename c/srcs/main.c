@@ -1,13 +1,10 @@
 #include "../fdf.h"
 
 int main(int argc, char** argv) {
-    char* filename;
-    t_data data;
-
-    ft_bzero(&data, sizeof(data));
+    t_data data = {0};
     data.projection = ISOMETRIC;
     data.should_rerender = true;
-    filename = argv[1];
+    char* filename = argv[1];
     if (argc != 2 || !ft_endswith(filename, ".fdf")) return (complain(&data, "Usage: ./fdf *.fdf"));
     if (!parse_map(filename, &data.map)) return (complain(&data, "Failed to parse the map"));
     data.colors = init_vertices(WINDOW_WIDTH, WINDOW_HEIGHT);

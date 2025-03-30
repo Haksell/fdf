@@ -1,8 +1,7 @@
-#include "../fdf.h"
-
 #include <dirent.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include "../fdf.h"
 
 #define RESET "\033[0m"
 #define BOLDBLUE "\033[1m\033[34m"
@@ -15,16 +14,8 @@
 void display_title(char* s) { ft_printf(BOLDBLUE "--- %s ---\n" RESET, s); }
 
 void ft_assert(char* test_name, bool result, bool expected) {
-    char* color;
-    char* verdict;
-
-    if (result == expected) {
-        color = GREEN;
-        verdict = "OK";
-    } else {
-        color = RED;
-        verdict = "KO";
-    }
+    char* color = result == expected ? GREEN : RED;
+    char* verdict = result == expected ? "OK" : "KO";
     ft_printf("%s%s: %s\n" RESET, color, test_name, verdict);
 }
 
