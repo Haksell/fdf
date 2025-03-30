@@ -1,1 +1,7 @@
 .vscode/
+c/mlx/
+c/libft/
+c/objs/
+c/fdf
+c/fdf_test
+rust/target/
