@@ -1,4 +1,4 @@
-#include "../../includes/fdf.h"
+#include "../../fdf.h"
 
 static bool get_map_dimensions(char* filename, t_map* map) {
     const int fd = open(filename, O_RDONLY);

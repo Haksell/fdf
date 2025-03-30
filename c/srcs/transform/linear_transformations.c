@@ -1,4 +1,4 @@
-#include "../../includes/fdf.h"
+#include "../../fdf.h"
 
 void rotate_2d(double* d1, double* d2, double rotation) {
     const double dist = hypot(*d1, *d2);

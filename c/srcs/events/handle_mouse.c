@@ -1,4 +1,4 @@
-#include "../../includes/fdf.h"
+#include "../../fdf.h"
 
 static void zoom(t_data* data, int x, int y, double scale_shift) {
     t_vertex mouse;

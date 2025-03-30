@@ -50,11 +50,10 @@ else
 	FILENAMES += main
 endif
 
-HEADERS := fdf
+HEADERS := fdf.h
 
 SRCS := $(addprefix $(PATH_SRCS)/, $(addsuffix .c, $(FILENAMES)))
 OBJS := $(addprefix $(PATH_OBJS)/, $(addsuffix .o, $(FILENAMES)))
-HEADERS := $(addprefix $(PATH_INCLUDES)/, $(addsuffix .h, $(HEADERS)))
 
 define clone_repo
 	@echo "$(GREEN)==> Cloning $(1)$(RESET)"

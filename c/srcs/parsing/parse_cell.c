@@ -1,4 +1,4 @@
-#include "../../includes/fdf.h"
+#include "../../fdf.h"
 
 static bool parse_double(const char* s, double* ans) {
     size_t i;

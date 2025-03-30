@@ -1,4 +1,4 @@
-#include "../../includes/fdf.h"
+#include "../../fdf.h"
 
 static void project_cabinet(t_vertex* vertex, t_data* data) {
     (void)data;

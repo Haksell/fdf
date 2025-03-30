@@ -1,4 +1,4 @@
-#include "../../includes/fdf.h"
+#include "../../fdf.h"
 
 void init_params(t_data* data) {
     t_vertex origin;

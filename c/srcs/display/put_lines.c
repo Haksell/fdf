@@ -1,4 +1,4 @@
-#include "../../includes/fdf.h"
+#include "../../fdf.h"
 
 static t_int_vertex create_int_vertex(t_vertex* vertex) {
     t_int_vertex int_vertex;

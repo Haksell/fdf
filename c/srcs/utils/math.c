@@ -1,4 +1,4 @@
-#include "../../includes/fdf.h"
+#include "../../fdf.h"
 
 double get_min(double x1, double x2) {
     if (x1 < x2)

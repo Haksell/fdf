@@ -1,4 +1,4 @@
-#include "../../includes/fdf.h"
+#include "../../fdf.h"
 
 static void project_isometric(t_vertex* vertex, t_data* data) {
     const double tmp_x = vertex->x;

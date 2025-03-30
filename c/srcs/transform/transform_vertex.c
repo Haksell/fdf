@@ -1,4 +1,4 @@
-#include "../../includes/fdf.h"
+#include "../../fdf.h"
 
 void transform_vertex(t_vertex* vertex, t_data* data) {
     static t_transform_func funcs[] = {

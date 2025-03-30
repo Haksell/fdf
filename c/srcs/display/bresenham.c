@@ -1,4 +1,4 @@
-#include "../../includes/fdf.h"
+#include "../../fdf.h"
 
 static t_int_vertex get_shift_vector(t_int_vertex* v0, t_int_vertex* v1) {
     return ((t_int_vertex){

@@ -1,4 +1,4 @@
-#include "../../includes/fdf.h"
+#include "../../fdf.h"
 
 static int lerp_component(int c0, int c1, int dist, int dist_max) {
     return ((c0 * dist + c1 * (dist_max - dist)) / dist_max);

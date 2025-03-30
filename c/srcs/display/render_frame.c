@@ -1,4 +1,4 @@
-#include "../../includes/fdf.h"
+#include "../../fdf.h"
 
 static t_vertex** copy_vertices(t_data* data) {
     t_vertex** copy;

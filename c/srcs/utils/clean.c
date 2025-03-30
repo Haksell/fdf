@@ -1,4 +1,4 @@
-#include "../../includes/fdf.h"
+#include "../../fdf.h"
 
 int close_window(t_data* data) {
     mlx_destroy_image(data->mlx, data->img);

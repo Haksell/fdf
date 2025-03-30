@@ -7,8 +7,8 @@
 #include <stdbool.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include "../libft/libft.h"
-#include "../mlx/mlx.h"
+#include "libft/libft.h"
+#include "mlx/mlx.h"
 
 #ifndef M_PI
 #define M_PI 3.141592653589793

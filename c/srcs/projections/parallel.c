@@ -1,4 +1,4 @@
-#include "../../includes/fdf.h"
+#include "../../fdf.h"
 
 static void project_parallel(t_vertex* vertex, t_data* data) {
     const double tmp_y = vertex->y;

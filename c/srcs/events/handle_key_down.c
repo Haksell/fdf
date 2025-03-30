@@ -1,4 +1,4 @@
-#include "../../includes/fdf.h"
+#include "../../fdf.h"
 
 static bool handle_numpad(int keycode, t_data* data) {
     static int numpad[10] = {7, 4, 8, 6, 2, 9, 3, 1, 5, 0};
