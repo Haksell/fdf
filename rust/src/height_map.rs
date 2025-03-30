@@ -1,7 +1,9 @@
-use std::fs::File;
-use std::io::{BufRead, BufReader};
-use std::num::ParseFloatError;
-use std::num::ParseIntError;
+use std::{
+    fmt,
+    fs::File,
+    io::{BufRead, BufReader},
+    num::{ParseFloatError, ParseIntError},
+};
 
 #[derive(Clone, Copy, Debug)]
 pub struct VertexData {
@@ -19,7 +21,6 @@ pub struct HeightMap {
 #[derive(Debug)]
 pub enum MapParseError {
     IoError(std::io::Error),
-    InvalidFormat(String),
     ParseHeight(ParseFloatError),
     ParseColor(ParseIntError),
     NotRectangular(usize, usize), // (expected, found)
@@ -44,25 +45,42 @@ impl From<ParseIntError> for MapParseError {
     }
 }
 
+impl fmt::Display for MapParseError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            MapParseError::IoError(e) => write!(f, "IO error: {}", e),
+            MapParseError::ParseHeight(e) => write!(f, "Height parse error: {}", e),
+            MapParseError::ParseColor(e) => write!(f, "Color parse error: {}", e),
+            MapParseError::NotRectangular(expected, found) => {
+                write!(f, "Expected {} columns, found {}", expected, found)
+            }
+            MapParseError::Empty => write!(f, "Map is empty"),
+        }
+    }
+}
+
+impl std::error::Error for MapParseError {}
+
 impl HeightMap {
     pub fn parse(path: &str) -> Result<Self, MapParseError> {
         let file = File::open(path)?;
         let reader = BufReader::new(file);
 
         let mut data = Vec::new();
-        let mut width = None;
-        let mut height = 0;
+        let (mut width, mut height) = (0, 0);
 
         for line_res in reader.lines() {
             let line = line_res?;
             let tokens: Vec<&str> = line.trim().split_whitespace().collect();
 
-            if let Some(expected_width) = width {
-                if tokens.len() != expected_width {
-                    return Err(MapParseError::NotRectangular(expected_width, tokens.len()));
-                }
-            } else {
-                width = Some(tokens.len());
+            if tokens.is_empty() {
+                continue;
+            }
+
+            if height == 0 {
+                width = tokens.len();
+            } else if tokens.len() != width {
+                return Err(MapParseError::NotRectangular(width, tokens.len()));
             }
 
             for token in tokens {
@@ -80,7 +98,11 @@ impl HeightMap {
             height += 1;
         }
 
-        let width = width.ok_or(MapParseError::Empty)?;
+        if height == 0 {
+            return Err(MapParseError::Empty);
+        }
+
+        data.shrink_to_fit();
 
         Ok(HeightMap {
             width,
