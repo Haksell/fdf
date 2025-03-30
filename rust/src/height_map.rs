@@ -5,19 +5,6 @@ use std::{
     num::{ParseFloatError, ParseIntError},
 };
 
-#[derive(Clone, Copy, Debug)]
-pub struct VertexData {
-    height: f32,
-    color: u32,
-}
-
-#[derive(Debug)]
-pub struct HeightMap {
-    pub width: usize,
-    pub height: usize,
-    data: Vec<VertexData>,
-}
-
 #[derive(Debug)]
 pub enum MapParseError {
     IoError(std::io::Error),
@@ -61,6 +48,34 @@ impl fmt::Display for MapParseError {
 
 impl std::error::Error for MapParseError {}
 
+#[derive(Clone, Copy, Debug)]
+pub struct VertexData {
+    height: f32,
+    color: u32,
+}
+
+impl VertexData {
+    pub fn parse(token: &str) -> Result<Self, MapParseError> {
+        Ok(
+            if let Some((height_str, color_str)) = token.split_once(',') {
+                let height: f32 = height_str.parse()?;
+                let color: u32 = u32::from_str_radix(color_str.trim_start_matches("0x"), 16)?;
+                VertexData { height, color }
+            } else {
+                let height: f32 = token.parse()?;
+                VertexData { height, color: !0 }
+            },
+        )
+    }
+}
+
+#[derive(Debug)]
+pub struct HeightMap {
+    pub width: usize,
+    pub height: usize,
+    data: Vec<VertexData>,
+}
+
 impl HeightMap {
     pub fn parse(path: &str) -> Result<Self, MapParseError> {
         let file = File::open(path)?;
@@ -87,15 +102,7 @@ impl HeightMap {
             }
 
             for token in tokens {
-                let vertex = if let Some((height_str, color_str)) = token.split_once(',') {
-                    let height: f32 = height_str.parse()?;
-                    let color: u32 = u32::from_str_radix(color_str.trim_start_matches("0x"), 16)?;
-                    VertexData { height, color }
-                } else {
-                    let height: f32 = token.parse()?;
-                    VertexData { height, color: !0 }
-                };
-                data.push(vertex);
+                data.push(VertexData::parse(token)?);
             }
 
             height += 1;
