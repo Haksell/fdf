@@ -1,5 +1,6 @@
 mod canvas;
 mod color;
+mod height_map;
 
 use {
     canvas::Canvas,
