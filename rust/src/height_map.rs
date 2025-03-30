@@ -23,7 +23,7 @@ pub enum MapParseError {
     IoError(std::io::Error),
     ParseHeight(ParseFloatError),
     ParseColor(ParseIntError),
-    NotRectangular(usize, usize), // (expected, found)
+    NotRectangular { expected: usize, found: usize },
     Empty,
 }
 
@@ -51,7 +51,7 @@ impl fmt::Display for MapParseError {
             MapParseError::IoError(e) => write!(f, "IO error: {}", e),
             MapParseError::ParseHeight(e) => write!(f, "Height parse error: {}", e),
             MapParseError::ParseColor(e) => write!(f, "Color parse error: {}", e),
-            MapParseError::NotRectangular(expected, found) => {
+            MapParseError::NotRectangular { expected, found } => {
                 write!(f, "Expected {} columns, found {}", expected, found)
             }
             MapParseError::Empty => write!(f, "Map is empty"),
@@ -80,7 +80,10 @@ impl HeightMap {
             if height == 0 {
                 width = tokens.len();
             } else if tokens.len() != width {
-                return Err(MapParseError::NotRectangular(width, tokens.len()));
+                return Err(MapParseError::NotRectangular {
+                    expected: width,
+                    found: tokens.len(),
+                });
             }
 
             for token in tokens {
