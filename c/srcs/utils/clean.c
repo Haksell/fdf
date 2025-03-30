@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "../../includes/fdf.h"
 
 int close_window(t_data* data) {
     mlx_destroy_image(data->mlx, data->img);
@@ -28,7 +28,19 @@ int complain(t_data* data, char* error_message) {
     return (EXIT_FAILURE);
 }
 
+void ft_free_double_pointer(void*** grid, size_t height) {
+    size_t i;
+
+    if (*grid == NULL) return;
+    i = 0;
+    while (i < height && (*grid)[i] != NULL) {
+        ft_free(&(*grid)[i]);
+        ++i;
+    }
+    ft_free((void**)grid);
+}
+
 void free_data(t_data* data) {
-    ft_free_double((void***)&data->map.vertices, data->map.height);
-    ft_free_double((void***)&data->colors, WINDOW_HEIGHT);
+    ft_free_double_pointer((void***)&data->map.vertices, data->map.height);
+    ft_free_double_pointer((void***)&data->colors, WINDOW_HEIGHT);
 }

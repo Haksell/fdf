@@ -23,7 +23,7 @@ YEET := 1>/dev/null 2>/dev/null
 
 CC := cc -Wall -Wextra -Werror -Ofast -mavx -g3
 INCLUDES := -I./$(PATH_INCLUDES) -I./$(PATH_LIBFT) -I./$(PATH_MLX)
-LIBRARIES := -L$(PATH_LIBFT) -lft -lX11 -lXext -L$(PATH_MLX) -lmlx -lm
+LIBRARIES := -L$(PATH_LIBFT) -lft -L$(PATH_MLX) -lmlx -lXext -lX11 -lm
 
 # TOOD: wildcard
 FILENAMES += main

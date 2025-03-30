@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "../../includes/fdf.h"
 
 static bool get_map_dimensions(char* filename, t_map* map) {
     const int fd = open(filename, O_RDONLY);
@@ -51,7 +51,7 @@ static bool parse_row(int y, char* line, t_map* map) {
         if (!parse_cell(cells[x], map, x, y)) is_valid_row = false;
         ++x;
     }
-    ft_free_double((void***)&cells, map->width);
+    ft_free_double_pointer((void***)&cells, map->width);
     return (is_valid_row);
 }
 
@@ -74,6 +74,6 @@ bool parse_map(char* filename, t_map* map) {
         ++y;
     }
     close(fd);
-    if (!is_valid_map) ft_free_double((void***)&map->vertices, map->height);
+    if (!is_valid_map) ft_free_double_pointer((void***)&map->vertices, map->height);
     return (is_valid_map);
 }
