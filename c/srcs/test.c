@@ -17,13 +17,9 @@ void ft_assert(char* test_name, bool result, bool expected) {
 }
 
 t_list* ls(char* path) {
-    DIR* dp;
-    struct dirent* ep;
-    t_list* lst;
-
-    lst = NULL;
-    dp = opendir(path);
-    ep = readdir(dp);
+    t_list* lst = NULL;
+    DIR* dp = opendir(path);
+    struct dirent* ep = readdir(dp);
     while (ep != NULL) {
         if (ep->d_name[0] != '.') ft_lstadd_front(&lst, ft_lstnew(ft_strjoin(path, ep->d_name)));
         ep = readdir(dp);
@@ -34,15 +30,12 @@ t_list* ls(char* path) {
 }
 
 void test(char* title, char* directory, bool expected) {
-    t_map map;
-    char* filename;
-    t_list* filenames;
-
     display_title(title);
-    filenames = ls(directory);
+    t_list* filenames = ls(directory);
     if (!expected) ft_lstadd_front(&filenames, ft_lstnew("../maps/invalid/notfound.fdf"));
     while (filenames != NULL) {
-        filename = filenames->content;
+        char* filename = filenames->content;
+        t_map map;
         ft_assert(filename, parse_map(filename, &map), expected);
         filenames = filenames->next;
     }
