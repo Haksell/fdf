@@ -1,6 +1,3 @@
-#include <dirent.h>
-#include <sys/stat.h>
-#include <sys/types.h>
 #include "../fdf.h"
 
 #define RESET "\033[0m"

@@ -1,6 +1,7 @@
 #ifndef FDF_H
 #define FDF_H
 
+#include <dirent.h>
 #include <fcntl.h>
 #include <limits.h>
 #include <math.h>
