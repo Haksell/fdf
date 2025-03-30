@@ -2,7 +2,6 @@ use std::{
     fmt,
     fs::File,
     io::{BufRead, BufReader},
-    num::{ParseFloatError, ParseIntError},
 };
 
 const MINIMUM_DIMENSION: usize = 2;
@@ -60,9 +59,11 @@ impl VertexData {
             if !color_str.starts_with("0x") {
                 return Err(MapParseError::ParseColor(color_str.into()));
             }
-
             let color = u32::from_str_radix(&color_str[2..], 16)
                 .map_err(|_| MapParseError::ParseColor(color_str.into()))?;
+            if color > 0xffffff {
+                return Err(MapParseError::ParseColor(color_str.into()));
+            }
 
             Ok(VertexData { height, color })
         } else {
@@ -143,40 +144,66 @@ impl HeightMap {
 mod tests {
     use {
         super::*,
-        std::{fs, path::Path},
+        std::{
+            fs::{self, Permissions},
+            os::unix::fs::PermissionsExt,
+            path::Path,
+        },
     };
 
-    #[test]
-    fn test_valid_and_invalid_maps() {
-        let valid_dir = Path::new("../maps/valid");
-        let invalid_dir = Path::new("../maps/invalid");
+    struct PermissionGuard<'a> {
+        path: &'a Path,
+        original: Permissions,
+    }
 
-        assert!(valid_dir.is_dir(), "Missing ../maps/valid directory");
-        assert!(invalid_dir.is_dir(), "Missing ../maps/invalid directory");
+    impl<'a> PermissionGuard<'a> {
+        fn new(path: &'a Path, mode: u32) -> Self {
+            let original = fs::metadata(path)
+                .expect("Failed to get metadata")
+                .permissions();
 
-        for entry in fs::read_dir(valid_dir).expect("Reading valid directory failed") {
-            let path = entry.unwrap().path();
-            if path.extension().and_then(|s| s.to_str()) == Some("fdf") {
-                let result = HeightMap::parse(path.to_str().unwrap());
-                assert!(
-                    result.is_ok(),
-                    "Expected OK for valid file: {:?}, got error: {:?}",
-                    path,
-                    result.err()
-                );
-            }
+            fs::set_permissions(path, Permissions::from_mode(mode))
+                .expect("Failed to change permissions");
+
+            Self { path, original }
         }
+    }
 
-        for entry in fs::read_dir(invalid_dir).expect("Reading invalid directory failed") {
-            let path = entry.unwrap().path();
-            if path.extension().and_then(|s| s.to_str()) == Some("fdf") {
-                let result = HeightMap::parse(path.to_str().unwrap());
-                assert!(
-                    result.is_err(),
-                    "Expected ERR for invalid file: {:?}, got OK",
-                    path
-                );
-            }
+    impl Drop for PermissionGuard<'_> {
+        fn drop(&mut self) {
+            let _ = fs::set_permissions(self.path, self.original.clone());
+        }
+    }
+
+    #[test]
+    fn test_valid_maps() {
+        for entry in fs::read_dir("../maps/valid").expect("Reading valid directory failed") {
+            let path = entry.expect("Invalid entry").path();
+            let result = HeightMap::parse(path.to_str().unwrap());
+            assert!(
+                result.is_ok(),
+                "Expected Ok for valid file: {:?}, got Err: {:?}",
+                path,
+                result.err()
+            );
+        }
+    }
+
+    #[test]
+    fn test_invalid_maps() {
+        for entry in fs::read_dir("../maps/invalid").expect("Reading invalid directory failed") {
+            let path = entry.expect("Invalid entry").path();
+
+            let _guard = path
+                .ends_with("unreadable.fdf")
+                .then(|| PermissionGuard::new(&path, 0));
+
+            let result = HeightMap::parse(path.to_str().unwrap());
+            assert!(
+                result.is_err(),
+                "Expected Err for invalid file: {:?}, got Ok",
+                path
+            );
         }
     }
 }
